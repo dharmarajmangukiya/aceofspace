@@ -1,15 +1,14 @@
-import DefaultHeader from "@/components/common/DefaultHeader";
-import Footer from "@/components/common/default-footer";
-import MobileMenu from "@/components/common/mobile-menu";
-import Listing1 from "@/components/listing/list-view/all-list-style/Listing1";
-import Listing2 from "@/components/listing/list-view/all-list-style/Listing2";
-import Listing3 from "@/components/listing/list-view/all-list-style/Listing3";
-import Listing4 from "@/components/listing/list-view/all-list-style/Listing4";
-import Listing5 from "@/components/listing/list-view/all-list-style/Listing5";
-import Listing6 from "@/components/listing/list-view/all-list-style/Listing6";
-import Listing7 from "@/components/listing/list-view/all-list-style/Listing7";
-import Listing8 from "@/components/listing/list-view/all-list-style/Listing8";
-import React from "react";
+import DefaultHeader from "@/theme components/common/DefaultHeader";
+import Footer from "@/theme components/common/default-footer";
+import MobileMenu from "@/theme components/common/mobile-menu";
+import Listing1 from "@/theme components/listing/list-view/all-list-style/Listing1";
+import Listing2 from "@/theme components/listing/list-view/all-list-style/Listing2";
+import Listing3 from "@/theme components/listing/list-view/all-list-style/Listing3";
+import Listing4 from "@/theme components/listing/list-view/all-list-style/Listing4";
+import Listing5 from "@/theme components/listing/list-view/all-list-style/Listing5";
+import Listing6 from "@/theme components/listing/list-view/all-list-style/Listing6";
+import Listing7 from "@/theme components/listing/list-view/all-list-style/Listing7";
+import Listing8 from "@/theme components/listing/list-view/all-list-style/Listing8";
 
 export const metadata = {
   title: "List V1 || Homez - Real Estate NextJS Template",

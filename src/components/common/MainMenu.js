@@ -1,10 +1,4 @@
-import {
-  homeItems,
-  blogItems,
-  listingItems,
-  propertyItems,
-  pageItems,
-} from "@/data/navItems";
+import { blogItems, pageItems, propertyItems } from "@/data/navItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,11 +10,10 @@ const MainMenu = () => {
   const [activeLink, setActiveLink] = useState("");
 
   useEffect(() => {
-    homeItems.forEach((elm) => {
-      if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-        setTopMenu("home");
-      }
-    });
+    if ("home" == pathname.split("/")[1]) {
+      setTopMenu("home");
+    }
+
     blogItems.forEach((elm) => {
       if (elm.href.split("/")[1] == pathname.split("/")[1]) {
         setTopMenu("blog");
@@ -39,14 +32,9 @@ const MainMenu = () => {
         }
       })
     );
-    listingItems.forEach((item) =>
-      item.submenu.forEach((elm) => {
-        if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-          setTopMenu("listing");
-          setSubmenu(item.title);
-        }
-      })
-    );
+    if ("listing" == pathname.split("/")[1]) {
+      setTopMenu("listing");
+    }
   }, [pathname]);
 
   const handleActive = (link) => {
@@ -57,14 +45,13 @@ const MainMenu = () => {
   return (
     <ul className="ace-responsive-menu">
       <li className="visible_list dropitem">
-        <a className="list-item" href="#">
+        <a className="list-item" href="/">
           <span className={topMenu == "home" ? "title menuActive" : "title"}>
             Home
           </span>
-          <span className="arrow"></span>
         </a>
         {/* Level Two*/}
-        <ul className="sub-menu">
+        {/* <ul className="sub-menu">
           {homeItems.map((item, index) => (
             <li key={index}>
               <Link className={`${handleActive(item.href)}`} href={item.href}>
@@ -72,18 +59,19 @@ const MainMenu = () => {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </li>
       {/* End homeItems */}
 
-      <li className="megamenu_style dropitem">
-        <a className="list-item" href="#">
+      {/* Listing menu */}
+      <li className="megamenu_style ">
+        <a className="list-item" href="/listing">
           <span className={topMenu == "listing" ? "title menuActive" : "title"}>
             Listing
           </span>
-          <span className="arrow"></span>
+          {/* <span className="arrow"></span> */}
         </a>
-        <ul className="row dropdown-megamenu sub-menu">
+        {/* <ul className="row dropdown-megamenu sub-menu">
           {listingItems.map((item, index) => (
             <li className="col mega_menu_list" key={index}>
               <h4 className="title">{item.title}</h4>
@@ -101,7 +89,7 @@ const MainMenu = () => {
               </ul>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </li>
       {/* End listings */}
 

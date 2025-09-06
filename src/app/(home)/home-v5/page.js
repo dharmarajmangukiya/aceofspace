@@ -1,18 +1,18 @@
-import Explore from "@/components/common/Explore";
-import Footer from "@/components/home/home-v5/footer";
-import MobileMenu from "@/components/common/mobile-menu";
-import FeaturedListings from "@/components/home/home-v5/FeatuerdListings";
-import Header from "@/components/home/home-v5/Header";
-import Partner from "@/components/common/Partner";
-import PropertiesByCities from "@/components/home/home-v5/PropertiesByCities";
-import Testimonial from "@/components/home/home-v5/Testimonial";
-import FilterWithProperties from "@/components/home/home-v5/filter-with-property";
 import Blog from "@/components/common/Blog";
-import Hero from "@/components/home/home-v5/Hero";
-import ApartmentTypes from "@/components/home/home-v5/ApartmentTypes";
-import Cta from "@/components/home/home-v5/Cta";
+import Explore from "@/components/common/Explore";
+import Partner from "@/components/common/Partner";
+import MobileMenu from "@/components/common/mobile-menu";
+import ApartmentTypes from "@/components/home/ApartmentTypes";
+import Cta from "@/components/home/Cta";
+import FeaturedListings from "@/components/home/FeatuerdListings";
+import Header from "@/components/home/Header";
+import Hero from "@/components/home/Hero";
+import PropertiesByCities from "@/components/home/PropertiesByCities";
+import PropertyListing from "@/components/home/PropertyListing";
+import Testimonial from "@/components/home/Testimonial";
+import FilterWithProperties from "@/components/home/filter-with-property";
+import Footer from "@/components/home/footer";
 import Link from "next/link";
-import PropertyListing from "@/components/home/home-v5/PropertyListing";
 
 export const metadata = {
   title: "Home v5 || Homez - Real Estate NextJS Template",
