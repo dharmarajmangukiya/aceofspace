@@ -5,7 +5,7 @@ import Link from "next/link";
 const Listing = () => {
   return (
     <>
-      {listings.slice(12, 15).map((listing) => (
+      {listings.slice(0, 3).map((listing) => (
         <div className="col-sm-6 col-lg-4" key={listing.id}>
           <div className="listing-style9">
             <div className="list-thumb">

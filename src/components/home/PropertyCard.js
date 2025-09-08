@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const PropertyCard = ({
   listing,
-  onClick = () => {},
+  onCardClick = () => {},
   onFeatureClick,
   onForSaleClick,
   onNewTabClick,
@@ -12,15 +12,17 @@ const PropertyCard = ({
   onLikeClick,
   imageStyles = {},
 }) => {
+  const isRentOrCommercial = listing.forRent ? "rent" : "commercial";
+
   return (
-    <div role="button" onClick={onClick} className="listing-style9">
+    <div role="button" onClick={onCardClick} className="listing-style9">
       <div className="list-thumb">
         <Image
           width={465}
           height={382}
           className={"w-100 h-100 cover"}
           style={imageStyles}
-          src={"/images/listings/xl-6.jpg"}
+          src={listing.image ?? "/images/listings/xl-6.jpg"}
           alt="listings"
         />
         <div className="sale-sticker-wrap">
@@ -71,17 +73,41 @@ const PropertyCard = ({
         <h6 className="list-title my-1">
           <Link href={`/single-v2/${listing.id}`}>{listing.title}</Link>
         </h6>
-        <div className="list-meta2 d-flex align-items-center">
-          <a href="#" className="mr10">
-            <span className="flaticon-bed mr5" /> {listing.bed} bed
-          </a>
-          <a href="#" className="mr10">
-            <span className="flaticon-shower mr5" /> {listing.bath} bath
-          </a>
-          <a href="#">
-            <span className="flaticon-expand mr5" /> {listing.sqft} sqft
-          </a>
-        </div>
+
+        {(() => {
+          if (isRentOrCommercial === "rent") {
+            return (
+              <div className="list-meta2 d-flex align-items-center">
+                <a href="#" className="mr10">
+                  <span className="flaticon-bed mr5" /> {listing.bed} bedroom(s)
+                </a>
+                <a href="#" className="mr10">
+                  <span className="flaticon-shower mr5" /> {listing.bath} bath
+                </a>
+                <a href="#">
+                  <span className="flaticon-expand mr5" /> {listing.sqft} sqft
+                </a>
+              </div>
+            );
+          } else if (isRentOrCommercial === "commercial") {
+            return (
+              <div className="list-meta2 d-flex align-items-center flex-wrap">
+                <a href="#" className="mr10 text-nowrap ">
+                  <span className="flaticon-bed mr5" /> {listing.bed} Clear
+                  height
+                </a>
+                <a href="#" className="mr10 text-nowrap ">
+                  <span className="flaticon-shower mr5" /> {listing.bath}
+                  Entrance Width
+                </a>
+                <a href="#" className="text-nowrap">
+                  <span className="flaticon-expand mr5" /> {listing.sqft} Carpet
+                  area
+                </a>
+              </div>
+            );
+          }
+        })()}
       </div>
     </div>
   );

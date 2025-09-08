@@ -1,9 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import PropertyCard from "./PropertyCard";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const PopularListings = ({ data }) => {
   return (
@@ -25,67 +29,21 @@ const PopularListings = ({ data }) => {
             slidesPerView: 4,
           },
         }}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        modules={[Autoplay]}
       >
-        {data.slice(0, 8).map((listing) => (
-          <SwiperSlide key={listing.id}>
-            <div className="item">
-              <div className="listing-style1">
-                <div className="list-thumb">
-                  <Image
-                    width={382}
-                    height={248}
-                    className="w-100 h-100 cover"
-                    src={listing.image}
-                    alt="listings"
-                  />
-                  <div className="sale-sticker-wrap">
-                    {listing.featured && (
-                      <div className="list-tag rounded-0 fz12">
-                        <span className="flaticon-electricity" />
-                        FEATURED
-                      </div>
-                    )}
-                  </div>
-                  <div className="list-price">
-                    {listing.price} / <span>mo</span>
-                  </div>
-                </div>
-                <div className="list-content">
-                  <h6 className="list-title">
-                    <Link href="/map-v3">{listing.title}</Link>
-                  </h6>
-                  <p className="list-text">{listing.location}</p>
-                  <div className="list-meta d-flex align-items-center">
-                    <a href="#">
-                      <span className="flaticon-bed" /> {listing.bed} bed
-                    </a>
-                    <a href="#">
-                      <span className="flaticon-shower" /> {listing.bath} bath
-                    </a>
-                    <a href="#">
-                      <span className="flaticon-expand" /> {listing.sqft} sqft
-                    </a>
-                  </div>
-                  <hr className="mt-2 mb-2" />
-                  <div className="list-meta2 d-flex justify-content-between align-items-center">
-                    <span className="for-what">For Rent</span>
-                    <div className="icons d-flex align-items-center">
-                      <a href="#">
-                        <span className="flaticon-fullscreen" />
-                      </a>
-                      <a href="#">
-                        <span className="flaticon-new-tab" />
-                      </a>
-                      <a href="#">
-                        <span className="flaticon-like" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
+        {[...data.slice(12, 15), ...data.slice(12, 15)].map(
+          (listing, index) => (
+            <SwiperSlide key={listing.id + index}>
+              <div className="item">
+                <PropertyCard listing={listing} />
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          )
+        )}
       </Swiper>
     </>
   );

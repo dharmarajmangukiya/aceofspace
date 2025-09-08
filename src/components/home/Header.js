@@ -2,10 +2,9 @@
 
 import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
-import LoginSignupModal from "@/components/common/login-signup-modal";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
@@ -65,16 +64,16 @@ const Header = () => {
 
               <div className="col-auto">
                 <div className="d-flex align-items-center">
-                  <a
-                    href="#"
+                  <Link
+                    href="/auth/login"
                     className="login-info d-flex align-items-center"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginSignupModal"
+                    // data-bs-toggle="modal"
+                    // data-bs-target="#loginSignupModal"
                     role="button"
                   >
                     <i className="far fa-user-circle fz16 me-2" />{" "}
                     <span className="d-none d-xl-block">Login / Register</span>
-                  </a>
+                  </Link>
                   <Link
                     className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
                     href="/dashboard-add-property"
@@ -116,7 +115,7 @@ const Header = () => {
       {/* End Header */}
 
       {/* Signup Modal */}
-      <div className="signup-modal">
+      {/* <div className="signup-modal">
         <div
           className="modal fade"
           id="loginSignupModal"
@@ -128,7 +127,7 @@ const Header = () => {
             <LoginSignupModal />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End Signup Modal */}
 
       {/* DesktopSidebarMenu */}

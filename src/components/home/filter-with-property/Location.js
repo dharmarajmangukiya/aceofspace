@@ -4,11 +4,13 @@ import Select from "react-select";
 
 const Location = () => {
   const inqueryType = [
-    { value: "New York", label: "New York" },
-    { value: "Los Angeles", label: "Los Angeles" },
-    { value: "London", label: "London" },
-    { value: "Paris", label: "Paris" },
+    { value: 1, label: "1 km" },
+    { value: 5, label: "5 km" },
+    { value: 10, label: "10 km" },
+    { value: 20, label: "20 km" },
+    { value: 50, label: "50 km" },
   ];
+
   const [showSelect, setShowSelect] = useState(false);
   useEffect(() => {
     setShowSelect(true);

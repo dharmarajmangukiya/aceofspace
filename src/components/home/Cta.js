@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 const Cta = () => {
   return (
@@ -8,7 +7,7 @@ const Cta = () => {
         <div className="row">
           <div className="col-xl-10 mx-auto" data-aos="fade-in">
             <div className="cta-style4 position-relative text-center">
-              <h6 className="sub-title fw400 text-white">BUY OR SELL</h6>
+              <h6 className="sub-title fw400 text-white">Rent or Lease</h6>
               <h1 className="cta-title mb30 text-white">
                 Looking to Buy a new property or sell an existing one? Realton
                 provides an awesome solution!

@@ -33,7 +33,8 @@ const FilterContent = () => {
   const [activeTab, setActiveTab] = useState("rent");
   const [index, setIndex] = useState(0);
 
-  const suggestions = activeTab === "rent" ? rentSuggestions : leaseSuggestions;
+  const isRent = activeTab === "rent";
+  const suggestions = isRent ? rentSuggestions : leaseSuggestions;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -114,7 +115,7 @@ const FilterContent = () => {
                 <div className="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
                   <div className="mt-3 mt-md-0">
                     <div className="bootselect-multiselect">
-                      <label className="fz14">Location</label>
+                      <label className="fz14">Location(Ahmedabad)</label>
                       <Location />
                     </div>
                   </div>
@@ -124,14 +125,14 @@ const FilterContent = () => {
                 <div className="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
                   <div className="mt-3 mt-md-0">
                     <div className="dropdown-lists">
-                      <label className="fz14 mb-1">Price</label>
+                      <label className="fz14 mb-1">Per month Price </label>
                       <div
                         className="btn open-btn text-start dropdown-toggle"
                         data-bs-toggle="dropdown"
                         data-bs-auto-close="outside"
                         style={{ fontSize: "13px" }}
                       >
-                        ${price[0]} - ${price[1]}{" "}
+                        ₹{price[0]} - ₹{price[1]}{" "}
                         <i className="fas fa-caret-down" />
                       </div>
                       <div className="dropdown-menu">
@@ -146,9 +147,9 @@ const FilterContent = () => {
                               id="slider"
                             />
                             <div className="d-flex align-items-center">
-                              <span id="slider-range-value1">${price[0]}</span>
+                              <span id="slider-range-value1">₹{price[0]}</span>
                               <i className="fa-sharp fa-solid fa-minus mx-2 dark-color icon" />
-                              <span id="slider-range-value2">${price[1]}</span>
+                              <span id="slider-range-value2">₹{price[1]}</span>
                             </div>
                           </div>
                         </div>
@@ -171,7 +172,9 @@ const FilterContent = () => {
                     <button
                       className="advance-search-icon ud-btn btn-thm ms-4"
                       type="button"
-                      onClick={() => router.push("/grid-full-3-col")}
+                      onClick={() =>
+                        router.push(`/listing?rl=${isRent ? "rent" : "lease"}`)
+                      }
                     >
                       <span className="flaticon-search" />
                     </button>
