@@ -1,51 +1,52 @@
 "use client";
-import { useEffect, useState } from "react";
+import {
+  ageOfPropertyOptions,
+  floorPreferenceOptions,
+  furnishingStatusOptions,
+  locationOptions,
+  propertyTypeOptions,
+  zoneTypeOptions,
+} from "@/utilis/constants";
 import Select from "react-select";
 import Amenities from "./Amenities";
 import Bathroom from "./Bathroom";
 import Bedroom from "./Bedroom";
+import Facilities from "./Facility";
 import PriceRange from "./PriceRange";
 
+const catOptions = propertyTypeOptions["lease"];
+
+const customStyles = {
+  option: (styles, { isFocused, isSelected, isHovered }) => {
+    return {
+      ...styles,
+      backgroundColor: isSelected
+        ? "#eb6753"
+        : isHovered
+        ? "#eb675312"
+        : isFocused
+        ? "#eb675312"
+        : undefined,
+    };
+  },
+};
+
+const multiSelectCustomStyles = {
+  ...customStyles,
+  valueContainer: (base) => {
+    return {
+      ...base,
+      flexWrap: "nowrap",
+    };
+  },
+  multiValue: (base) => {
+    return { ...base, minWidth: "60px" };
+  },
+};
+
 const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
-  const [showSelect, setShowSelect] = useState(false);
-  useEffect(() => {
-    setShowSelect(true);
-  }, []);
-  const catOptions = [
-    { value: "Houses", label: "Houses" },
-    { value: "Office", label: "Office" },
-    { value: "Apartments", label: "Apartments" },
-    { value: "Villa", label: "Villa" },
-  ];
-
-  const locationOptions = [
-    { value: "All Cities", label: "All Cities" },
-    { value: "California", label: "California" },
-    { value: "Los Angeles", label: "Los Angeles" },
-    { value: "New Jersey", label: "New Jersey" },
-    { value: "New York", label: "New York" },
-    { value: "San Diego", label: "San Diego" },
-    { value: "San Francisco", label: "San Francisco" },
-    { value: "Texas", label: "Texas" },
-  ];
-
-  const customStyles = {
-    option: (styles, { isFocused, isSelected, isHovered }) => {
-      return {
-        ...styles,
-        backgroundColor: isSelected
-          ? "#eb6753"
-          : isHovered
-          ? "#eb675312"
-          : isFocused
-          ? "#eb675312"
-          : undefined,
-      };
-    },
-  };
-
   return (
-    <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal-dialog modal-dialog-centered modal-xl">
       <div className="modal-content">
         <div className="modal-header pl30 pr30">
           <h5 className="modal-title" id="exampleModalLabel">
@@ -71,101 +72,77 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
               </div>
             </div>
           </div>
-          {/* End .row */}
 
-          <div className="row">
-            <div className="col-sm-6">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+            <div className="col">
               <div className="widget-wrapper">
                 <h6 className="list-title">Type</h6>
                 <div className="form-style2 input-group">
-                  {showSelect && (
-                    <Select
-                      defaultValue={[catOptions[1]]}
-                      name="colors"
-                      options={catOptions}
-                      styles={customStyles}
-                      onChange={(e) =>
-                        filterFunctions?.setPropertyTypes([e.value])
-                      }
-                      className="select-custom"
-                      classNamePrefix="select"
-                      required
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            {/* End .col-6 */}
-
-            <div className="col-sm-6">
-              <div className="widget-wrapper">
-                <h6 className="list-title">Property ID</h6>
-                <div className="form-style2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="RT04949213"
-                  />
-                </div>
-              </div>
-            </div>
-            {/* End .col-6 */}
-          </div>
-          {/* End .row */}
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="widget-wrapper">
-                <h6 className="list-title">Bedrooms</h6>
-                <div className="d-flex">
-                  <Bedroom filterFunctions={filterFunctions} />
-                </div>
-              </div>
-            </div>
-            {/* End .col-md-6 */}
-
-            <div className="col-sm-6">
-              <div className="widget-wrapper">
-                <h6 className="list-title">Bathrooms</h6>
-                <div className="d-flex">
-                  <Bathroom filterFunctions={filterFunctions} />
-                </div>
-              </div>
-            </div>
-            {/* End .col-md-6 */}
-          </div>
-          {/* End .row */}
-
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="widget-wrapper">
-                <h6 className="list-title">Location</h6>
-                <div className="form-style2 input-group">
                   <Select
-                    defaultValue={[locationOptions[0]]}
-                    name="colors"
+                    instanceId="property-type"
+                    defaultValue={[catOptions[1]]}
+                    name="catOptions"
+                    options={catOptions}
                     styles={customStyles}
-                    options={locationOptions}
-                    className="select-custom filterSelect"
-                    value={{
-                      value: filterFunctions?.location,
-                      label: filterFunctions?.location,
-                    }}
+                    onChange={(e) =>
+                      filterFunctions?.setPropertyTypes([e.value])
+                    }
+                    className="select-custom"
                     classNamePrefix="select"
-                    onChange={(e) => filterFunctions?.handlelocation(e.value)}
                     required
                   />
                 </div>
               </div>
             </div>
-            {/* End .col-md-6 */}
 
-            <div className="col-sm-6">
+            <div className="col">
               <div className="widget-wrapper">
-                <h6 className="list-title">Square Feet</h6>
-                <div className="space-area">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="form-style1">
+                <h6 className="list-title">Zone Type</h6>
+                <div className="form-style2 input-group">
+                  <Select
+                    instanceId="zone-type"
+                    defaultValue={[zoneTypeOptions[1]]}
+                    name="zoneTypeOptions"
+                    isMulti
+                    options={zoneTypeOptions}
+                    hideSelectedOptions={false}
+                    closeMenuOnSelect={false}
+                    styles={multiSelectCustomStyles}
+                    className="select-custom"
+                    classNamePrefix="select"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Area and Location</h6>
+                <div className="form-style2 input-group">
+                  <Select
+                    instanceId="property-type"
+                    defaultValue={[locationOptions[1]]}
+                    name="locationOptions"
+                    options={locationOptions}
+                    styles={customStyles}
+                    // onChange={(e) =>
+                    //   filterFunctions?.setPropertyTypes([e.value])
+                    // }
+                    className="select-custom"
+                    classNamePrefix="select"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Carpet area </h6>
+                <div className="">
+                  <div className="d-flex gap-3 align-items-center justify-content-between">
+                    <div className="form-style">
                       <input
                         type="number"
                         className="form-control filterInput"
@@ -180,7 +157,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                       />
                     </div>
                     <span className="dark-color">-</span>
-                    <div className="form-style1">
+                    <div className="form-style">
                       <input
                         type="number"
                         className="form-control filterInput"
@@ -198,17 +175,246 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                 </div>
               </div>
             </div>
-            {/* End .col-md-6 */}
-          </div>
-          {/* End .row */}
-
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="widget-wrapper mb0">
-                <h6 className="list-title mb10">Amenities</h6>
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Age of property</h6>
+                <div className="form-style2 input-group">
+                  {/* // todo : Pending Data handle */}
+                  <Select
+                    instanceId="age-of-property-1"
+                    defaultValue={[ageOfPropertyOptions[0]]}
+                    name="ageOfPropertyOptions"
+                    styles={customStyles}
+                    options={ageOfPropertyOptions}
+                    className="select-custom filterSelect"
+                    value={{
+                      value: filterFunctions?.location,
+                      label: filterFunctions?.location,
+                    }}
+                    onChange={(e) => filterFunctions?.handlelocation(e.value)}
+                    classNamePrefix="select"
+                    required
+                  />
+                </div>
               </div>
             </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Available from </h6>
+                <div className="form-style2 input-group">
+                  <input
+                    type="date"
+                    className="form-control filterInput"
+                    onChange={(e) =>
+                      console.log("Available from ", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Floor Preference</h6>
+                <div className="form-style2 input-group">
+                  <Select
+                    instanceId="zone-type"
+                    defaultValue={[floorPreferenceOptions[1]]}
+                    name="floorPreferenceOptions"
+                    isMulti
+                    options={floorPreferenceOptions}
+                    hideSelectedOptions={false}
+                    closeMenuOnSelect={false}
+                    styles={multiSelectCustomStyles}
+                    className="select-custom"
+                    classNamePrefix="select"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Seat Count </h6>
+                <div className="">
+                  <div className="d-flex gap-3 align-items-center justify-content-between">
+                    <div className="form-style">
+                      <input
+                        type="number"
+                        className="form-control filterInput"
+                        onChange={(e) =>
+                          filterFunctions?.handlesquirefeet([
+                            e.target.value,
+                            document.getElementById("maxFeet3").value / 1,
+                          ])
+                        }
+                        placeholder="Min."
+                        id="minFeet3"
+                      />
+                    </div>
+                    <span className="dark-color">-</span>
+                    <div className="form-style">
+                      <input
+                        type="number"
+                        className="form-control filterInput"
+                        placeholder="Max"
+                        id="maxFeet3"
+                        onChange={(e) =>
+                          filterFunctions?.handlesquirefeet([
+                            document.getElementById("minFeet3").value / 1,
+                            e.target.value,
+                          ])
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">No. of Cabins</h6>
+                <div className="form-style2">
+                  <input
+                    className="form-control"
+                    type="number"
+                    placeholder="Number of cabins (e.g. 3)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">No. of Washrooms</h6>
+                <div className="form-style2">
+                  <input
+                    className="form-control"
+                    type="number"
+                    placeholder="Number of Washrooms (e.g. 3)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Entrance Width</h6>
+                <div className="form-style2">
+                  <input
+                    className="form-control"
+                    placeholder="Enter entrance width (e.g. 4 ft)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Clear Height</h6>
+                <div className="form-style2">
+                  <input
+                    className="form-control"
+                    placeholder="Enter clear height (e.g. 12 ft)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Bedrooms</h6>
+                <div className="d-flex">
+                  <Bedroom filterFunctions={filterFunctions} />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Bathrooms</h6>
+                <div className="d-flex">
+                  <Bathroom filterFunctions={filterFunctions} />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Furnishing status</h6>
+                <div className="form-style2 input-group">
+                  {/* // todo : Pending Data handle */}
+                  <Select
+                    instanceId="furnishing-status"
+                    defaultValue={[furnishingStatusOptions[0]]}
+                    name="furnishingStatusOptions"
+                    styles={customStyles}
+                    options={furnishingStatusOptions}
+                    className="select-custom filterSelect"
+                    value={{
+                      value: filterFunctions?.location,
+                      label: filterFunctions?.location,
+                    }}
+                    onChange={(e) => filterFunctions?.handlelocation(e.value)}
+                    classNamePrefix="select"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Parking</h6>
+                <div className="form-style2 input-group">
+                  {["Yes", "No"].map((option) => (
+                    <div className="selection" key={`parking-${option}`}>
+                      <input
+                        id={`parking-${option}`}
+                        type="radio"
+                        name="parking"
+                        value={option}
+                      />
+                      <label htmlFor={`parking-${option}`}>{option}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="col">
+              <div className="widget-wrapper">
+                <h6 className="list-title">Safety Measures</h6>
+                <div className="form-style2 input-group">
+                  {["Yes", "No"].map((option) => (
+                    <div className="selection" key={`safety-${option}`}>
+                      <input
+                        id={`safety-${option}`}
+                        type="radio"
+                        name="safetyMeasures"
+                        value={option}
+                      />
+                      <label htmlFor={`safety-${option}`}>{option}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="widget-wrapper mb0">
+              <h6 className="list-title mb10">Amenities</h6>
+            </div>
             <Amenities filterFunctions={filterFunctions} />
+          </div>
+          <div>
+            <div className="widget-wrapper mb0">
+              <h6 className="list-title mb10">Facilities</h6>
+            </div>
+            <Facilities filterFunctions={filterFunctions} />
           </div>
         </div>
         {/* End modal body */}

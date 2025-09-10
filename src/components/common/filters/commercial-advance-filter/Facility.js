@@ -1,10 +1,10 @@
 "use client";
 
-import { buildingAmenitiesOptions } from "@/utilis/constants";
+import { facilitiesOptions } from "@/utilis/constants";
 import classNames from "classnames";
 import { useState } from "react";
 
-const Amenities = ({ onSelectionChange }) => {
+const Facilities = ({ onSelectionChange }) => {
   const [selected, setSelected] = useState([]);
 
   const handleClick = (amenity) => {
@@ -21,7 +21,7 @@ const Amenities = ({ onSelectionChange }) => {
 
   return (
     <div className="row row-cols-2 row-cols-md-3 row-cols-lg-5  g-3 mb-3">
-      {buildingAmenitiesOptions.map((amenity, idx) => {
+      {facilitiesOptions.map((amenity, idx) => {
         const isSelected = selected.includes(amenity.value);
 
         return (
@@ -53,4 +53,4 @@ const Amenities = ({ onSelectionChange }) => {
   );
 };
 
-export default Amenities;
+export default Facilities;

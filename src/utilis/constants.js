@@ -187,3 +187,122 @@ export const amenitiesOptions = [
     value: "24x7_cctv_surveillance",
   },
 ];
+
+export const buildingAmenitiesOptions = [
+  {
+    value: "reception_area",
+    label: "Reception area",
+    icon: "/images/icon/lift.svg",
+  },
+  { value: "furnished", label: "Furnished", icon: "/images/icon/lift.svg" },
+  {
+    value: "central_air_conditioning",
+    label: "Central Air Conditioning",
+    icon: "/images/icon/lift.svg",
+  },
+  { value: "oxygen_duct", label: "Oxygen Duct", icon: "/images/icon/lift.svg" },
+  { value: "ups", label: "UPS", icon: "/images/icon/lift.svg" },
+  {
+    value: "fire_extinguisher",
+    label: "Fire extinguisher",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "fire_sensors",
+    label: "Fire sensors",
+    icon: "/images/icon/lift.svg",
+  },
+  { value: "sprinklers", label: "Sprinklers", icon: "/images/icon/lift.svg" },
+  { value: "fire_hose", label: "Fire hose", icon: "/images/icon/lift.svg" },
+  {
+    value: "no_conference_room",
+    label: "No Conference room",
+    icon: "/images/icon/lift.svg",
+  },
+];
+
+export const facilitiesOptions = [
+  {
+    value: "power_backup",
+    label: "Power Back-up",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "cafeteria_food_court",
+    label: "Cafeteria / Food Court",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "visitor_parking",
+    label: "Visitor Parking",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "wheelchair_accessibility",
+    label: "WheelChair Accessibility",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "security_personnel",
+    label: "Security Personnel",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "cctv_surveillance",
+    label: "CCTV Surveillance",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "maintenance_staff",
+    label: "Maintenance Staff",
+    icon: "/images/icon/lift.svg",
+  },
+  { value: "atm", label: "ATM", icon: "/images/icon/lift.svg" },
+  {
+    value: "water_storage",
+    label: "Water Storage",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "feng_shui_vaastu_compliant",
+    label: "Feng Shui / Vaastu Compliant",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "waste_disposal",
+    label: "Waste Disposal",
+    icon: "/images/icon/lift.svg",
+  },
+  {
+    value: "grade_a_building",
+    label: "Grade A Building",
+    icon: "/images/icon/lift.svg",
+  },
+];
+
+export const zoneTypeOptions = [
+  { value: "open-spaces", label: "Open Spaces" },
+  { value: "agricultural-zone", label: "Agricultural Zone" },
+  { value: "special-economic-zone", label: "Special Economic Zone" },
+  { value: "natural-conservation-zone", label: "Natural Conservation Zone" },
+  { value: "government-use", label: "Government Use" },
+  { value: "other", label: "Other" },
+  { value: "industrial", label: "Industrial" },
+  { value: "commercial", label: "Commercial" },
+  { value: "residential", label: "Residential" },
+  {
+    value: "transport-and-communication",
+    label: "Transport and Communication",
+  },
+  { value: "public-utilities", label: "Public Utilities" },
+  { value: "public-and-semi-public-use", label: "Public and Semi Public Use" },
+];
+
+export const floorPreferenceOptions = [
+  { value: "lower-basement", label: "Lower Basement" },
+  { value: "basement", label: "Basement" },
+  { value: "lower-ground", label: "Lower Ground" },
+  { value: "ground", label: "Ground" },
+  { value: "rooftop-terrace", label: "Rooftop/Terrace" },
+  { value: "1", label: "1" },
+];

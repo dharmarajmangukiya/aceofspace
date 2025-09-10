@@ -58,7 +58,7 @@ const RentalAdvanceFilterModal = ({ filterFunctions }) => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
             <div className="col">
               <div className="widget-wrapper">
                 <h6 className="list-title">Type</h6>
@@ -136,9 +136,9 @@ const RentalAdvanceFilterModal = ({ filterFunctions }) => {
             <div className="col">
               <div className="widget-wrapper">
                 <h6 className="list-title">Square Feet</h6>
-                <div className="space-area">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="form-style1">
+                <div className="">
+                  <div className="d-flex gap-3 align-items-center justify-content-between">
+                    <div className="form-style">
                       <input
                         type="number"
                         className="form-control filterInput"
@@ -153,7 +153,7 @@ const RentalAdvanceFilterModal = ({ filterFunctions }) => {
                       />
                     </div>
                     <span className="dark-color">-</span>
-                    <div className="form-style1">
+                    <div className="form-style">
                       <input
                         type="number"
                         className="form-control filterInput"
