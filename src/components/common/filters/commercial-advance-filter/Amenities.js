@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-const Amenities = ({ filterFunctions }) => {
+const Amenities = ({filterFunctions}) => {
   const amenities = [
     [
       { label: "Attic" },
-      { label: "Basketball court", defaultChecked: true },
-      { label: "Air Conditioning", defaultChecked: true },
-      { label: "Lawn", defaultChecked: true },
+    { label: "Basketball court", defaultChecked: true },
+    { label: "Air Conditioning", defaultChecked: true },
+    { label: "Lawn", defaultChecked: true },
     ],
     [
       { label: "TV Cable" },
       { label: "Dryer" },
       { label: "Outdoor Shower" },
-      { label: "Washer" },
+    { label: "Washer" },
     ],
     [
       { label: "Lake view" },
@@ -32,13 +32,10 @@ const Amenities = ({ filterFunctions }) => {
                 <label className="custom_checkbox" key={amenityIndex}>
                   {amenity.label}
                   <input
-                    checked={filterFunctions?.categories.includes(
-                      amenity.label
-                    )}
-                    onChange={() =>
-                      filterFunctions?.handlecategories(amenity.label)
-                    }
+                  checked={filterFunctions?.categories.includes(amenity.label)}
+                  onChange={()=>filterFunctions?.handlecategories(amenity.label)}
                     type="checkbox"
+
                   />
                   <span className="checkmark" />
                 </label>

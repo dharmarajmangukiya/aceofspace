@@ -1,10 +1,10 @@
 "use client";
-import Select from "react-select";
-import PriceRange from "./PriceRange";
-import Bedroom from "./Bedroom";
-import Bathroom from "./Bathroom";
-import Amenities from "./Amenities";
 import { useEffect, useState } from "react";
+import Select from "react-select";
+import Amenities from "./Amenities";
+import Bathroom from "./Bathroom";
+import Bedroom from "./Bedroom";
+import PriceRange from "./PriceRange";
 
 const AdvanceFilterModal = ({ filterFunctions }) => {
   const [showSelect, setShowSelect] = useState(false);

@@ -1,10 +1,9 @@
+"use client";
 
-'use client'
-
-import AdvanceFilterModal from "@/components/common/advance-filter-two";
+import AdvanceFilterModal from "@/components/common/filters/advance-filter-two";
 import HeroContent from "./HeroContent";
 
-const Hero = ({filterFunctions}) => {
+const Hero = ({ filterFunctions }) => {
   return (
     <>
       <div className="inner-banner-style1 text-center">

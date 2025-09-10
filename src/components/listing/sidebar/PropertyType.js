@@ -1,27 +1,7 @@
 "use client";
 
-const options = {
-  // residential - rent
-  rent: [
-    {
-      label: "All",
-      defaultChecked: true,
-    },
-    { label: "Appartments" },
-    { label: "Bunglow" },
-    { label: "House" },
-    { label: "Villa" },
-  ],
-  // commercial - lease
-  lease: [
-    {
-      label: "All",
-      defaultChecked: true,
-    },
-    { label: "Office" },
-    { label: "Showroom" },
-  ],
-};
+import { propertyTypeOptions } from "@/utilis/constants";
+
 const PropertyType = ({ filterFunctions, rentOrLease = "residential" }) => {
   return (
     <>
@@ -36,7 +16,7 @@ const PropertyType = ({ filterFunctions, rentOrLease = "residential" }) => {
         />
         <span className="checkmark" />
       </label> */}
-      {(options[rentOrLease] ?? []).map((option, index) => (
+      {(propertyTypeOptions[rentOrLease] ?? []).map((option, index) => (
         <label className="custom_checkbox" key={index}>
           {option.label}
           <input

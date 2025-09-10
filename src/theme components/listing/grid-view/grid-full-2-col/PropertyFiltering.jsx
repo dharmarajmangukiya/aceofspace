@@ -1,13 +1,12 @@
 "use client";
 
+import AdvanceFilterModal from "@/components/common/filters/advance-filter-two";
 import listings from "@/data/listings";
-import React, { useState, useEffect } from "react";
-import ListingSidebar from "../../sidebar";
-import AdvanceFilterModal from "@/components/common/advance-filter-two";
-import TopFilterBar from "./TopFilterBar";
-import FeaturedListings from "./FeatuerdListings";
-import Pagination from "../../Pagination";
+import { useEffect, useState } from "react";
 import PaginationTwo from "../../PaginationTwo";
+import ListingSidebar from "../../sidebar";
+import FeaturedListings from "./FeatuerdListings";
+import TopFilterBar from "./TopFilterBar";
 
 export default function PropertyFiltering() {
   const [filteredData, setFilteredData] = useState([]);

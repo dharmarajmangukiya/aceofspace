@@ -2,12 +2,13 @@
 import React, { useState } from "react";
 import Slider, { Range } from "rc-slider";
 
-const PriceRange = () => {
+const PriceRange = ({ filterFunctions }) => {
   const [price, setPrice] = useState([20, 70987]);
 
   // price range handler
   const handleOnChange = (value) => {
     setPrice(value);
+    filterFunctions?.handlepriceRange(value);
   };
 
   return (
@@ -17,7 +18,10 @@ const PriceRange = () => {
           range
           max={100000}
           min={0}
-          defaultValue={price}
+          defaultValue={[
+            filterFunctions?.priceRange[0],
+            filterFunctions?.priceRange[1],
+          ]}
           onChange={(value) => handleOnChange(value)}
           id="slider"
         />

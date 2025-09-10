@@ -1,6 +1,6 @@
-import AdvanceFilterModal from "@/components/common/advance-filter";
-import HeroContent from "./HeroContent";
+import AdvanceFilterModal from "@/components/common/filters/advance-filter";
 import Category from "./Category";
+import HeroContent from "./HeroContent";
 
 const Hero = () => {
   return (

@@ -1,4 +1,4 @@
-import AdvanceFilterModal from "@/components/common/advance-filter";
+import AdvanceFilterModal from "@/components/common/filters/advance-filter";
 import Funfact from "../Funfact";
 import HeroContent from "./HeroContent";
 

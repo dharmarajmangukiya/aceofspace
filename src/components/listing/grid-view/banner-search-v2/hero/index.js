@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import AdvanceFilterModal from "@/components/common/advance-filter-two";
+import AdvanceFilterModal from "@/components/common/filters/advance-filter-two";
 import HeroContent from "./HeroContent";
 
-const Hero = ({filterFunctions}) => {
+const Hero = ({ filterFunctions }) => {
   return (
     <>
       <div className="inner-banner-style1 text-center">
@@ -12,7 +12,7 @@ const Hero = ({filterFunctions}) => {
           We’ve more than 745,000 apartments, place & plot.
         </p>
 
-        <HeroContent  filterFunctions={filterFunctions}  />
+        <HeroContent filterFunctions={filterFunctions} />
       </div>
       {/* End Hero content */}
 
@@ -25,7 +25,7 @@ const Hero = ({filterFunctions}) => {
           aria-labelledby="advanceSeachModalLabel"
           aria-hidden="true"
         >
-          <AdvanceFilterModal  filterFunctions={filterFunctions} />
+          <AdvanceFilterModal filterFunctions={filterFunctions} />
         </div>
       </div>
       {/* <!-- Advance Feature Modal End --> */}

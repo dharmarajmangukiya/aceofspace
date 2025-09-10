@@ -1,7 +1,7 @@
-import AdvanceFilterModal from "@/components/common/advance-filter";
-import HeroContent from "./HeroContent";
+import AdvanceFilterModal from "@/components/common/filters/advance-filter";
 import Image from "next/image";
 import Category from "./Category";
+import HeroContent from "./HeroContent";
 import VideoBox from "./VideoBox";
 
 const Hero = () => {

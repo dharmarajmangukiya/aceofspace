@@ -10,8 +10,6 @@ import PropertyType from "../../sidebar/PropertyType";
 const TopFilterBar = ({
   filterFunctions,
   setCurrentSortingOption,
-  colstyle,
-  setColstyle,
   currentSortingOption,
 }) => {
   return (
@@ -190,6 +188,8 @@ const TopFilterBar = ({
             {/* End bed and bathroom check */}
 
             <li className="list-inline-item">
+              {/* Opens in parent component */}
+              {/* https://getbootstrap.com/docs/5.0/components/modal/#optional-sizes */}
               {/* Advance Features modal trigger */}
               <button
                 type="button"
