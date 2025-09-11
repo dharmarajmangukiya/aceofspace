@@ -1,9 +1,8 @@
-import React from "react";
-import PropertyDescription from "./property-description";
-import UploadMedia from "./upload-media";
+import Amenities from "./Amenities";
 import LocationField from "./LocationField";
 import DetailsFiled from "./details-field";
-import Amenities from "./Amenities";
+import PropertyDescription from "./property-description";
+import UploadMedia from "./upload-media";
 
 const AddPropertyTabContent = () => {
   return (

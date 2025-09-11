@@ -1,8 +1,10 @@
 "use client";
 
 import PropertyCard from "@/components/home/PropertyCard";
+import { useRouter } from "next/navigation";
 
 const FeaturedListings = ({ data, colstyle }) => {
+  const router = useRouter();
   return (
     <>
       {data.map((listing) => (
@@ -14,7 +16,9 @@ const FeaturedListings = ({ data, colstyle }) => {
         >
           <PropertyCard
             listing={listing}
-            onCardClick={() => {}}
+            onCardClick={() => {
+              router.push(`/property-detail/${listing.id}`);
+            }}
             onLikeClick={() => {}}
           />
         </div>

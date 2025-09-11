@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import React from "react";
 import { usePathname } from "next/navigation";
 
 const SidebarDashboard = () => {
@@ -26,7 +25,7 @@ const SidebarDashboard = () => {
       title: "MANAGE LISTINGS",
       items: [
         {
-          href: "/dashboard-add-property",
+          href: "/add-property",
           icon: "flaticon-new-tab",
           text: "Add New Property",
         },
