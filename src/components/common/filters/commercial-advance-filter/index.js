@@ -7,6 +7,10 @@ import {
   propertyTypeOptions,
   zoneTypeOptions,
 } from "@/utilis/constants";
+import {
+  customSelectStyles,
+  multiSelectCustomSelectStyles,
+} from "@/utilis/helper";
 import Select from "react-select";
 import Amenities from "./Amenities";
 import Bathroom from "./Bathroom";
@@ -15,34 +19,6 @@ import Facilities from "./Facility";
 import PriceRange from "./PriceRange";
 
 const catOptions = propertyTypeOptions["lease"];
-
-const customStyles = {
-  option: (styles, { isFocused, isSelected, isHovered }) => {
-    return {
-      ...styles,
-      backgroundColor: isSelected
-        ? "#eb6753"
-        : isHovered
-        ? "#eb675312"
-        : isFocused
-        ? "#eb675312"
-        : undefined,
-    };
-  },
-};
-
-const multiSelectCustomStyles = {
-  ...customStyles,
-  valueContainer: (base) => {
-    return {
-      ...base,
-      flexWrap: "nowrap",
-    };
-  },
-  multiValue: (base) => {
-    return { ...base, minWidth: "60px" };
-  },
-};
 
 const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
   return (
@@ -83,7 +59,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     defaultValue={[catOptions[1]]}
                     name="catOptions"
                     options={catOptions}
-                    styles={customStyles}
+                    styles={customSelectStyles}
                     onChange={(e) =>
                       filterFunctions?.setPropertyTypes([e.value])
                     }
@@ -107,7 +83,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     options={zoneTypeOptions}
                     hideSelectedOptions={false}
                     closeMenuOnSelect={false}
-                    styles={multiSelectCustomStyles}
+                    styles={multiSelectCustomSelectStyles}
                     className="select-custom"
                     classNamePrefix="select"
                     required
@@ -125,7 +101,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     defaultValue={[locationOptions[1]]}
                     name="locationOptions"
                     options={locationOptions}
-                    styles={customStyles}
+                    styles={customSelectStyles}
                     // onChange={(e) =>
                     //   filterFunctions?.setPropertyTypes([e.value])
                     // }
@@ -184,7 +160,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     instanceId="age-of-property-1"
                     defaultValue={[ageOfPropertyOptions[0]]}
                     name="ageOfPropertyOptions"
-                    styles={customStyles}
+                    styles={customSelectStyles}
                     options={ageOfPropertyOptions}
                     className="select-custom filterSelect"
                     value={{
@@ -225,7 +201,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     options={floorPreferenceOptions}
                     hideSelectedOptions={false}
                     closeMenuOnSelect={false}
-                    styles={multiSelectCustomStyles}
+                    styles={multiSelectCustomSelectStyles}
                     className="select-custom"
                     classNamePrefix="select"
                     required
@@ -350,7 +326,7 @@ const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
                     instanceId="furnishing-status"
                     defaultValue={[furnishingStatusOptions[0]]}
                     name="furnishingStatusOptions"
-                    styles={customStyles}
+                    styles={customSelectStyles}
                     options={furnishingStatusOptions}
                     className="select-custom filterSelect"
                     value={{

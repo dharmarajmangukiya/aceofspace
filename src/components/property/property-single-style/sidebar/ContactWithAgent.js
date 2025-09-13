@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const ContactWithAgent = () => {
   return (
@@ -35,7 +34,7 @@ const ContactWithAgent = () => {
 
       <div className="d-grid">
         <Link href="/agent-single/3" className="ud-btn btn-white2">
-          Contact Agent
+          Contact Owner
           <i className="fal fa-arrow-right-long" />
         </Link>
       </div>

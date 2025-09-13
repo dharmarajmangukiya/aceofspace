@@ -17,3 +17,13 @@
     color: white;
   }
 }
+
+
+.elegant-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.elegant-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(33, 37, 41, 0.3);
+  border-radius: 12px;
+}
