@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/core": "7.27.1",
+    "@mdxeditor/editor": "^3.45.0",
     "@popperjs/core": "^2.11.8",
     "@react-google-maps/api": "^2.20.6",
     "aos": "^2.3.4",

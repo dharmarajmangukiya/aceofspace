@@ -1,18 +1,146 @@
-import classNames from "classnames";
+import "@mdxeditor/editor/style.css";
+import React from "react";
+import CommercialAmenities from "./Amenities";
+import CommercialFacilities from "./Facility";
+
+// Editor wrapper component to handle the dynamic imports properly
+const EditorWrapper = ({ value, onChange, placeholder }) => {
+  const [Editor, setEditor] = React.useState(null);
+
+  React.useEffect(() => {
+    const loadEditor = async () => {
+      try {
+        const mod = await import("@mdxeditor/editor");
+        setEditor({
+          MDXEditor: mod.MDXEditor,
+          listsPlugin: mod.listsPlugin,
+          markdownShortcutPlugin: mod.markdownShortcutPlugin,
+          toolbarPlugin: mod.toolbarPlugin,
+          UndoRedo: mod.UndoRedo,
+          BoldItalicUnderlineToggles: mod.BoldItalicUnderlineToggles,
+          ListsToggle: mod.ListsToggle,
+          headingsPlugin: mod.headingsPlugin,
+        });
+      } catch (error) {
+        console.error("Failed to load MDX Editor:", error);
+      }
+    };
+
+    loadEditor();
+  }, []);
+
+  if (!Editor) {
+    return (
+      <div
+        className="p-3 border rounded bg-light d-flex align-items-center justify-content-center"
+        style={{ minHeight: "200px" }}
+      >
+        <div className="text-center">
+          <div
+            className="spinner-border spinner-border-sm text-primary mb-2"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <div>Loading editor...</div>
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    MDXEditor: MDXEditorComponent,
+    listsPlugin,
+    markdownShortcutPlugin,
+    toolbarPlugin,
+    UndoRedo,
+    BoldItalicUnderlineToggles,
+    ListsToggle,
+    headingsPlugin,
+  } = Editor;
+
+  return (
+    <MDXEditorComponent
+      key="mdx-editor" // Add key to prevent re-mounting issues
+      markdown={value || ""}
+      onChange={onChange}
+      plugins={[
+        headingsPlugin(),
+        listsPlugin(),
+        markdownShortcutPlugin(),
+        toolbarPlugin({
+          toolbarContents: () => (
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <UndoRedo />
+              <div
+                style={{
+                  width: "1px",
+                  height: "24px",
+                  backgroundColor: "#dee2e6",
+                  margin: "0 4px",
+                }}
+              />
+              <BoldItalicUnderlineToggles />
+              <div
+                style={{
+                  width: "1px",
+                  height: "24px",
+                  backgroundColor: "#dee2e6",
+                  margin: "0 4px",
+                }}
+              />
+              <ListsToggle />
+            </div>
+          ),
+        }),
+      ]}
+      // contentEditableClassName="prose max-w-none"
+      placeholder={placeholder || "Start writing..."}
+    />
+  );
+};
 
 const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
+  const [description, setDescription] = React.useState(
+    formData.propertyDescription || ""
+  );
+  const [isMounted, setIsMounted] = React.useState(false);
+
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
   };
 
-  const handleFacilityClick = (facility) => {
-    const currentFacilities = formData.facilities || [];
-    const isSelected = currentFacilities.includes(facility);
-    const updatedFacilities = isSelected
-      ? currentFacilities.filter((f) => f !== facility)
-      : [...currentFacilities, facility];
-    handleInputChange("facilities", updatedFacilities);
+  const handleDescriptionChange = (markdown) => {
+    setDescription(markdown);
+    handleInputChange("propertyDescription", markdown);
   };
+
+  // Sync description state when formData changes
+  React.useEffect(() => {
+    if (formData.propertyDescription !== description) {
+      setDescription(formData.propertyDescription || "");
+    }
+  }, [formData.propertyDescription]);
+
+  // Handle mounting for client-side only rendering
+  React.useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  // Function to count characters (excluding markdown syntax)
+  const getCharacterCount = (text) => {
+    return text.replace(/[#*`_~\[\]()]/g, "").length;
+  };
+
+  const characterCount = getCharacterCount(description);
 
   return (
     <div className="pricing-details-step">
@@ -24,26 +152,20 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
           <h5 className="mb-3">Ownership</h5>
         </div>
         <div className="col-md-12 mb-3">
-          <div className="d-flex gap-3">
+          <div className="form-style2 input-group">
             {["Freehold", "Leasehold", "Power of attorney"].map((option) => (
-              <div key={option} className="form-check">
+              <div className="selection" key={`ownership-${option}`}>
                 <input
-                  className="form-check-input"
+                  id={`ownership-${option}`}
                   type="radio"
                   name="ownership"
-                  id={`ownership-${option}`}
                   value={option}
                   checked={formData.ownership === option}
                   onChange={(e) =>
                     handleInputChange("ownership", e.target.value)
                   }
                 />
-                <label
-                  className="form-check-label"
-                  htmlFor={`ownership-${option}`}
-                >
-                  {option}
-                </label>
+                <label htmlFor={`ownership-${option}`}>{option}</label>
               </div>
             ))}
           </div>
@@ -65,43 +187,43 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
               value={formData.leaseAmount || ""}
               onChange={(e) => handleInputChange("leaseAmount", e.target.value)}
             />
-            <span className="input-group-text">₹</span>
-            <span className="input-group-text">per sq ft</span>
+            <span className="input-group-text">₹/sq ft</span>
           </div>
         </div>
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Additional pricing</label>
-          <div className="row">
+          <div className="d-flex flex-wrap gap-3">
             {[
               "Digi & UPS included",
               "Electricity & Water excluded",
               "Price Negotiable",
             ].map((option) => (
-              <div key={option} className="col-12 mb-2">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id={`pricing-${option}`}
-                    checked={
-                      formData.additionalPricing?.includes(option) || false
-                    }
-                    onChange={(e) => {
-                      const currentPricing = formData.additionalPricing || [];
-                      const updatedPricing = e.target.checked
-                        ? [...currentPricing, option]
-                        : currentPricing.filter((p) => p !== option);
-                      handleInputChange("additionalPricing", updatedPricing);
-                    }}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor={`pricing-${option}`}
-                  >
-                    {option}
-                  </label>
-                </div>
+              <div
+                key={option}
+                className="form-check d-flex align-items-center gap-2"
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`pricing-${option}`}
+                  checked={
+                    formData.additionalPricing?.includes(option) || false
+                  }
+                  onChange={(e) => {
+                    const currentPricing = formData.additionalPricing || [];
+                    const updatedPricing = e.target.checked
+                      ? [...currentPricing, option]
+                      : currentPricing.filter((p) => p !== option);
+                    handleInputChange("additionalPricing", updatedPricing);
+                  }}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`pricing-${option}`}
+                >
+                  {option}
+                </label>
               </div>
             ))}
           </div>
@@ -115,7 +237,7 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
             <input
               type="number"
               className="form-control filterInput"
-              placeholder="Enter maintenance amount"
+              placeholder="Enter maintenance "
               value={formData.maintenanceAmount || ""}
               onChange={(e) =>
                 handleInputChange("maintenanceAmount", e.target.value)
@@ -132,15 +254,18 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="Quarterly">Quarterly</option>
               <option value="Annually">Annually</option>
             </select>
-            <span className="input-group-text">per unit</span>
+            <span className="input-group-text">/unit</span>
           </div>
         </div>
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Security deposit</label>
-          <div className="d-flex gap-3">
+          <div className="d-flex align-items-center gap-3 mb-2">
             {["Fixed", "Multiple of rent", "None"].map((option) => (
-              <div key={option} className="form-check">
+              <div
+                key={option}
+                className="form-check d-flex align-items-center gap-2"
+              >
                 <input
                   className="form-check-input"
                   type="radio"
@@ -163,7 +288,7 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
 
           {formData.securityDeposit === "Fixed" && (
-            <div className="input-group mt-2">
+            <div className="input-group">
               <input
                 type="number"
                 className="form-control filterInput"
@@ -178,7 +303,7 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
           )}
 
           {formData.securityDeposit === "Multiple of rent" && (
-            <div className="input-group mt-2">
+            <div className="input-group">
               <input
                 type="number"
                 className="form-control filterInput"
@@ -229,128 +354,113 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
       </div>
 
       <div className="row mb-4">
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Fire NOC certified</label>
-          <div className="d-flex gap-3">
+        <div className="col-12">
+          <h5 className="mb-3">Is your property fire NOC certified?</h5>
+        </div>
+        <div className="col-md-12 mb-3">
+          <div className="form-style2 input-group">
             {["Yes", "No"].map((option) => (
-              <div key={option} className="form-check">
+              <div className="selection" key={`fireNOC-${option}`}>
                 <input
-                  className="form-check-input"
+                  id={`fireNOC-${option}`}
                   type="radio"
                   name="fireNOC"
-                  id={`fireNOC-${option}`}
                   value={option}
                   checked={formData.fireNOC === option}
                   onChange={(e) => handleInputChange("fireNOC", e.target.value)}
                 />
-                <label
-                  className="form-check-label"
-                  htmlFor={`fireNOC-${option}`}
-                >
-                  {option}
-                </label>
+                <label htmlFor={`fireNOC-${option}`}>{option}</label>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Occupancy Certificate</label>
-          <div className="d-flex gap-3">
+      <div className="row mb-4">
+        <div className="col-12">
+          <h5 className="mb-3">Occupancy Certificate</h5>
+        </div>
+        <div className="col-md-12 mb-3">
+          <div className="form-style2 input-group">
             {["Yes", "No"].map((option) => (
-              <div key={option} className="form-check">
+              <div className="selection" key={`occupancy-${option}`}>
                 <input
-                  className="form-check-input"
+                  id={`occupancy-${option}`}
                   type="radio"
                   name="occupancyCert"
-                  id={`occupancy-${option}`}
                   value={option}
                   checked={formData.occupancyCert === option}
                   onChange={(e) =>
                     handleInputChange("occupancyCert", e.target.value)
                   }
                 />
-                <label
-                  className="form-check-label"
-                  htmlFor={`occupancy-${option}`}
-                >
-                  {option}
-                </label>
+                <label htmlFor={`occupancy-${option}`}>{option}</label>
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      {/* Property Description with MDX Editor */}
       <div className="row mb-4">
         <div className="col-md-12 mb-3">
-          <label className="form-label">Property description *</label>
-          <textarea
-            className="form-control filterInput"
-            rows="4"
-            placeholder="Describe your property (50-5000 characters)"
-            value={formData.propertyDescription || ""}
-            onChange={(e) =>
-              handleInputChange("propertyDescription", e.target.value)
-            }
-            minLength={50}
-            maxLength={5000}
-          ></textarea>
-          <small className="text-muted">
-            {formData.propertyDescription?.length || 0}/5000 characters
-          </small>
-        </div>
-      </div>
-
-      <div className="row mb-4">
-        <div className="col-md-12 mb-3">
-          <label className="form-label">Facilities & amenities</label>
-          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-            {[
-              "Air Conditioning",
-              "Elevator",
-              "Power Backup",
-              "Security",
-              "CCTV",
-              "Fire Safety",
-              "Parking",
-              "Conference Room",
-              "Reception Area",
-              "Storage Space",
-              "Loading Dock",
-              "High Speed Internet",
-              "Phone Lines",
-            ].map((facility) => {
-              const isSelected =
-                formData.facilities?.includes(facility) || false;
-              return (
-                <div key={facility} className="col">
-                  <button
-                    type="button"
-                    onClick={() => handleFacilityClick(facility)}
-                    className={classNames(
-                      "w-100 h-100 border border-1 rounded d-flex flex-column align-items-center justify-content-center p-3 amenity-btn",
-                      {
-                        "amenity-selected": isSelected,
-                        "bg-white text-dark": !isSelected,
-                      }
-                    )}
-                    style={{ minHeight: "80px" }}
+          <label className="form-label">Describe your property *</label>
+          <div className="rich-text-editor" style={{ minHeight: "300px" }}>
+            {isMounted ? (
+              <EditorWrapper
+                value={description}
+                onChange={handleDescriptionChange}
+                placeholder="Tell a story about your property... Try creating a list with bullet points or numbers!"
+              />
+            ) : (
+              <div
+                className="p-3 border rounded bg-light d-flex align-items-center justify-content-center"
+                style={{ minHeight: "200px" }}
+              >
+                <div className="text-center">
+                  <div
+                    className="spinner-border spinner-border-sm text-primary mb-2"
+                    role="status"
                   >
-                    <span className="text-center text-wrap">{facility}</span>
-                  </button>
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <div>Loading editor...</div>
                 </div>
-              );
-            })}
+              </div>
+            )}
+          </div>
+          <div className="d-flex justify-content-between align-items-center mt-2">
+            <small className="text-muted">
+              {characterCount}/5000 characters
+            </small>
+            {characterCount < 50 && (
+              <small className="text-danger">
+                Minimum 50 characters required
+              </small>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="row">
+      {/* Facilities & Amenities */}
+      <div>
+        <div className="widget-wrapper mb0">
+          <h6 className="list-title mb10">Amenities</h6>
+        </div>
+        <CommercialAmenities />
+      </div>
+      <div>
+        <div className="widget-wrapper mb0">
+          <h6 className="list-title mb10">Facilities</h6>
+        </div>
+        <CommercialFacilities />
+      </div>
+
+      <div className="row mt-3">
         <div className="col-md-12 mb-3">
           <button
             type="button"
-            className="btn btn-primary"
+            className="ud-btn btn-thm"
             onClick={() => console.log("Preview form:", formData)}
           >
             Preview

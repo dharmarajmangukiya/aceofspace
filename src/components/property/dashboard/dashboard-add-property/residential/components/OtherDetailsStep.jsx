@@ -1,4 +1,7 @@
+import { residentialAmenities } from "@/utilis/constants";
+import { smallSelectStyles } from "@/utilis/helper";
 import classNames from "classnames";
+import Select from "react-select";
 
 const OtherDetailsStep = ({ formData, onDataChange, subType }) => {
   const handleInputChange = (field, value) => {
@@ -72,74 +75,159 @@ const OtherDetailsStep = ({ formData, onDataChange, subType }) => {
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Duration of agreement</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.agreementDuration || ""}
-            onChange={(e) =>
-              handleInputChange("agreementDuration", e.target.value)
-            }
-          >
-            <option value="">Select duration</option>
-            {Array.from({ length: 37 }, (_, i) => i).map((month) => (
-              <option key={month} value={month}>
-                {month} months
-              </option>
-            ))}
-          </select>
+          <div className="form-style2 input-group">
+            <Select
+              instanceId="agreementDuration"
+              options={[
+                { value: "None", label: "None" },
+                ...Array.from({ length: 36 }, (_, i) => ({
+                  value: (i + 1).toString(),
+                  label: `${i + 1} month${i > 0 ? "s" : ""}`,
+                })),
+              ]}
+              styles={smallSelectStyles}
+              className="select-custom filterSelect"
+              classNamePrefix="select"
+              value={{
+                value: formData.agreementDuration || "",
+                label: formData.agreementDuration
+                  ? formData.agreementDuration === "None"
+                    ? "None"
+                    : `${formData.agreementDuration} month${
+                        formData.agreementDuration > 1 ? "s" : ""
+                      }`
+                  : "Select duration",
+              }}
+              onChange={(e) => handleInputChange("agreementDuration", e.value)}
+              placeholder="Select duration"
+            />
+          </div>
         </div>
       </div>
 
       <div className="row">
         <div className="col-md-6 mb-3">
           <label className="form-label">Month of notice</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.noticeMonths || ""}
-            onChange={(e) => handleInputChange("noticeMonths", e.target.value)}
-          >
-            <option value="">Select notice period</option>
-            <option value="None">None</option>
-            {Array.from({ length: 6 }, (_, i) => i + 1).map((month) => (
-              <option key={month} value={month}>
-                {month} month{month > 1 ? "s" : ""}
-              </option>
-            ))}
-          </select>
+          <div className="form-style2 input-group">
+            <Select
+              instanceId="noticeMonths"
+              options={[
+                { value: "None", label: "None" },
+                ...Array.from({ length: 6 }, (_, i) => ({
+                  value: (i + 1).toString(),
+                  label: `${i + 1} month${i > 0 ? "s" : ""}`,
+                })),
+              ]}
+              styles={smallSelectStyles}
+              className="select-custom filterSelect"
+              classNamePrefix="select"
+              value={{
+                value: formData.noticeMonths || "",
+                label: formData.noticeMonths
+                  ? formData.noticeMonths === "None"
+                    ? "None"
+                    : `${formData.noticeMonths} month${
+                        formData.noticeMonths > 1 ? "s" : ""
+                      }`
+                  : "Select notice period",
+              }}
+              onChange={(e) => handleInputChange("noticeMonths", e.value)}
+              placeholder="Select notice period"
+            />
+          </div>
         </div>
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Parking details</label>
           <div className="row">
             <div className="col-6">
-              <div className="form-check">
+              <label className="form-label small">Covered parking</label>
+              <div className="input-group">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.coveredParkingCount || 0
+                    );
+                    if (currentValue > 0) {
+                      handleInputChange(
+                        "coveredParkingCount",
+                        currentValue - 1
+                      );
+                    }
+                  }}
+                  disabled={parseInt(formData.coveredParkingCount || 0) <= 0}
+                >
+                  -
+                </button>
                 <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="coveredParking"
-                  checked={formData.coveredParking || false}
-                  onChange={(e) =>
-                    handleInputChange("coveredParking", e.target.checked)
-                  }
+                  type="number"
+                  className="form-control text-center no-spinner"
+                  value={formData.coveredParkingCount || 0}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    handleInputChange(
+                      "coveredParkingCount",
+                      Math.max(0, value)
+                    );
+                  }}
+                  min="0"
                 />
-                <label className="form-check-label" htmlFor="coveredParking">
-                  Covered parking (+/-)
-                </label>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.coveredParkingCount || 0
+                    );
+                    handleInputChange("coveredParkingCount", currentValue + 1);
+                  }}
+                >
+                  +
+                </button>
               </div>
             </div>
             <div className="col-6">
-              <div className="form-check">
+              <label className="form-label small">Open parking</label>
+              <div className="input-group">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.openParkingCount || 0
+                    );
+                    if (currentValue > 0) {
+                      handleInputChange("openParkingCount", currentValue - 1);
+                    }
+                  }}
+                  disabled={parseInt(formData.openParkingCount || 0) <= 0}
+                >
+                  -
+                </button>
                 <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="openParking"
-                  checked={formData.openParking || false}
-                  onChange={(e) =>
-                    handleInputChange("openParking", e.target.checked)
-                  }
+                  type="number"
+                  className="form-control text-center no-spinner"
+                  value={formData.openParkingCount || 0}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    handleInputChange("openParkingCount", Math.max(0, value));
+                  }}
+                  min="0"
                 />
-                <label className="form-check-label" htmlFor="openParking">
-                  Open parking (+/-)
-                </label>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.openParkingCount || 0
+                    );
+                    handleInputChange("openParkingCount", currentValue + 1);
+                  }}
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
@@ -185,42 +273,39 @@ const OtherDetailsStep = ({ formData, onDataChange, subType }) => {
           />
         </div>
 
-        <div className="col-md-6 mb-3">
+        <div className="col-12">
           <label className="form-label">Amenities and facilities</label>
-          <div className="row row-cols-1 row-cols-md-2 g-3">
-            {["Main entrance", "Gated community", "Gas Pipeline"].map(
-              (amenity) => {
-                const isSelected =
-                  formData.amenities?.includes(amenity) || false;
-                return (
-                  <div key={amenity} className="col">
-                    <button
-                      type="button"
-                      onClick={() => handleAmenityClick(amenity)}
-                      className={classNames(
-                        "w-100 h-100 border border-1 rounded d-flex flex-column align-items-center justify-content-center p-3 amenity-btn",
-                        {
-                          "amenity-selected": isSelected,
-                          "bg-white text-dark": !isSelected,
-                        }
-                      )}
-                      style={{ minHeight: "80px" }}
-                    >
-                      <span className="text-center text-wrap">{amenity}</span>
-                    </button>
-                  </div>
-                );
-              }
-            )}
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
+            {residentialAmenities.map((amenity) => {
+              const isSelected = formData.amenities?.includes(amenity) || false;
+              return (
+                <div key={amenity} className="col">
+                  <button
+                    type="button"
+                    onClick={() => handleAmenityClick(amenity)}
+                    className={classNames(
+                      "w-100 h-100 border border-1 rounded d-flex flex-column align-items-center justify-content-center p-3 amenity-btn",
+                      {
+                        "amenity-selected": isSelected,
+                        "bg-white text-dark": !isSelected,
+                      }
+                    )}
+                    style={{ minHeight: "80px" }}
+                  >
+                    <span className="text-center text-wrap">{amenity}</span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <div className="row">
+      <div className="row mt-3">
         <div className="col-md-12 mb-3">
           <button
             type="button"
-            className="btn btn-primary"
+            className="ud-btn btn-thm"
             onClick={() => console.log("Preview form:", formData)}
           >
             Preview

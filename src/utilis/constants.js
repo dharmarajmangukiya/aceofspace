@@ -306,3 +306,22 @@ export const floorPreferenceOptions = [
   { value: "rooftop-terrace", label: "Rooftop/Terrace" },
   { value: "1", label: "1" },
 ];
+
+export const residentialAmenities = [
+  "Basketball court",
+  "Squash court",
+  "Badminton court",
+  "All k...",
+  "Fitness/Gym",
+  "Swimming pool",
+  "Spa",
+  "Sauna",
+  "Club house",
+  "Playground / Kids Play Area",
+  "Indoor games",
+  "Movie theatre",
+  "Garden",
+  "24x7 security & surveillance",
+  "EV Charging",
+  "Jogging Park",
+];

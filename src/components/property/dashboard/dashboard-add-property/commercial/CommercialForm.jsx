@@ -83,9 +83,9 @@ const CommercialForm = ({ subType, onBackToSelection }) => {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="row mt-4">
+      <div className="row">
         <div className="col-12">
-          <div className="px30 d-flex justify-content-between">
+          <div className="p30 pt0 d-flex justify-content-between">
             <button
               className="reset-button"
               onClick={handlePrevious}

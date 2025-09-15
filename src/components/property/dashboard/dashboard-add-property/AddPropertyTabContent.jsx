@@ -59,25 +59,6 @@ const AddPropertyTabContent = () => {
             <div key={type.id} className="col-lg-5 col-md-6 mb30">
               <button
                 className="card h-100 property-type-card w-100 text-start"
-                style={{
-                  transition: "all 0.3s ease",
-                  border: "2px solid #e9ecef",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transition =
-                    "all 0.25s cubic-bezier(0.4,0,0.2,1)";
-                  e.currentTarget.style.borderColor =
-                    "var(--primary-color, #eb6753)";
-                  e.currentTarget.style.transform =
-                    "translateY(-6px) scale(1.03)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(235, 103, 83, 0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#e9ecef";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
                 onClick={() => handlePropertyTypeSelect(type)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
@@ -87,15 +68,11 @@ const AddPropertyTabContent = () => {
                 }}
                 type="button"
               >
-                <div className="card-body text-center p-4">
-                  <div className="mb-3">
-                    <span style={{ fontSize: "3rem" }}>{type.icon}</span>
-                  </div>
-                  <h4 className="card-title mb-2">{type.title}</h4>
-                  <p className="card-text text-muted">{type.description}</p>
-                  <div className="mt-3">
-                    <small className="text-primary">Click to select</small>
-                  </div>
+                <div className="card-body">
+                  <span className="property-icon">{type.icon}</span>
+                  <h4 className="card-title">{type.title}</h4>
+                  <p className="card-text">{type.description}</p>
+                  <small className="selection-hint">Click to select</small>
                 </div>
               </button>
             </div>
@@ -108,43 +85,86 @@ const AddPropertyTabContent = () => {
   return (
     <div className="property-form-container">
       {/* Header with property type and sub-type selection */}
-      <div className="row mb-4">
+      <div className="row mb-5">
         <div className="col-12">
-          <div className="p30 d-flex justify-content-between align-items-center">
-            <div>
-              <h4 className="mb-1">
-                {selectedPropertyType.title} Property - {selectedSubType}
-              </h4>
-              <p className="text-muted mb-0">Add your property details</p>
-            </div>
-            <div className="d-flex align-items-center gap-3">
-              <div>
-                <label htmlFor="subTypeSelect" className="form-label small">
-                  Sub-type:
-                </label>
-                <Select
-                  options={selectedPropertyType.subTypes.map((subType) => ({
-                    value: subType,
-                    label: subType,
-                  }))}
-                  id="subTypeSelect"
-                  styles={customSelectStyles}
-                  className="select-custom"
-                  value={{
-                    value: selectedSubType,
-                    label: selectedSubType,
-                  }}
-                  onChange={(e) => handleSubTypeChange(e?.value ?? "")}
-                />
+          <div className="property-header-card p-4 border-0" style={{}}>
+            <div className="row align-items-center">
+              <div className=" col-md-7 mb-3 mb-md-0">
+                <div className="d-flex align-items-center mb-2">
+                  <div className="d-flex align-items-center gap-2">
+                    <span style={{ fontSize: "18px" }}>
+                      {selectedPropertyType.icon}
+                    </span>
+                    <h4 className="mb-0 fw-bold" style={{ color: "#2c3e50" }}>
+                      {selectedPropertyType.title} - {selectedSubType}
+                    </h4>
+                  </div>
+                </div>
+
+                <p className="text-muted mb-0 fs-6">
+                  Complete the form below to list your property
+                </p>
               </div>
-              {/* <div className="btn-area">
-              </div> */}
-              <button
-                className="ud-btn btn-thm btn-sm p-1"
-                onClick={handleBackToSelection}
-              >
-                Back to Selection
-              </button>
+
+              <div className=" col-md-5">
+                <div className="d-flex flex-wrap flex-column flex-md-row gap-3 align-items-md-end">
+                  <div className="flex-grow-1">
+                    <label
+                      htmlFor="subTypeSelect"
+                      className="form-label fw-semibold mb-2 text-nowrap"
+                      style={{ color: "#495057" }}
+                    >
+                      Property Sub-type
+                    </label>
+                    <Select
+                      options={selectedPropertyType.subTypes.map((subType) => ({
+                        value: subType,
+                        label: subType,
+                      }))}
+                      id="subTypeSelect"
+                      styles={{
+                        ...customSelectStyles,
+                        control: (provided) => ({
+                          ...provided,
+                          minHeight: "45px",
+                          border: "2px solid #e9ecef",
+                          borderRadius: "8px",
+                          "&:hover": {
+                            borderColor: "var(--primary-color, #eb6753)",
+                          },
+                          "&:focus-within": {
+                            borderColor: "var(--primary-color, #eb6753)",
+                            boxShadow: "0 0 0 0.2rem rgba(235, 103, 83, 0.25)",
+                          },
+                        }),
+                      }}
+                      className="select-custom"
+                      value={{
+                        value: selectedSubType,
+                        label: selectedSubType,
+                      }}
+                      onChange={(e) => handleSubTypeChange(e?.value ?? "")}
+                    />
+                  </div>
+
+                  <button
+                    className="ud-btn btn-thm d-flex align-items-center gap-2"
+                    onClick={handleBackToSelection}
+                    style={{
+                      borderRadius: "8px",
+                      fontWeight: "600",
+                      minHeight: "45px",
+                      padding: "10px 16px",
+                      transition: "all 0.3s ease",
+                      whiteSpace: "nowrap",
+                      minWidth: "fit-content",
+                    }}
+                  >
+                    <i className="fas fa-arrow-left"></i>
+                    Back to Selection
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

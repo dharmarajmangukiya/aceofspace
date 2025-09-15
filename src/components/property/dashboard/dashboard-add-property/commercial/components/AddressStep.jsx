@@ -1,7 +1,26 @@
+import { smallSelectStyles } from "@/utilis/helper";
+import Select from "react-select";
+
 const AddressStep = ({ formData, onDataChange, subType }) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
   };
+
+  const zoneOptions = [
+    { value: "Zone 1", label: "Zone 1" },
+    { value: "Zone 2", label: "Zone 2" },
+    { value: "Zone 3", label: "Zone 3" },
+    { value: "Zone 4", label: "Zone 4" },
+    { value: "Zone 5", label: "Zone 5" },
+  ];
+
+  const locationInsideOptions = [
+    { value: "Main Road", label: "Main Road" },
+    { value: "Inside Lane", label: "Inside Lane" },
+    { value: "Corner Plot", label: "Corner Plot" },
+    { value: "Near Metro", label: "Near Metro" },
+    { value: "Near Bus Stop", label: "Near Bus Stop" },
+  ];
 
   return (
     <div className="address-step">
@@ -58,38 +77,39 @@ const AddressStep = ({ formData, onDataChange, subType }) => {
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Zone *</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.zone || ""}
-            onChange={(e) => handleInputChange("zone", e.target.value)}
-          >
-            <option value="">Select zone</option>
-            <option value="Zone 1">Zone 1</option>
-            <option value="Zone 2">Zone 2</option>
-            <option value="Zone 3">Zone 3</option>
-            <option value="Zone 4">Zone 4</option>
-            <option value="Zone 5">Zone 5</option>
-          </select>
+          <Select
+            instanceId="zone"
+            options={[{ value: "", label: "Select zone" }, ...zoneOptions]}
+            styles={smallSelectStyles}
+            className="select-custom filterSelect"
+            classNamePrefix="select"
+            value={{
+              value: formData.zone || "",
+              label: formData.zone || "Select zone",
+            }}
+            onChange={(e) => handleInputChange("zone", e.value)}
+          />
         </div>
       </div>
 
       <div className="row">
         <div className="col-md-6 mb-3">
           <label className="form-label">Location inside *</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.locationInside || ""}
-            onChange={(e) =>
-              handleInputChange("locationInside", e.target.value)
-            }
-          >
-            <option value="">Select location</option>
-            <option value="Main Road">Main Road</option>
-            <option value="Inside Lane">Inside Lane</option>
-            <option value="Corner Plot">Corner Plot</option>
-            <option value="Near Metro">Near Metro</option>
-            <option value="Near Bus Stop">Near Bus Stop</option>
-          </select>
+          <Select
+            instanceId="locationInside"
+            options={[
+              { value: "", label: "Select location" },
+              ...locationInsideOptions,
+            ]}
+            styles={smallSelectStyles}
+            className="select-custom filterSelect"
+            classNamePrefix="select"
+            value={{
+              value: formData.locationInside || "",
+              label: formData.locationInside || "Select location",
+            }}
+            onChange={(e) => handleInputChange("locationInside", e.value)}
+          />
         </div>
 
         <div className="col-md-6 mb-3">

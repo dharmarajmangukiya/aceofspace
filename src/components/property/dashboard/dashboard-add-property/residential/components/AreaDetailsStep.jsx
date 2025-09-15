@@ -10,17 +10,16 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
     <div className="area-details-step">
       <h4 className="title fz17 mb30">Add Area Details</h4>
 
-      <div className="row">
-        <div className="col-md-6 mb-3">
+      <div className="row row-cols-1 row-cols-md-2">
+        <div className="col mb-3">
           <label className="form-label">Carpet area *</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
               placeholder="Enter carpet area"
               value={formData.carpetArea || ""}
               onChange={(e) => handleInputChange("carpetArea", e.target.value)}
-              style={{ flex: "0 0 80%" }}
             />
             <select
               className="form-select"
@@ -28,7 +27,6 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               onChange={(e) =>
                 handleInputChange("carpetAreaUnit", e.target.value)
               }
-              style={{ flex: "0 0 20%" }}
             >
               <option value="sq ft">sq ft</option>
               <option value="sq yd">sq yd</option>
@@ -37,16 +35,15 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
         </div>
 
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Built Up Area</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
               placeholder="Enter built-up area"
               value={formData.builtUpArea || ""}
               onChange={(e) => handleInputChange("builtUpArea", e.target.value)}
-              style={{ flex: "0 0 80%" }}
             />
             <select
               className="form-select"
@@ -54,7 +51,6 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               onChange={(e) =>
                 handleInputChange("builtUpAreaUnit", e.target.value)
               }
-              style={{ flex: "0 0 20%" }}
             >
               <option value="sq ft">sq ft</option>
               <option value="sq yd">sq yd</option>
@@ -62,27 +58,51 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             </select>
           </div>
         </div>
-      </div>
 
-      <div className="row">
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Clear Height</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
               placeholder="Enter clear height"
               value={formData.clearHeight || ""}
               onChange={(e) => handleInputChange("clearHeight", e.target.value)}
-              style={{ flex: "0 0 80%" }}
             />
-            <span className="input-group-text" style={{ flex: "0 0 20%" }}>
-              ft
-            </span>
+            <span className="input-group-text">ft</span>
           </div>
         </div>
 
-        <div className="col-md-6 mb-3">
+        {/* Plot Area for Bungalow/House/Villa */}
+        {(subType === "Bungalow" ||
+          subType === "House" ||
+          subType === "Villa") && (
+          <div className="col mb-3">
+            <label className="form-label">Plot Area</label>
+            <div className="input-group responsive-input-group">
+              <input
+                type="number"
+                className="form-control filterInput"
+                placeholder="Enter plot area"
+                value={formData.plotArea || ""}
+                onChange={(e) => handleInputChange("plotArea", e.target.value)}
+              />
+              <select
+                className="form-select"
+                value={formData.plotAreaUnit || "sq ft"}
+                onChange={(e) =>
+                  handleInputChange("plotAreaUnit", e.target.value)
+                }
+              >
+                <option value="sq ft">sq ft</option>
+                <option value="sq mtr">sq mtr</option>
+                <option value="sq yd">sq yd</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        <div className="col mb-3">
           <label className="form-label">Furnishing *</label>
           <div className="form-style2 input-group">
             {["Furnished", "Unfurnished", "Semi-furnished"].map((option) => (
@@ -102,10 +122,8 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="row">
-        <div className="col-md-12 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Specifications</label>
           <textarea
             className="form-control filterInput"
@@ -117,10 +135,8 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             }
           ></textarea>
         </div>
-      </div>
 
-      <div className="row">
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Total floors</label>
           <input
             type="text"
@@ -132,7 +148,7 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
         </div>
 
         {subType === "Flat" && (
-          <div className="col-md-6 mb-3">
+          <div className="col mb-3">
             <label className="form-label">Property on floor</label>
             <Select
               instanceId="propertyFloor"
@@ -157,10 +173,8 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             />
           </div>
         )}
-      </div>
 
-      <div className="row">
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Age of Property</label>
           <Select
             instanceId="propertyAge"
@@ -182,7 +196,7 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           />
         </div>
 
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Available from</label>
           <input
             type="date"
@@ -191,15 +205,13 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             onChange={(e) => handleInputChange("availableFrom", e.target.value)}
           />
         </div>
-      </div>
 
-      <div className="row">
-        <div className="col-md-12 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Willing to rent out to</label>
-          <div className="row">
+          <div className="d-flex flex-wrap gap-2">
             {["Family", "Single man", "Single woman", "Student"].map(
               (option) => (
-                <div key={option} className="col-md-3 mb-2">
+                <div key={option} className=" mb-2">
                   <div className="form-check d-flex align-items-center gap-2">
                     <input
                       className="form-check-input"
@@ -227,79 +239,6 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
         </div>
       </div>
-
-      {/* Plot Area for Bungalow/House/Villa */}
-      {(subType === "Bungalow" ||
-        subType === "House" ||
-        subType === "Villa") && (
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label className="form-label">Plot Area</label>
-            <div className="input-group">
-              <input
-                type="number"
-                className="form-control filterInput"
-                placeholder="Enter plot area"
-                value={formData.plotArea || ""}
-                onChange={(e) => handleInputChange("plotArea", e.target.value)}
-                style={{ flex: "0 0 80%" }}
-              />
-              <select
-                className="form-select"
-                value={formData.plotAreaUnit || "sq ft"}
-                onChange={(e) =>
-                  handleInputChange("plotAreaUnit", e.target.value)
-                }
-                style={{ flex: "0 0 20%" }}
-              >
-                <option value="sq ft">sq ft</option>
-                <option value="sq mtr">sq mtr</option>
-                <option value="sq yd">sq yd</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Amenities for Bungalow/House/Villa */}
-      {(subType === "Bungalow" ||
-        subType === "House" ||
-        subType === "Villa") && (
-        <div className="row">
-          <div className="col-md-12 mb-3">
-            <label className="form-label">Amenities and facilities</label>
-            <div className="row">
-              {["Main entrance", "Gated community", "Gas Pipeline"].map(
-                (amenity) => (
-                  <div key={amenity} className="col-md-4 mb-2">
-                    <div className="form-check d-flex align-items-center gap-2">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        id={`amenity-${amenity}`}
-                        checked={formData.amenities?.includes(amenity) || false}
-                        onChange={(e) => {
-                          const currentAmenities = formData.amenities || [];
-                          const updatedAmenities = e.target.checked
-                            ? [...currentAmenities, amenity]
-                            : currentAmenities.filter((a) => a !== amenity);
-                          handleInputChange("amenities", updatedAmenities);
-                        }}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={`amenity-${amenity}`}
-                      >
-                        {amenity}
-                      </label>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

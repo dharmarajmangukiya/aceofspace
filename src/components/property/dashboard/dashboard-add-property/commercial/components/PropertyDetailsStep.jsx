@@ -1,3 +1,6 @@
+import { smallSelectStyles } from "@/utilis/helper";
+import Select from "react-select";
+
 const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
@@ -16,13 +19,10 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       <h4 className="title fz17 mb30">Property Details</h4>
 
       {/* Area Details */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5 className="mb-3">Area Details</h5>
-        </div>
-        <div className="col-md-4 mb-3">
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className="col mb-3">
           <label className="form-label">Carpet area *</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
@@ -31,7 +31,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               onChange={(e) => handleInputChange("carpetArea", e.target.value)}
             />
             <select
-              className="form-select filterSelect"
+              className="form-select"
               value={formData.carpetAreaUnit || "sq ft"}
               onChange={(e) =>
                 handleInputChange("carpetAreaUnit", e.target.value)
@@ -44,9 +44,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
         </div>
 
-        <div className="col-md-4 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Super built-up area</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
@@ -57,7 +57,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               }
             />
             <select
-              className="form-select filterSelect"
+              className="form-select"
               value={formData.superBuiltUpAreaUnit || "sq ft"}
               onChange={(e) =>
                 handleInputChange("superBuiltUpAreaUnit", e.target.value)
@@ -70,9 +70,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
         </div>
 
-        <div className="col-md-4 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Built Up Area</label>
-          <div className="input-group">
+          <div className="input-group responsive-input-group">
             <input
               type="number"
               className="form-control filterInput"
@@ -81,7 +81,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               onChange={(e) => handleInputChange("builtUpArea", e.target.value)}
             />
             <select
-              className="form-select filterSelect"
+              className="form-select"
               value={formData.builtUpAreaUnit || "sq ft"}
               onChange={(e) =>
                 handleInputChange("builtUpAreaUnit", e.target.value)
@@ -201,58 +201,109 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       )}
 
       {/* Washrooms */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5 className="mb-3">Washrooms</h5>
-        </div>
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="privateWashrooms"
-              checked={formData.privateWashrooms || false}
-              onChange={(e) =>
-                handleInputChange("privateWashrooms", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="privateWashrooms">
-              Private washrooms (+/-)
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="sharedWashrooms"
-              checked={formData.sharedWashrooms || false}
-              onChange={(e) =>
-                handleInputChange("sharedWashrooms", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="sharedWashrooms">
-              Shared washrooms (+/-)
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="washroomsNotAvailable"
-              checked={formData.washroomsNotAvailable || false}
-              onChange={(e) =>
-                handleInputChange("washroomsNotAvailable", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="washroomsNotAvailable">
-              Not Available
-            </label>
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className="col mb-3">
+          <label className="form-label">Washrooms</label>
+          <div className="row">
+            <div className="col-6">
+              <label className="form-label small">Private washrooms</label>
+              <div className="input-group">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.privateWashroomsCount || 0
+                    );
+                    if (currentValue > 0) {
+                      handleInputChange(
+                        "privateWashroomsCount",
+                        currentValue - 1
+                      );
+                    }
+                  }}
+                  disabled={parseInt(formData.privateWashroomsCount || 0) <= 0}
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="form-control text-center no-spinner"
+                  value={formData.privateWashroomsCount || 0}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    handleInputChange(
+                      "privateWashroomsCount",
+                      Math.max(0, value)
+                    );
+                  }}
+                  min="0"
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.privateWashroomsCount || 0
+                    );
+                    handleInputChange(
+                      "privateWashroomsCount",
+                      currentValue + 1
+                    );
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="col-6">
+              <label className="form-label small">Shared washrooms</label>
+              <div className="input-group">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.sharedWashroomsCount || 0
+                    );
+                    if (currentValue > 0) {
+                      handleInputChange(
+                        "sharedWashroomsCount",
+                        currentValue - 1
+                      );
+                    }
+                  }}
+                  disabled={parseInt(formData.sharedWashroomsCount || 0) <= 0}
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="form-control text-center no-spinner"
+                  value={formData.sharedWashroomsCount || 0}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    handleInputChange(
+                      "sharedWashroomsCount",
+                      Math.max(0, value)
+                    );
+                  }}
+                  min="0"
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => {
+                    const currentValue = parseInt(
+                      formData.sharedWashroomsCount || 0
+                    );
+                    handleInputChange("sharedWashroomsCount", currentValue + 1);
+                  }}
+                >
+                  +
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -312,78 +363,69 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       </div>
 
       {/* Facilities */}
-      <div className="row mb-4">
-        <div className="col-12">
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className="col mb-3">
           <h5 className="mb-3">Facilities</h5>
-        </div>
-        <div className="col-md-12 mb-3">
-          <div className="row">
+          <div className="d-flex flex-wrap gap-3">
             {["Furnishing", "Central AC", "Oxygen duct", "UPS"].map(
               (facility) => (
-                <div key={facility} className="col-md-3 mb-2">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      id={`facility-${facility}`}
-                      checked={formData.facilities?.includes(facility) || false}
-                      onChange={(e) =>
-                        handleCheckboxChange(
-                          "facilities",
-                          facility,
-                          e.target.checked
-                        )
-                      }
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={`facility-${facility}`}
-                    >
-                      {facility}
-                    </label>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Fire safety measures */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5 className="mb-3">Fire safety measures</h5>
-        </div>
-        <div className="col-md-12 mb-3">
-          <div className="row">
-            {[
-              "Fire extinguisher",
-              "Fire sensors",
-              "Sprinklers",
-              "Fire hose",
-            ].map((safety) => (
-              <div key={safety} className="col-md-3 mb-2">
-                <div className="form-check">
+                <div
+                  key={facility}
+                  className="form-check d-flex align-items-center gap-2"
+                >
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    id={`safety-${safety}`}
-                    checked={formData.fireSafety?.includes(safety) || false}
+                    id={`facility-${facility}`}
+                    checked={formData.facilities?.includes(facility) || false}
                     onChange={(e) =>
                       handleCheckboxChange(
-                        "fireSafety",
-                        safety,
+                        "facilities",
+                        facility,
                         e.target.checked
                       )
                     }
                   />
                   <label
                     className="form-check-label"
-                    htmlFor={`safety-${safety}`}
+                    htmlFor={`facility-${facility}`}
                   >
-                    {safety}
+                    {facility}
                   </label>
                 </div>
+              )
+            )}
+          </div>
+        </div>
+
+        <div className="col mb-3">
+          <h5 className="mb-3">Fire safety measures</h5>
+          <div className="d-flex flex-wrap gap-3">
+            {[
+              "Fire extinguisher",
+              "Fire sensors",
+              "Sprinklers",
+              "Fire hose",
+            ].map((safety) => (
+              <div
+                key={safety}
+                className="form-check d-flex align-items-center gap-2"
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`safety-${safety}`}
+                  checked={formData.fireSafety?.includes(safety) || false}
+                  onChange={(e) =>
+                    handleCheckboxChange("fireSafety", safety, e.target.checked)
+                  }
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`safety-${safety}`}
+                >
+                  {safety}
+                </label>
               </div>
             ))}
           </div>
@@ -408,20 +450,25 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
 
         <div className="col-md-4 mb-3">
           <label className="form-label">Your floor No</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.yourFloor || ""}
-            onChange={(e) => handleInputChange("yourFloor", e.target.value)}
-          >
-            <option value="">Select floor</option>
-            <option value="Basement">Basement</option>
-            <option value="G">G</option>
-            {Array.from({ length: 25 }, (_, i) => i + 1).map((floor) => (
-              <option key={floor} value={floor}>
-                {floor}
-              </option>
-            ))}
-          </select>
+          <Select
+            instanceId="yourFloor"
+            options={[
+              { value: "Basement", label: "Basement" },
+              { value: "G", label: "G" },
+              ...Array.from({ length: 25 }, (_, i) => ({
+                value: (i + 1).toString(),
+                label: (i + 1).toString(),
+              })),
+            ]}
+            styles={smallSelectStyles}
+            className="select-custom filterSelect"
+            classNamePrefix="select"
+            value={{
+              value: formData.yourFloor || "",
+              label: formData.yourFloor || "Select floor",
+            }}
+            onChange={(e) => handleInputChange("yourFloor", e.value)}
+          />
         </div>
 
         <div className="col-md-4 mb-3">
@@ -437,135 +484,153 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       </div>
 
       {/* Lifts */}
-      <div className="row mb-4">
-        <div className="col-12">
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className="col mb-3">
           <h5 className="mb-3">Lifts</h5>
-        </div>
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="passengerLift"
-              checked={formData.passengerLift || false}
-              onChange={(e) =>
-                handleInputChange("passengerLift", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="passengerLift">
-              Passenger (+/-)
-            </label>
+          <div className="form-style2 input-group mb-3">
+            {["Available", "Not Available"].map((option) => (
+              <div className="selection" key={`lifts-${option}`}>
+                <input
+                  id={`lifts-${option}`}
+                  type="radio"
+                  name="liftsAvailable"
+                  value={option}
+                  checked={formData.liftsAvailable === option}
+                  onChange={(e) =>
+                    handleInputChange("liftsAvailable", e.target.value)
+                  }
+                />
+                <label htmlFor={`lifts-${option}`}>{option}</label>
+              </div>
+            ))}
           </div>
-        </div>
 
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="serviceLift"
-              checked={formData.serviceLift || false}
-              onChange={(e) =>
-                handleInputChange("serviceLift", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="serviceLift">
-              Service (+/-)
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-4 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="liftsNotAvailable"
-              checked={formData.liftsNotAvailable || false}
-              onChange={(e) =>
-                handleInputChange("liftsNotAvailable", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="liftsNotAvailable">
-              Not available
-            </label>
-          </div>
+          {formData.liftsAvailable === "Available" && (
+            <div className="row">
+              <div className="col-6">
+                <label className="form-label small">Passenger lifts</label>
+                <div className="input-group">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      const currentValue = parseInt(
+                        formData.passengerLiftCount || 0
+                      );
+                      if (currentValue > 0) {
+                        handleInputChange(
+                          "passengerLiftCount",
+                          currentValue - 1
+                        );
+                      }
+                    }}
+                    disabled={parseInt(formData.passengerLiftCount || 0) <= 0}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    className="form-control text-center no-spinner"
+                    value={formData.passengerLiftCount || 0}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value) || 0;
+                      handleInputChange(
+                        "passengerLiftCount",
+                        Math.max(0, value)
+                      );
+                    }}
+                    min="0"
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      const currentValue = parseInt(
+                        formData.passengerLiftCount || 0
+                      );
+                      handleInputChange("passengerLiftCount", currentValue + 1);
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="col-6">
+                <label className="form-label small">Service lifts</label>
+                <div className="input-group">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      const currentValue = parseInt(
+                        formData.serviceLiftCount || 0
+                      );
+                      if (currentValue > 0) {
+                        handleInputChange("serviceLiftCount", currentValue - 1);
+                      }
+                    }}
+                    disabled={parseInt(formData.serviceLiftCount || 0) <= 0}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    className="form-control text-center no-spinner"
+                    value={formData.serviceLiftCount || 0}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value) || 0;
+                      handleInputChange("serviceLiftCount", Math.max(0, value));
+                    }}
+                    min="0"
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      const currentValue = parseInt(
+                        formData.serviceLiftCount || 0
+                      );
+                      handleInputChange("serviceLiftCount", currentValue + 1);
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Parking */}
-      <div className="row mb-4">
-        <div className="col-12">
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className=" mb-3">
           <h5 className="mb-3">Parking</h5>
-        </div>
-        <div className="col-md-3 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="privateBasementParking"
-              checked={formData.privateBasementParking || false}
-              onChange={(e) =>
-                handleInputChange("privateBasementParking", e.target.checked)
-              }
-            />
-            <label
-              className="form-check-label"
-              htmlFor="privateBasementParking"
-            >
-              Private basement
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-3 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="privateOutsideParking"
-              checked={formData.privateOutsideParking || false}
-              onChange={(e) =>
-                handleInputChange("privateOutsideParking", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="privateOutsideParking">
-              Private outside
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-3 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="generalParking"
-              checked={formData.generalParking || false}
-              onChange={(e) =>
-                handleInputChange("generalParking", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="generalParking">
-              General parking
-            </label>
-          </div>
-        </div>
-
-        <div className="col-md-3 mb-3">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="parkingNotAvailable"
-              checked={formData.parkingNotAvailable || false}
-              onChange={(e) =>
-                handleInputChange("parkingNotAvailable", e.target.checked)
-              }
-            />
-            <label className="form-check-label" htmlFor="parkingNotAvailable">
-              Not available
-            </label>
+          <div className="d-flex flex-wrap gap-3">
+            {[
+              { key: "privateBasementParking", label: "Private basement" },
+              { key: "privateOutsideParking", label: "Private outside" },
+              { key: "generalParking", label: "General parking" },
+              { key: "parkingNotAvailable", label: "Not available" },
+            ].map((option) => (
+              <div
+                key={option.key}
+                className="form-check d-flex align-items-center gap-2"
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={option.key}
+                  checked={formData[option.key] || false}
+                  onChange={(e) =>
+                    handleInputChange(option.key, e.target.checked)
+                  }
+                />
+                <label className="form-check-label" htmlFor={option.key}>
+                  {option.label}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -588,23 +653,31 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       </div>
 
       {/* Age and Availability */}
-      <div className="row mb-4">
-        <div className="col-md-6 mb-3">
+      <div className="row row-cols-1 row-cols-md-2 mb-4">
+        <div className="col mb-3">
           <label className="form-label">Age of property</label>
-          <select
-            className="form-select filterSelect"
-            value={formData.propertyAge || ""}
-            onChange={(e) => handleInputChange("propertyAge", e.target.value)}
-          >
-            <option value="">Select age</option>
-            <option value="0-1">0-1</option>
-            <option value="1-5">1-5</option>
-            <option value="5-10">5-10</option>
-            <option value="10+">10+</option>
-          </select>
+          <Select
+            instanceId="propertyAge"
+            options={[
+              { value: "", label: "Select age" },
+              { value: "0-1", label: "0-1" },
+              { value: "1-5", label: "1-5" },
+              { value: "5-10", label: "5-10" },
+              { value: "10+", label: "10+" },
+            ]}
+            menuPlacement="top"
+            styles={smallSelectStyles}
+            className="select-custom filterSelect"
+            classNamePrefix="select"
+            value={{
+              value: formData.propertyAge || "",
+              label: formData.propertyAge || "Select age",
+            }}
+            onChange={(e) => handleInputChange("propertyAge", e.value)}
+          />
         </div>
 
-        <div className="col-md-6 mb-3">
+        <div className="col mb-3">
           <label className="form-label">Available from</label>
           <input
             type="date"
