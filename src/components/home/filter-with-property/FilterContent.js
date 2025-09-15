@@ -28,12 +28,10 @@ const leaseSuggestions = [
   "Showroom for lease",
 ];
 
-const FilterContent = () => {
+const FilterContent = ({ activeTab, setActiveTab, isRent }) => {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("rent");
   const [index, setIndex] = useState(0);
 
-  const isRent = activeTab === "rent";
   const suggestions = isRent ? rentSuggestions : leaseSuggestions;
 
   useEffect(() => {
