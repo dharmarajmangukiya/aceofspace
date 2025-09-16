@@ -108,6 +108,7 @@ const EditorWrapper = ({ value, onChange, placeholder }) => {
 };
 
 const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
+  const isShowroom = subType === "Showroom";
   const [description, setDescription] = React.useState(
     formData.propertyDescription || ""
   );
@@ -177,27 +178,50 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
         <div className="col-12">
           <h5 className="mb-3">Price Details</h5>
         </div>
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Expected Lease Amount *</label>
-          <div className="input-group">
-            <input
-              type="number"
-              className="form-control filterInput"
-              placeholder="Enter lease amount"
-              value={formData.leaseAmount || ""}
-              onChange={(e) => handleInputChange("leaseAmount", e.target.value)}
-            />
-            <span className="input-group-text">₹/sq ft</span>
+
+        {isShowroom ? (
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Booking amount</label>
+            <div className="input-group">
+              <input
+                type="number"
+                className="form-control filterInput"
+                placeholder="Enter booking amount"
+                value={formData.bookingAmount || ""}
+                onChange={(e) =>
+                  handleInputChange("bookingAmount", e.target.value)
+                }
+              />
+              <span className="input-group-text">₹</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Expected Lease Amount *</label>
+            <div className="input-group">
+              <input
+                type="number"
+                className="form-control filterInput"
+                placeholder="Enter lease amount"
+                value={formData.leaseAmount || ""}
+                onChange={(e) =>
+                  handleInputChange("leaseAmount", e.target.value)
+                }
+              />
+              <span className="input-group-text">₹/sq ft</span>
+            </div>
+          </div>
+        )}
 
         <div className="col-md-6 mb-3">
           <label className="form-label">Additional pricing</label>
           <div className="d-flex flex-wrap gap-3">
             {[
-              "Digi & UPS included",
-              "Electricity & Water excluded",
               "Price Negotiable",
+
+              ...(isShowroom
+                ? ["Tax and Govt charges excluded"]
+                : ["Digi & UPS included", "Electricity & Water excluded"]),
             ].map((option) => (
               <div
                 key={option}
@@ -258,153 +282,164 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
         </div>
 
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Security deposit</label>
-          <div className="d-flex align-items-center gap-3 mb-2">
-            {["Fixed", "Multiple of rent", "None"].map((option) => (
-              <div
-                key={option}
-                className="form-check d-flex align-items-center gap-2"
-              >
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="securityDeposit"
-                  id={`security-${option}`}
-                  value={option}
-                  checked={formData.securityDeposit === option}
-                  onChange={(e) =>
-                    handleInputChange("securityDeposit", e.target.value)
-                  }
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`security-${option}`}
+        {!isShowroom && (
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Security deposit</label>
+            <div className="d-flex align-items-center gap-3 mb-2">
+              {["Fixed", "Multiple of rent", "None"].map((option) => (
+                <div
+                  key={option}
+                  className="form-check d-flex align-items-center gap-2"
                 >
-                  {option}
-                </label>
-              </div>
-            ))}
-          </div>
-
-          {formData.securityDeposit === "Fixed" && (
-            <div className="input-group">
-              <input
-                type="number"
-                className="form-control filterInput"
-                placeholder="Enter amount"
-                value={formData.securityDepositAmount || ""}
-                onChange={(e) =>
-                  handleInputChange("securityDepositAmount", e.target.value)
-                }
-              />
-              <span className="input-group-text">₹</span>
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="securityDeposit"
+                    id={`security-${option}`}
+                    value={option}
+                    checked={formData.securityDeposit === option}
+                    onChange={(e) =>
+                      handleInputChange("securityDeposit", e.target.value)
+                    }
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor={`security-${option}`}
+                  >
+                    {option}
+                  </label>
+                </div>
+              ))}
             </div>
-          )}
 
-          {formData.securityDeposit === "Multiple of rent" && (
-            <div className="input-group">
-              <input
-                type="number"
-                className="form-control filterInput"
-                placeholder="Enter months"
-                value={formData.securityDepositMonths || ""}
-                onChange={(e) =>
-                  handleInputChange("securityDepositMonths", e.target.value)
-                }
-              />
-              <span className="input-group-text">months</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="row mb-4">
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Lock-in period</label>
-          <div className="input-group">
-            <input
-              type="number"
-              className="form-control filterInput"
-              placeholder="Enter lock-in period"
-              value={formData.lockInPeriod || ""}
-              onChange={(e) =>
-                handleInputChange("lockInPeriod", e.target.value)
-              }
-            />
-            <span className="input-group-text">months</span>
-          </div>
-        </div>
-
-        <div className="col-md-6 mb-3">
-          <label className="form-label">Yearly rent increase</label>
-          <div className="input-group">
-            <input
-              type="number"
-              className="form-control filterInput"
-              placeholder="Enter percentage"
-              value={formData.yearlyRentIncrease || ""}
-              onChange={(e) =>
-                handleInputChange("yearlyRentIncrease", e.target.value)
-              }
-            />
-            <span className="input-group-text">%</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5 className="mb-3">Is your property fire NOC certified?</h5>
-        </div>
-        <div className="col-md-12 mb-3">
-          <div className="form-style2 input-group">
-            {["Yes", "No"].map((option) => (
-              <div className="selection" key={`fireNOC-${option}`}>
+            {formData.securityDeposit === "Fixed" && (
+              <div className="input-group">
                 <input
-                  id={`fireNOC-${option}`}
-                  type="radio"
-                  name="fireNOC"
-                  value={option}
-                  checked={formData.fireNOC === option}
-                  onChange={(e) => handleInputChange("fireNOC", e.target.value)}
-                />
-                <label htmlFor={`fireNOC-${option}`}>{option}</label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="row mb-4">
-        <div className="col-12">
-          <h5 className="mb-3">Occupancy Certificate</h5>
-        </div>
-        <div className="col-md-12 mb-3">
-          <div className="form-style2 input-group">
-            {["Yes", "No"].map((option) => (
-              <div className="selection" key={`occupancy-${option}`}>
-                <input
-                  id={`occupancy-${option}`}
-                  type="radio"
-                  name="occupancyCert"
-                  value={option}
-                  checked={formData.occupancyCert === option}
+                  type="number"
+                  className="form-control filterInput"
+                  placeholder="Enter amount"
+                  value={formData.securityDepositAmount || ""}
                   onChange={(e) =>
-                    handleInputChange("occupancyCert", e.target.value)
+                    handleInputChange("securityDepositAmount", e.target.value)
                   }
                 />
-                <label htmlFor={`occupancy-${option}`}>{option}</label>
+                <span className="input-group-text">₹</span>
               </div>
-            ))}
+            )}
+
+            {formData.securityDeposit === "Multiple of rent" && (
+              <div className="input-group">
+                <input
+                  type="number"
+                  className="form-control filterInput"
+                  placeholder="Enter months"
+                  value={formData.securityDepositMonths || ""}
+                  onChange={(e) =>
+                    handleInputChange("securityDepositMonths", e.target.value)
+                  }
+                />
+                <span className="input-group-text">months</span>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
+      {!isShowroom && (
+        <>
+          <div className="row mb-4">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Lock-in period</label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className="form-control filterInput"
+                  placeholder="Enter lock-in period"
+                  value={formData.lockInPeriod || ""}
+                  onChange={(e) =>
+                    handleInputChange("lockInPeriod", e.target.value)
+                  }
+                />
+                <span className="input-group-text">months</span>
+              </div>
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Yearly rent increase</label>
+              <div className="input-group">
+                <input
+                  type="number"
+                  className="form-control filterInput"
+                  placeholder="Enter percentage"
+                  value={formData.yearlyRentIncrease || ""}
+                  onChange={(e) =>
+                    handleInputChange("yearlyRentIncrease", e.target.value)
+                  }
+                />
+                <span className="input-group-text">%</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="row mb-4">
+            <div className="col-12">
+              <h5 className="mb-3">Is your property fire NOC certified?</h5>
+            </div>
+            <div className="col-md-12 mb-3">
+              <div className="form-style2 input-group">
+                {["Yes", "No"].map((option) => (
+                  <div className="selection" key={`fireNOC-${option}`}>
+                    <input
+                      id={`fireNOC-${option}`}
+                      type="radio"
+                      name="fireNOC"
+                      value={option}
+                      checked={formData.fireNOC === option}
+                      onChange={(e) =>
+                        handleInputChange("fireNOC", e.target.value)
+                      }
+                    />
+                    <label htmlFor={`fireNOC-${option}`}>{option}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="row mb-4">
+            <div className="col-12">
+              <h5 className="mb-3">Occupancy Certificate</h5>
+            </div>
+            <div className="col-md-12 mb-3">
+              <div className="form-style2 input-group">
+                {["Yes", "No"].map((option) => (
+                  <div className="selection" key={`occupancy-${option}`}>
+                    <input
+                      id={`occupancy-${option}`}
+                      type="radio"
+                      name="occupancyCert"
+                      value={option}
+                      checked={formData.occupancyCert === option}
+                      onChange={(e) =>
+                        handleInputChange("occupancyCert", e.target.value)
+                      }
+                    />
+                    <label htmlFor={`occupancy-${option}`}>{option}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Property Description with MDX Editor */}
       <div className="row mb-4">
         <div className="col-md-12 mb-3">
-          <label className="form-label">Describe your property *</label>
+          <label className="form-label">
+            {isShowroom
+              ? "What makes your property unique *"
+              : "Describe your property *"}
+          </label>
           <div className="rich-text-editor" style={{ minHeight: "300px" }}>
             {isMounted ? (
               <EditorWrapper
@@ -433,11 +468,6 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
             <small className="text-muted">
               {characterCount}/5000 characters
             </small>
-            {characterCount < 50 && (
-              <small className="text-danger">
-                Minimum 50 characters required
-              </small>
-            )}
           </div>
         </div>
       </div>
