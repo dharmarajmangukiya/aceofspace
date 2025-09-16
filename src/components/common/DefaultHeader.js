@@ -2,10 +2,9 @@
 
 import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
-import LoginSignupModal from "@/components/common/login-signup-modal";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const DefaultHeader = () => {
   const [navbar, setNavbar] = useState(false);
@@ -77,17 +76,17 @@ const DefaultHeader = () => {
                   </a>
                   <Link
                     className="ud-btn btn-white add-property bdrs60 mx-2 mx-xl-4"
-                    href="/dashboard-add-property"
+                    href="/add-property"
                   >
                     Add Property
                     <i className="fal fa-arrow-right-long" />
                   </Link>
-                  <a
+                  <Link
                     className="sidemenu-btn filter-btn-right"
-                    href="#"
+                    href="/auth/login"
                     data-bs-toggle="offcanvas"
-                    data-bs-target="#SidebarPanel"
-                    aria-controls="SidebarPanelLabel"
+                    // data-bs-target="#SidebarPanel"
+                    // aria-controls="SidebarPanelLabel"
                   >
                     <Image
                       width={25}
@@ -103,7 +102,7 @@ const DefaultHeader = () => {
                       src="/images/dark-nav-icon.svg"
                       alt="humberger menu"
                     />
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* End .col-auto */}
@@ -115,7 +114,7 @@ const DefaultHeader = () => {
       {/* End Header */}
 
       {/* Signup Modal */}
-      <div className="signup-modal">
+      {/* <div className="signup-modal">
         <div
           className="modal fade"
           id="loginSignupModal"
@@ -127,7 +126,7 @@ const DefaultHeader = () => {
             <LoginSignupModal />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End Signup Modal */}
 
       {/* DesktopSidebarMenu */}

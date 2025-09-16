@@ -1,0 +1,149 @@
+.amenity-btn {
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #f8f9fa; // light grey
+    box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.amenity-selected {
+  background-color: var(--primary-color);
+  color: white;
+
+  &:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+}
+
+.elegant-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.elegant-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(33, 37, 41, 0.3);
+  border-radius: 12px;
+}
+
+/* Hide number input spinners */
+.no-spinner {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.responsive-input-group .form-control {
+  flex: 0 0 60%;
+}
+
+.responsive-input-group .form-select,
+.responsive-input-group span {
+  flex: 0 0 40%;
+}
+
+// /* MDXEditor styles for property description */
+/* Fix MDX Editor lists visibility - More comprehensive approach */
+.rich-text-editor {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: white;
+
+  li {
+    list-style-type: unset !important;
+  }
+
+  li[role="checkbox"] {
+    list-style-type: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .responsive-input-group .form-control {
+    flex: 0 0 80%;
+  }
+
+  .responsive-input-group .form-select,
+  .responsive-input-group span {
+    flex: 0 0 20%;
+  }
+}
+
+/* Property Type Selection Cards */
+.property-type-card {
+  transition: all 0.3s ease !important;
+  border: 2px solid #e9ecef !important;
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+
+  &:hover {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-color: var(--primary-color, #eb6753) !important;
+    transform: translateY(-6px) scale(1.03) !important;
+    box-shadow: 0 12px 32px rgba(235, 103, 83, 0.08) !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+    text-align: center !important;
+
+    .property-icon {
+      font-size: 3rem !important;
+      margin-bottom: 1rem !important;
+      display: block !important;
+    }
+
+    .card-title {
+      margin-bottom: 0.5rem !important;
+      font-weight: 600 !important;
+      color: #2c3e50 !important;
+    }
+
+    .card-text {
+      color: #6c757d !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .selection-hint {
+      color: var(--primary-color, #eb6753) !important;
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+    }
+  }
+}
+
+/* Property Header Card */
+.property-header-card {
+  .property-type-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+
+    .property-icon {
+      font-size: 1.125rem !important;
+    }
+
+    .property-title {
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      color: #2c3e50 !important;
+      margin: 0 !important;
+    }
+  }
+
+  .property-description {
+    color: #6c757d !important;
+    font-size: 0.875rem !important;
+    margin: 0 !important;
+  }
+}
