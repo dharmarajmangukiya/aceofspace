@@ -5,6 +5,7 @@ import SidebarPanel from "@/components/common/sidebar-panel";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LoginSignupModal from "./login-signup-modal";
 
 const DefaultHeader = () => {
   const [navbar, setNavbar] = useState(false);
@@ -83,10 +84,11 @@ const DefaultHeader = () => {
                   </Link>
                   <Link
                     className="sidemenu-btn filter-btn-right"
-                    href="/auth/login"
+                    // href="/auth/login"
+                    href="#"
                     data-bs-toggle="offcanvas"
-                    // data-bs-target="#SidebarPanel"
-                    // aria-controls="SidebarPanelLabel"
+                    data-bs-target="#SidebarPanel"
+                    aria-controls="SidebarPanelLabel"
                   >
                     <Image
                       width={25}
@@ -114,7 +116,7 @@ const DefaultHeader = () => {
       {/* End Header */}
 
       {/* Signup Modal */}
-      {/* <div className="signup-modal">
+      <div className="signup-modal">
         <div
           className="modal fade"
           id="loginSignupModal"
@@ -126,7 +128,7 @@ const DefaultHeader = () => {
             <LoginSignupModal />
           </div>
         </div>
-      </div> */}
+      </div>
       {/* End Signup Modal */}
 
       {/* DesktopSidebarMenu */}

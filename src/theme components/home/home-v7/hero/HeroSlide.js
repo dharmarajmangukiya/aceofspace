@@ -1,14 +1,13 @@
 "use client";
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Scrollbar } from "swiper/modules";
 import Image from "next/image";
 import Link from "next/link";
+import { Scrollbar } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const listingsData = [
   {
     imageUrl: "/images/listings/slider-home7-1.jpg",
-    price: "$986,00",
+    price: "₹986,00",
     title: "Studio on Grand Avenue",
     beds: "32 Beds",
     baths: "91 Baths",
@@ -16,7 +15,7 @@ const listingsData = [
   },
   {
     imageUrl: "/images/listings/slider-home7-2.jpg",
-    price: "$14,000",
+    price: "₹14,000",
     title: "New apartment nice view",
     beds: "32 Beds",
     baths: "91 Baths",
@@ -24,7 +23,7 @@ const listingsData = [
   },
   {
     imageUrl: "/images/listings/slider-home7-3.jpg",
-    price: "$14,000",
+    price: "₹14,000",
     title: "New apartment nice view",
     beds: "32 Beds",
     baths: "91 Baths",

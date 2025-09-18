@@ -1,29 +1,29 @@
 "use client";
-import { Gallery, Item } from "react-photoswipe-gallery";
-import "photoswipe/dist/photoswipe.css";
-import Image from "next/image";
 import listings from "@/data/listings";
+import Image from "next/image";
+import "photoswipe/dist/photoswipe.css";
+import { Gallery, Item } from "react-photoswipe-gallery";
 
 const images = [
   {
-    src: "/images/listings/listing-single-2.jpg",
+    src: "/images/properties/detail/listing-single-6-1.webp",
     alt: "2.jpg",
   },
   {
-    src: "/images/listings/listing-single-3.jpg",
+    src: "/images/properties/detail/listing-single-6-2.webp",
     alt: "3.jpg",
   },
   {
-    src: "/images/listings/listing-single-4.jpg",
+    src: "/images/properties/detail/listing-single-6-3.webp",
     alt: "4.jpg",
   },
   {
-    src: "/images/listings/listing-single-5.jpg",
+    src: "/images/properties/detail/listing-single-6-4.webp",
     alt: "5.jpg",
   },
 ];
 
-const PropertyGallery = ({id}) => {
+const PropertyGallery = ({ id }) => {
   const data = listings.filter((elm) => elm.id == id)[0] || listings[0];
   return (
     <>
@@ -32,14 +32,14 @@ const PropertyGallery = ({id}) => {
           <div className="sp-img-content mb15-md">
             <div className="popup-img preview-img-1 sp-img">
               <Item
-                original={'/images/listings/listing-single-1.jpg'}
-                thumbnail={'/images/listings/listing-single-1.jpg'}
+                original={"/images/properties/detail/listing-single-6-1.webp"}
+                thumbnail={"/images/properties/detail/listing-single-6-1.webp"}
                 width={610}
                 height={510}
               >
                 {({ ref, open }) => (
                   <Image
-                    src={'/images/listings/listing-single-1.jpg'}
+                    src={"/images/properties/detail/listing-single-6-1.webp"}
                     width={591}
                     height={558}
                     ref={ref}

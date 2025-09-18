@@ -5,6 +5,7 @@ import SidebarPanel from "@/components/common/sidebar-panel";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LoginSignupModal from "../common/login-signup-modal";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
@@ -65,10 +66,11 @@ const Header = () => {
               <div className="col-auto">
                 <div className="d-flex align-items-center">
                   <Link
-                    href="/auth/login"
+                    href="#"
+                    // href="/auth/login"
                     className="login-info d-flex align-items-center"
-                    // data-bs-toggle="modal"
-                    // data-bs-target="#loginSignupModal"
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginSignupModal"
                     role="button"
                   >
                     <i className="far fa-user-circle fz16 me-2" />{" "}
@@ -115,7 +117,7 @@ const Header = () => {
       {/* End Header */}
 
       {/* Signup Modal */}
-      {/* <div className="signup-modal">
+      <div className="signup-modal">
         <div
           className="modal fade"
           id="loginSignupModal"
@@ -127,7 +129,7 @@ const Header = () => {
             <LoginSignupModal />
           </div>
         </div>
-      </div> */}
+      </div>
       {/* End Signup Modal */}
 
       {/* DesktopSidebarMenu */}

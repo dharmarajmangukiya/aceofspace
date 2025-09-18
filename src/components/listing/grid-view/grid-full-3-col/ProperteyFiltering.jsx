@@ -191,12 +191,7 @@ export default function ProperteyFiltering() {
         {/* End TopFilterBar */}
 
         <div className="row">
-          <FeaturedListings
-            colstyle={colstyle}
-            data={pageItems?.map((i) => {
-              return { ...i, image: "/images/listings/xl-6.jpg" };
-            })}
-          />
+          <FeaturedListings colstyle={colstyle} data={pageItems} />
         </div>
         {/* End .row */}
 
