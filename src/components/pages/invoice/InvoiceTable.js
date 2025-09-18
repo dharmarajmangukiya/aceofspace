@@ -1,24 +1,22 @@
-import React from "react";
-
 const InvoiceTable = () => {
   const tableData = [
     {
       description: "Standard Plan",
-      price: "$443.00",
-      vat: "$921.80",
-      total: "$9243",
+      price: "₹443.00",
+      vat: "₹921.80",
+      total: "₹9243",
     },
     {
       description: "Extra Plan",
-      price: "$443.00",
-      vat: "$921.80",
-      total: "$9243",
+      price: "₹443.00",
+      vat: "₹921.80",
+      total: "₹9243",
     },
     {
       description: "Total Due",
       price: "",
       vat: "",
-      total: "$9,750",
+      total: "₹9,750",
     },
   ];
 

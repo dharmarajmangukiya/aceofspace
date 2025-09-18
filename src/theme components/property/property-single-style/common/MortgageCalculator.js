@@ -1,17 +1,15 @@
-import React from "react";
-
 const resultItems = [
   {
     label: "Principal and Interest",
-    value: "$2,412",
+    value: "₹2,412",
   },
   {
     label: "Property Taxes",
-    value: "$2,412",
+    value: "₹2,412",
   },
   {
     label: "Homeowners' Insurance",
-    value: "$2,412",
+    value: "₹2,412",
   },
 ];
 
@@ -44,7 +42,7 @@ const MortgageCalculator = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="$250"
+                  placeholder="₹250"
                   required
                 />
               </div>
@@ -57,7 +55,7 @@ const MortgageCalculator = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="$2304"
+                  placeholder="₹2304"
                   required
                 />
               </div>
@@ -94,7 +92,7 @@ const MortgageCalculator = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="$1000"
+                  placeholder="₹1000"
                   required
                 />
               </div>
@@ -107,7 +105,7 @@ const MortgageCalculator = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="$1000"
+                  placeholder="₹1000"
                   required
                 />
               </div>

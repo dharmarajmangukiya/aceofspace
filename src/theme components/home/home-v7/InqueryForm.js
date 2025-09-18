@@ -147,7 +147,7 @@ const InqueryForm = () => {
         <div className="col-md-6">
           <div className="mb20">
             <label className="form-label fw600 dark-color">Max Price</label>
-            <input type="text" className="form-control" placeholder="$90" />
+            <input type="text" className="form-control" placeholder="₹90" />
           </div>
         </div>
         {/* End .col */}

@@ -70,7 +70,7 @@ const BannerSlider = () => {
                   <div className="container position-relative">
                     <div className="row">
                       <div className="col-xl-7">
-                        <h1 className="sub-title">${item.price}</h1>
+                        <h1 className="sub-title">₹{item.price}</h1>
                         <h3 className="banner-title">{item.title}</h3>
                         <p className="banner-text text-white ff-heading">
                           {item.meta}

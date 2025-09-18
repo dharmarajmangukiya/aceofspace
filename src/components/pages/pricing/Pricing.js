@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Pricing = () => {
   const pricingPackages = [
@@ -20,7 +20,7 @@ const Pricing = () => {
     },
     {
       packageTitle: "Professional",
-      price: "$199.95",
+      price: "₹199.95",
       pricePerMonth: "per month",
       priceIcon: "images/icon/pricing-icon-1.svg",
       uniqueClass: "unique-class", // Add a unique class for Professional package
@@ -35,7 +35,7 @@ const Pricing = () => {
     },
     {
       packageTitle: "Business",
-      price: "$399.95",
+      price: "₹399.95",
       pricePerMonth: "per month",
       priceIcon: "images/icon/pricing-icon-3.svg",
       features: [
@@ -92,8 +92,8 @@ const Pricing = () => {
                     ? index === 0
                       ? "Free" // First object shows "Free"
                       : index === 1
-                      ? "$599.99" // Second object shows "$599.95"
-                      : "$999.99" // Third object shows "$999.95"
+                      ? "₹599.99" // Second object shows "₹599.95"
+                      : "₹999.99" // Third object shows "₹999.95"
                     : item.price}
                 </h1>
                 <p className="text">{item.pricePerMonth}</p>

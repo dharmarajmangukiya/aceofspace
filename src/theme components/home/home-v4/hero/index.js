@@ -13,7 +13,7 @@ const Hero = () => {
           Property
         </h2>
         <p className="hero-text fz15 animate-up-2">
-          From as low as $10 per day with limited time offer discounts
+          From as low as ₹10 per day with limited time offer discounts
         </p>
 
         <div className="home4-floatin-img">

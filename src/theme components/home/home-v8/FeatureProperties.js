@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,7 +13,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$14,000 / mo",
+    price: "₹14,000 / mo",
     imageSrc: "/images/listings/property_slide_1.jpg",
   },
   {
@@ -26,7 +25,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$2,800 / mo",
+    price: "₹2,800 / mo",
   },
   {
     id: 3,
@@ -37,7 +36,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$14,000 / mo",
+    price: "₹14,000 / mo",
   },
   {
     id: 4,
@@ -48,7 +47,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$2,800 / mo",
+    price: "₹2,800 / mo",
   },
 ];
 

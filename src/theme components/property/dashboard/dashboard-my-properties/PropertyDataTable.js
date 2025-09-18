@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const propertyData = [
@@ -10,7 +9,7 @@ const propertyData = [
     title: "Equestrian Family Home",
     imageSrc: "/images/listings/list-1.jpg",
     location: "California City, CA, USA",
-    price: "$14,000/mo",
+    price: "₹14,000/mo",
     datePublished: "December 31, 2022",
     status: "Pending",
   },
@@ -19,7 +18,7 @@ const propertyData = [
     title: "Luxury villa in Rego Park",
     imageSrc: "/images/listings/list-2.jpg",
     location: "California City, CA, USA",
-    price: "$14,000/mo",
+    price: "₹14,000/mo",
     datePublished: "December 31, 2022",
     status: "Published",
   },
@@ -28,7 +27,7 @@ const propertyData = [
     title: "Villa on Hollywood Boulevard",
     imageSrc: "/images/listings/list-3.jpg",
     location: "California City, CA, USA",
-    price: "$14,000/mo",
+    price: "₹14,000/mo",
     datePublished: "December 31, 2022",
     status: "Processing",
   },
@@ -37,7 +36,7 @@ const propertyData = [
     title: "Equestrian Family Home",
     imageSrc: "/images/listings/list-4.jpg",
     location: "California City, CA, USA",
-    price: "$14,000/mo",
+    price: "₹14,000/mo",
     datePublished: "December 31, 2022",
     status: "Pending",
   },
@@ -46,7 +45,7 @@ const propertyData = [
     title: "Luxury villa in Rego Park",
     imageSrc: "/images/listings/list-5.jpg",
     location: "California City, CA, USA",
-    price: "$14,000/mo",
+    price: "₹14,000/mo",
     datePublished: "December 31, 2022",
     status: "Published",
   },
@@ -93,7 +92,9 @@ const PropertyDataTable = () => {
                 </div>
                 <div className="list-content py-0 p-0 mt-2 mt-xxl-0 ps-xxl-4">
                   <div className="h6 list-title">
-                    <Link href={`/single-v1/${property.id}`}>{property.title}</Link>
+                    <Link href={`/single-v1/${property.id}`}>
+                      {property.title}
+                    </Link>
                   </div>
                   <p className="list-text mb-0">{property.location}</p>
                   <div className="list-price">

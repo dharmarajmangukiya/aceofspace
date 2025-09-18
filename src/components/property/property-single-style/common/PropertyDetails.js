@@ -1,5 +1,3 @@
-import React from "react";
-
 const PropertyDetails = () => {
   const columns = [
     [
@@ -9,7 +7,7 @@ const PropertyDetails = () => {
       },
       {
         label: "Price",
-        value: "$252,000",
+        value: "₹252,000",
       },
       {
         label: "Property Size",

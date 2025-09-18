@@ -1,7 +1,6 @@
 "use client";
 
 import listings from "@/data/listings";
-import React from "react";
 
 const PropertyHeader = ({ id }) => {
   const data = listings.filter((elm) => elm.id == id)[0] || listings[0];
@@ -57,9 +56,9 @@ const PropertyHeader = ({ id }) => {
             </div>
             <h3 className="price mb-0 text-white">{data.price}</h3>
             <p className="text space fz15 text-white">
-              $
+              ₹
               {(
-                Number(data.price.split("$")[1].split(",").join("")) / data.sqft
+                Number(data.price.split("₹")[1].split(",").join("")) / data.sqft
               ).toFixed(2)}
               /sq ft
             </p>

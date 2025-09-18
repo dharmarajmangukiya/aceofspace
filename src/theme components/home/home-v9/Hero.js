@@ -1,9 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/swiper-bundle.css";
 import Link from "next/link";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
 
 const Hero = () => {
   const sliderItems = [
@@ -16,13 +15,13 @@ const Hero = () => {
         </>
       ),
       description:
-        "From as low as $10 per day with limited time offer discounts.",
+        "From as low as ₹10 per day with limited time offer discounts.",
       title: "Equestrian Family Home",
       location: "New York City, CA, USA",
       bed: "1",
       bath: "2",
       sqft: 1200,
-      price: "$14,000",
+      price: "₹14,000",
     },
 
     {
@@ -34,13 +33,13 @@ const Hero = () => {
         </>
       ),
       description:
-        "From as low as $10 per day with limited time offer discounts.",
+        "From as low as ₹10 per day with limited time offer discounts.",
       title: "Villa on Hollywood Boulevard",
       location: "New York City, CA, USA",
       bed: "1",
       bath: "2",
       sqft: 1200,
-      price: "$14,000",
+      price: "₹14,000",
     },
   ];
 
@@ -113,7 +112,7 @@ const Hero = () => {
                         <div className="listing-style1 at-home9-hero banner-content">
                           <div className="list-content">
                             <div className="list-price bgc-thm">
-                              ${item.price} / <span>mo</span>
+                              ₹{item.price} / <span>mo</span>
                             </div>
                             <h6 className="list-title">
                               <a href="page-property-single-v1.html">
