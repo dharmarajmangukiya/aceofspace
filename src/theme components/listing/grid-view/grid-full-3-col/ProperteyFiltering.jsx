@@ -173,9 +173,9 @@ export default function ProperteyFiltering() {
     if (priceRange.length > 0) {
       const filtered = refItems.filter(
         (elm) =>
-          Number(elm.price.split("$")[1].split(",").join("")) >=
+          Number(elm.price.split("₹")[1].split(",").join("")) >=
             priceRange[0] &&
-          Number(elm.price.split("$")[1].split(",").join("")) <= priceRange[1]
+          Number(elm.price.split("₹")[1].split(",").join("")) <= priceRange[1]
       );
       filteredArrays = [...filteredArrays, filtered];
     }
@@ -220,15 +220,15 @@ export default function ProperteyFiltering() {
     } else if (currentSortingOption.trim() == "Price Low") {
       const sorted = [...filteredData].sort(
         (a, b) =>
-          a.price.split("$")[1].split(",").join("") -
-          b.price.split("$")[1].split(",").join("")
+          a.price.split("₹")[1].split(",").join("") -
+          b.price.split("₹")[1].split(",").join("")
       );
       setSortedFilteredData(sorted);
     } else if (currentSortingOption.trim() == "Price High") {
       const sorted = [...filteredData].sort(
         (a, b) =>
-          b.price.split("$")[1].split(",").join("") -
-          a.price.split("$")[1].split(",").join("")
+          b.price.split("₹")[1].split(",").join("") -
+          a.price.split("₹")[1].split(",").join("")
       );
       setSortedFilteredData(sorted);
     } else {

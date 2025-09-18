@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 const floorPlanData = [
@@ -8,7 +7,7 @@ const floorPlanData = [
     size: "1267 Sqft",
     bedrooms: "2",
     bathrooms: "2",
-    price: "$920,99",
+    price: "₹920,99",
     imageSrc: "/images/listings/listing-single-1.png",
   },
   {
@@ -17,7 +16,7 @@ const floorPlanData = [
     size: "1267 Sqft",
     bedrooms: "2",
     bathrooms: "2",
-    price: "$920,99",
+    price: "₹920,99",
     imageSrc: "/images/listings/listing-single-1.png",
   },
   {
@@ -26,7 +25,7 @@ const floorPlanData = [
     size: "1267 Sqft",
     bedrooms: "2",
     bathrooms: "2",
-    price: "$920,99",
+    price: "₹920,99",
     imageSrc: "/images/listings/listing-single-1.png",
   },
 ];

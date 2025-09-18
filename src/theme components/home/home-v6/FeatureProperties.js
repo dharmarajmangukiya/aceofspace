@@ -14,7 +14,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$14,000 / mo",
+    price: "₹14,000 / mo",
     imageSrc: "/images/listings/property_slide_1.jpg",
   },
   {
@@ -26,7 +26,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$2,800 / mo",
+    price: "₹2,800 / mo",
     imageSrc: "/images/listings/property_slide_2.jpg",
   },
   {
@@ -38,7 +38,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$14,000 / mo",
+    price: "₹14,000 / mo",
     imageSrc: "/images/listings/property_slide_3.jpg",
   },
   {
@@ -50,7 +50,7 @@ const properties = [
     bed: "3 bed",
     bath: "4 bath",
     sqft: "1200 sqft",
-    price: "$2,800 / mo",
+    price: "₹2,800 / mo",
     imageSrc: "/images/listings/property_slide_4.jpg",
   },
 ];

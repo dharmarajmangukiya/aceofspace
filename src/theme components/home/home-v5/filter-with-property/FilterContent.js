@@ -96,7 +96,7 @@ const FilterContent = () => {
                         data-bs-auto-close="outside"
                         style={{ fontSize: "13px" }}
                       >
-                        ${price[0]} - ${price[1]}{" "}
+                        ₹{price[0]} - ₹{price[1]}{" "}
                         <i className="fas fa-caret-down" />
                       </div>
                       <div className="dropdown-menu">
@@ -113,7 +113,7 @@ const FilterContent = () => {
                             <div className="d-flex align-items-center">
                               <span id="slider-range-value1">₹{price[0]}</span>
                               <i className="fa-sharp fa-solid fa-minus mx-2 dark-color icon" />
-                              <span id="slider-range-value2">${price[1]}</span>
+                              <span id="slider-range-value2">₹{price[1]}</span>
                             </div>
                           </div>
                         </div>
