@@ -1,7 +1,7 @@
 "use client";
-import Select from "react-select";
 import Slider from "rc-slider";
 import { useEffect, useState } from "react";
+import Select from "react-select";
 
 const FilterItems = () => {
   const [price, setPrice] = useState([20, 70987]);
@@ -92,7 +92,7 @@ const FilterItems = () => {
                     id="slider"
                   />
                   <div className="d-flex align-items-center">
-                    <span id="slider-range-value1">${price[0]}</span>
+                    <span id="slider-range-value1">₹{price[0]}</span>
                     <i className="fa-sharp fa-solid fa-minus mx-2 dark-color icon" />
                     <span id="slider-range-value2">${price[1]}</span>
                   </div>

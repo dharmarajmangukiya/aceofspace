@@ -163,7 +163,7 @@ export default function MainRoot() {
       {/* End  Popular Property */}
 
       {/* Our Partners */}
-      <section className="our-partners pt0">
+      <section className="our-partners pt50">
         <div className="container">
           <div className="row">
             <div className="col-lg-12" data-aos="fade-up">
