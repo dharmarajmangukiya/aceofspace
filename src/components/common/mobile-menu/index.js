@@ -1,9 +1,9 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import ContactInfo from "./ContactInfo";
-import Social from "./Social";
 import ProSidebarContent from "./ProSidebarContent";
+import Social from "./Social";
 
 const MobileMenu = () => {
   return (
@@ -30,7 +30,9 @@ const MobileMenu = () => {
                 <Image
                   width={138}
                   height={44}
-                  src="/images/header-logo2.svg"
+                  // src="/images/header-logo2.svg"
+                  src="/images/settlewise-logo.jpg"
+                  className="object-fit-contain"
                   alt="logo"
                 />
               </Link>
@@ -59,7 +61,7 @@ const MobileMenu = () => {
             >
               <span className="far fa-times"></span>
             </div>
-            <h4 className="title">Welcome to Homez</h4>
+            <h4 className="title">Welcome to Settle Wise</h4>
           </div>
           {/* End header */}
 

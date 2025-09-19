@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactInfo = () => {
   const contactInfo = [
     {
@@ -11,8 +9,8 @@ const ContactInfo = () => {
     {
       id: 2,
       title: "Need Live Support?",
-      email: "hi@homez.com",
-      emailHref: "mailto:hi@homez.com", // Updated emailHref to use "mailto" URI
+      email: "hi@settlewise.in",
+      emailHref: "mailto:hi@settlewise.in", // Updated emailHref to use "mailto" URI
     },
   ];
 

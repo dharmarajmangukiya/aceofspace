@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import ContactMeta from "./ContactMeta";
 import AppWidget from "./AppWidget";
-import Subscribe from "./Subscribe";
-import MenuWidget from "./MenuWidget";
+import ContactMeta from "./ContactMeta";
 import Copyright from "./Copyright";
+import MenuWidget from "./MenuWidget";
+import Subscribe from "./Subscribe";
 
 const Footer = () => {
   return (
@@ -18,7 +18,9 @@ const Footer = () => {
                   width={138}
                   height={44}
                   className="mb40"
-                  src="/images/header-logo2.svg"
+                  // src="/images/header-logo2.svg"
+                  src="/images/settlewise-logo.jpg"
+                  className="object-fit-contain"
                   alt=""
                 />
               </Link>

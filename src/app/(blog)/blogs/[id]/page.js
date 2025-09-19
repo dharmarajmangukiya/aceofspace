@@ -13,10 +13,10 @@ import MobileMenu from "@/components/common/mobile-menu";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Blog Single  || Homez - Real Estate NextJS Template",
+  title: "Blog Single  || Settle Wise - Real Estate NextJS Template",
 };
 
-const BlogSingle = async props => {
+const BlogSingle = async (props) => {
   const params = await props.params;
   return (
     <>
@@ -30,10 +30,7 @@ const BlogSingle = async props => {
 
       {/* Blog Section Area */}
       <section className="our-blog pt50">
-
-        <Details  id={params.id} />
-       
-
+        <Details id={params.id} />
 
         <div className="container">
           <div className="roww" data-aos="fade-up" data-aos-delay="500">

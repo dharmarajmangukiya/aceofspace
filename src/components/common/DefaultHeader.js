@@ -42,7 +42,9 @@ const DefaultHeader = () => {
                       <Image
                         width={138}
                         height={44}
-                        src="/images/header-logo2.svg"
+                        // src="/images/header-logo2.svg"
+                        src="/images/settlewise-logo.jpg"
+                        className="object-fit-contain"
                         alt="Header Logo"
                       />
                     </Link>
@@ -50,7 +52,9 @@ const DefaultHeader = () => {
                       <Image
                         width={138}
                         height={44}
-                        src="/images/header-logo2.svg"
+                        // src="/images/header-logo2.svg"
+                        src="/images/settlewise-logo.jpg"
+                        className="object-fit-contain"
                         alt="Header Logo"
                       />
                     </Link>

@@ -3,10 +3,9 @@ import Footer from "@/components/common/default-footer";
 import MobileMenu from "@/components/common/mobile-menu";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export const metadata = {
-  title: "Not-Found  || Homez - Real Estate NextJS Template",
+  title: "Not-Found  || Settle Wise - Real Estate NextJS Template",
 };
 
 const NotFound = () => {

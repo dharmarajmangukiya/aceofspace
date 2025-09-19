@@ -147,3 +147,10 @@
     margin: 0 !important;
   }
 }
+
+@media (max-width: 360px) {
+  .modal-body {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}

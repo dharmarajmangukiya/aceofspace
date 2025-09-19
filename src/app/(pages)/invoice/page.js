@@ -4,7 +4,6 @@ import InvoiceTopData from "@/components/pages/invoice/InvoiceTopData";
 import PrintInvoice from "@/components/pages/invoice/PrintInvoice";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const Invoice = () => {
   return (
@@ -32,7 +31,9 @@ const Invoice = () => {
                           <Image
                             width={138}
                             height={44}
-                            src="/images/header-logo2.svg"
+                            // src="/images/header-logo2.svg"
+                            src="/images/settlewise-logo.jpg"
+                            className="object-fit-contain"
                             alt="header-logo2"
                           />
                         </Link>

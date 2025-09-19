@@ -1,12 +1,10 @@
-import Pagination from "@/components/blog/Pagination";
-import BlogFilter from "@/components/blog/blog-list-v3/BlogFilter";
 import BlogFilterContainer from "@/components/blog/blog-list-v3/BlogFilterContainer";
 import DefaultHeader from "@/components/common/DefaultHeader";
 import Footer from "@/components/common/default-footer";
 import MobileMenu from "@/components/common/mobile-menu";
 
 export const metadata = {
-  title: "Blog List v3  || Homez - Real Estate NextJS Template",
+  title: "Blog List v3  || Settle Wise - Real Estate NextJS Template",
 };
 
 const BlogV3 = () => {
@@ -39,7 +37,7 @@ const BlogV3 = () => {
       {/* End Breadcrumb Start */}
 
       {/* Blog Section Area */}
-      <BlogFilterContainer/>
+      <BlogFilterContainer />
       {/* End Blog Section Area */}
 
       {/* Start Our Footer */}

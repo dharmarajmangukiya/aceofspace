@@ -1,4 +1,3 @@
-import React from "react";
 import Social from "./Social";
 
 const getCurrentYear = () => {
@@ -12,7 +11,7 @@ const Footer = () => {
         <div className="col-sm-6">
           <div className="text-center text-lg-start">
             <p className="copyright-text text-gray ff-heading">
-              © Homez {getCurrentYear()}{" "}
+              © Settle Wise {getCurrentYear()}{" "}
               <a
                 href="https://themeforest.net/user/ib-themes"
                 target="_blank"
