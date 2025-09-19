@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactMeta = () => {
   const contactInfoData = [
     {
@@ -14,8 +12,8 @@ const ContactMeta = () => {
     },
     {
       text: "Need Live Support?",
-      info: "hi@homez.com",
-      link: "mailto:hi@homez.com",
+      info: "hi@settlewise.in",
+      link: "mailto:hi@settlewise.in",
     },
   ];
 

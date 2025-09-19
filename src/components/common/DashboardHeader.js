@@ -4,7 +4,6 @@ import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const DashboardHeader = () => {
@@ -83,7 +82,9 @@ const DashboardHeader = () => {
                       <Image
                         width={138}
                         height={44}
-                        src="/images/header-logo2.svg"
+                        // src="/images/header-logo2.svg"
+                        src="/images/settlewise-logo.jpg"
+                        className="object-fit-contain"
                         alt="Header Logo"
                       />
                     </Link>

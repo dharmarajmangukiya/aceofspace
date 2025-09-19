@@ -5,31 +5,31 @@ import MobileMenu from "@/components/common/mobile-menu";
 import EnergyClass from "@/components/property/property-single-style/common/EnergyClass";
 import FloorPlans from "@/components/property/property-single-style/common/FloorPlans";
 import HomeValueChart from "@/components/property/property-single-style/common/HomeValueChart";
-import InfoWithForm from "@/components/property/property-single-style/common/more-info";
+import MortgageCalculator from "@/components/property/property-single-style/common/MortgageCalculator";
 import NearbySimilarProperty from "@/components/property/property-single-style/common/NearbySimilarProperty";
-import OverView from "@/components/property/property-single-style/single-v2/OverView";
 import PropertyAddress from "@/components/property/property-single-style/common/PropertyAddress";
 import PropertyDetails from "@/components/property/property-single-style/common/PropertyDetails";
 import PropertyFeaturesAminites from "@/components/property/property-single-style/common/PropertyFeaturesAminites";
 import PropertyNearby from "@/components/property/property-single-style/common/PropertyNearby";
 import PropertyVideo from "@/components/property/property-single-style/common/PropertyVideo";
-import PropertyViews from "@/components/property/property-single-style/common/property-view";
 import ProperytyDescriptions from "@/components/property/property-single-style/common/ProperytyDescriptions";
 import ReviewBoxForm from "@/components/property/property-single-style/common/ReviewBoxForm";
 import VirtualTour360 from "@/components/property/property-single-style/common/VirtualTour360";
+import WalkScore from "@/components/property/property-single-style/common/WalkScore";
+import InfoWithForm from "@/components/property/property-single-style/common/more-info";
+import PropertyViews from "@/components/property/property-single-style/common/property-view";
 import AllReviews from "@/components/property/property-single-style/common/reviews";
 import ContactWithAgent from "@/components/property/property-single-style/single-v2/ContactWithAgent";
+import OverView from "@/components/property/property-single-style/single-v2/OverView";
 import PropertyGallery from "@/components/property/property-single-style/single-v2/PropertyGallery";
-import MortgageCalculator from "@/components/property/property-single-style/common/MortgageCalculator";
-import WalkScore from "@/components/property/property-single-style/common/WalkScore";
 import PropertyHeader from "@/components/property/property-single-style/single-v2/PropertyHeader";
 import ScheduleForm from "@/components/property/property-single-style/single-v2/ScheduleForm";
 
 export const metadata = {
-  title: "Property Single V2 || Homez - Real Estate NextJS Template",
+  title: "Property Single V2 || Settle Wise - Real Estate NextJS Template",
 };
 
-const SingleV2 = async props => {
+const SingleV2 = async (props) => {
   const params = await props.params;
   return (
     <>

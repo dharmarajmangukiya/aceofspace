@@ -134,7 +134,9 @@ const FeatureProperties = () => {
                               Need Live Support?
                             </p>
                             <h6 className="info-mail">
-                              <a href="mailto:hi@homez.com">hi@homez.com</a>
+                              <a href="mailto:hi@settlewise.in">
+                                hi@settlewise.in
+                              </a>
                             </h6>
                           </div>
                         </div>

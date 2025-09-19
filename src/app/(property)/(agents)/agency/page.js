@@ -3,10 +3,8 @@ import Footer from "@/components/common/default-footer";
 import MobileMenu from "@/components/common/mobile-menu";
 import FilteringAgency from "@/components/property/FilteringAgency";
 
-import React from "react";
-
 export const metadata = {
-  title: "Agency || Homez - Real Estate NextJS Template",
+  title: "Agency || Settle Wise - Real Estate NextJS Template",
 };
 
 const Agency = () => {
@@ -39,7 +37,7 @@ const Agency = () => {
       {/* End Breadcumb Sections */}
 
       {/* Agent Section Area */}
-      <FilteringAgency/>
+      <FilteringAgency />
 
       {/* End Agent Section Area */}
 

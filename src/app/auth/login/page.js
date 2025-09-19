@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Login  || Homez - Real Estate NextJS Template",
+  title: "Login  || Settle Wise - Real Estate NextJS Template",
 };
 
 const Login = () => {
@@ -30,7 +30,9 @@ const Login = () => {
                       width={138}
                       height={44}
                       className="mb25"
-                      src="/images/header-logo2.svg"
+                      // src="/images/header-logo2.svg"
+                      src="/images/settlewise-logo.jpg"
+                      className="object-fit-contain"
                       alt="logo"
                     />
                   </Link>

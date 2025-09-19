@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="col-auto">
             <div className="copyright-widget">
               <p className="text">
-                © Homez {currentYear}{" "}
+                © Settle Wise {currentYear}{" "}
                 <a
                   href="https://themeforest.net/user/ib-themes"
                   target="_blank"

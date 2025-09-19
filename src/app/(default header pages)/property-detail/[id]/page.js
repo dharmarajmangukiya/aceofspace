@@ -3,7 +3,7 @@
 import PropertyInfo from "@/components/PropertyInfo/PropertyInfo";
 
 export const metadata = {
-  title: "Property Single V1 || Homez - Real Estate NextJS Template",
+  title: "Property Single V1 || Settle Wise - Real Estate NextJS Template",
 };
 
 const SingleV1 = async (props) => {

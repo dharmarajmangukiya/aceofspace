@@ -10,14 +10,12 @@ import ListingItemsContainer from "@/components/property/agency-single/ListingIt
 import SingleAgencyCta from "@/components/property/agency-single/SingleAgencyCta";
 import AllReviews from "@/components/property/reviews";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 
 export const metadata = {
-  title: "Agency Single || Homez - Real Estate NextJS Template",
+  title: "Agency Single || Settle Wise - Real Estate NextJS Template",
 };
 
-const AgencySingle = async props => {
+const AgencySingle = async (props) => {
   const params = await props.params;
   return (
     <>
@@ -40,7 +38,6 @@ const AgencySingle = async props => {
                   <Image
                     width={120}
                     height={120}
-                    
                     className="img-1 spin-right"
                     src="/images/about/element-12.png"
                     alt="agents"
@@ -132,7 +129,7 @@ const AgencySingle = async props => {
               </div>
               {/* End .row */}
 
-              <ListingItemsContainer/>
+              <ListingItemsContainer />
               {/* End .row */}
 
               <div className="row pt30 bdrb1">

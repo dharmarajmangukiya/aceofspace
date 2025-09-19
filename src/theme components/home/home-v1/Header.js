@@ -1,11 +1,11 @@
 "use client";
 
+import LoginSignupModal from "@/components/common/login-signup-modal";
 import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
-import LoginSignupModal from "@/components/common/login-signup-modal";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
@@ -42,7 +42,9 @@ const Header = () => {
                       <Image
                         width={138}
                         height={44}
-                        src="/images/header-logo.svg"
+                        // src="/images/header-logo.svg"
+                        src="/images/settlewise-logo.jpg"
+                        className="object-fit-contain"
                         alt="Header Logo"
                       />
                     </Link>
@@ -50,7 +52,9 @@ const Header = () => {
                       <Image
                         width={138}
                         height={44}
-                        src="/images/header-logo2.svg"
+                        // src="/images/header-logo2.svg"
+                        src="/images/settlewise-logo.jpg"
+                        className="object-fit-contain"
                         alt="Header Logo"
                       />
                     </Link>

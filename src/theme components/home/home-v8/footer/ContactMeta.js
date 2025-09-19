@@ -1,5 +1,3 @@
-import React from "react";
-
 const ContactMeta = () => {
   const contactInfoList = [
     {
@@ -9,7 +7,7 @@ const ContactMeta = () => {
     },
     {
       title: "Need Live Support?",
-      mail: "hi@homez.com",
+      mail: "hi@settlewise.in",
       mailLink: "mailto:ibthemes21@gmail.com",
     },
   ];
