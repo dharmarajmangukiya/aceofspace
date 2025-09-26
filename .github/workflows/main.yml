@@ -24,7 +24,17 @@
           - name: Build Next.js application
             run: npm run build # Or npm run build && npm run export for static export
 
-          - name: Deploy to Server
+          - name: Deploy to Server.
+            uses: appleboy/scp-action@master
+            with:
+              host: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              password: ${{ secrets.PASSWORD }}
+              port: 22
+              source: ".next/*"
+              target: "/home/ubuntu/.next"
+
+          - name: Restart server
             uses: appleboy/ssh-action@master
             with:
               host: ${{ secrets.HOST }}
@@ -32,13 +42,11 @@
               password: ${{ secrets.PASSWORD }}
               port: 22
               script: |
-                # Example commands for deploying and restarting a Next.js app
-                # Adjust based on your server setup (e.g., PM2, Nginx)
                 cd /var/www/html/aceofspace
-                rm -rf .next # Or out for static export
-                mkdir -p .next # Or out
+                rm -rf .next
+                mkdir -p .next
                 # Copy build output from GitHub Actions workspace to server
-                scp -r .next/* root@host:/var/www/html/aceofspace/.next/
+                scp -r /home/ubuntu/.next/* root@host:/var/www/html/aceofspace/.next/
                 # If using a Next.js server
                 pm2 restart aceofspace # Example using PM2
                 # If using static export with Nginx, update Nginx config and reload
