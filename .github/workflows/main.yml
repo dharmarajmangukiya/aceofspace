@@ -32,7 +32,7 @@
               password: ${{ secrets.PASSWORD }}
               port: 22
               source: ".next/*"
-              target: "/home/ubuntu/.next/"
+              target: "/home/ubuntu/"
 
           - name: Restart server
             uses: appleboy/ssh-action@master
