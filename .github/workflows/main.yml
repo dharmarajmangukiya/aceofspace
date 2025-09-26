@@ -32,7 +32,7 @@
               password: ${{ secrets.PASSWORD }}
               port: 22
               source: ".next/*"
-              target: "/var/www/html/aceofspace/.next/"
+              target: "/var/www/html/aceofspace/"
               rm: true
 
           - name: Restart server
