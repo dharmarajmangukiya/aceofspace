@@ -1,3 +1,5 @@
+export const PAGE_SIZE = 10;
+
 export const propertyTypeOptions = {
   // residential - rent
   rent: [

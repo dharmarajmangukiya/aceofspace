@@ -1,4 +1,5 @@
 "use client";
+import { useGetHeroImages } from "@/hooks/api/landingPage";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,6 +11,10 @@ const isLoggedIn = false;
 
 const Hero = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+  // exmple use to test loading
+
+  const { data: heroImages, isLoading, isError } = useGetHeroImages();
 
   const sliderItems = [
     {
