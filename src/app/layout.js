@@ -2,11 +2,12 @@
 import ScrollToTop from "@/components/common/ScrollTop";
 import Aos from "aos";
 
+import MainLayout from "@/Layouts/MainLayout";
 import "aos/dist/aos.css";
-import "../../public/scss/main.scss";
-import "rc-slider/assets/index.css";
 import { DM_Sans, Poppins } from "next/font/google";
+import "rc-slider/assets/index.css";
 import { useEffect } from "react";
+import "../../public/scss/main.scss";
 
 // DM_Sans font
 const dmSans = DM_Sans({
@@ -41,7 +42,9 @@ export default function RootLayout({ children }) {
         className={`body  ${poppins.variable} ${dmSans.variable}`}
         cz-shortcut-listen="false"
       >
-        <div className="wrapper ovh">{children}</div>
+        <div className="wrapper ovh">
+          <MainLayout>{children}</MainLayout>
+        </div>
 
         <ScrollToTop />
       </body>
