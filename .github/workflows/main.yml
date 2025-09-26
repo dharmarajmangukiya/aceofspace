@@ -10,6 +10,31 @@
         runs-on: ubuntu-24.04
 
         steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Set up Node.js
+            uses: actions/setup-node@v4
+            with:
+              node-version: '18.19.1' # Or your desired Node.js version
+
+          - name: Install dependencies
+            run: npm install
+
+          - name: Build Next.js application
+            run: npm run build # Or npm run build && npm run export for static export
+
+          - name: Deploy to Server.
+            uses: appleboy/scp-action@master
+            with:
+              host: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              password: ${{ secrets.PASSWORD }}
+              port: 22
+              source: ".next/*"
+              target: "/var/www/html/aceofspace/.next/"
+              rm: true
+
           - name: Restart server
             uses: appleboy/ssh-action@master
             with:
@@ -18,12 +43,12 @@
               password: ${{ secrets.PASSWORD }}
               port: 22
               script: |
-                cd /var/www/html/aceofspace
-                rm -rf .next
-                mkdir -p .next
+                #cd /var/www/html/aceofspace
+                #rm -rf .next
+                #mkdir -p .next
                 # Copy build output from GitHub Actions workspace to server
-                sudo mv /home/ubuntu/.next/ username@host:/var/www/html/aceofspace/
-                echo "Folder moved"
+                #sudo mv /home/ubuntu/.next/ username@host:/var/www/html/aceofspace/
+                #echo "Folder moved"
                 #rm -rf /home/ubunut/.next
                 # If using a Next.js server
                 pm2 restart aceofspace # Example using PM2
