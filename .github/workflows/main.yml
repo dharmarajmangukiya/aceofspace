@@ -29,7 +29,8 @@
             with:
               host: ${{ secrets.HOST }}
               username: ${{ secrets.USERNAME }}
-              key: ${{ secrets.SSH_PRIVATE_KEY }}
+              password: ${{ secrets.PASSWORD }}
+              port: 22
               script: |
                 # Example commands for deploying and restarting a Next.js app
                 # Adjust based on your server setup (e.g., PM2, Nginx)
