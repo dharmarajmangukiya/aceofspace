@@ -33,7 +33,6 @@
               port: 22
               source: ".next/*"
               target: "/var/www/html/aceofspace-front/"
-              rm: true
 
           - name: Restart server
             uses: appleboy/ssh-action@master
@@ -43,13 +42,13 @@
               password: ${{ secrets.PASSWORD }}
               port: 22
               script: |
-                #cd /var/www/html/aceofspace
-                #rm -rf .next
-                #mkdir -p .next
+                cd /var/www/html/aceofspace-front
+                rm -rf .next
+                mkdir -p .next
                 # Copy build output from GitHub Actions workspace to server
-                #sudo mv /home/ubuntu/.next/ username@host:/var/www/html/aceofspace/
-                #echo "Folder moved"
-                #rm -rf /home/ubunut/.next
+                sudo mv /home/ubuntu/.next /var/www/html/aceofspace-front/
+                echo "Folder moved"
+                rm -rf /home/ubunut/.next
                 # If using a Next.js server
                 pm2 restart aceofspace # Example using PM2
                 # If using static export with Nginx, update Nginx config and reload
