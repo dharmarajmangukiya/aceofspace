@@ -1,16 +1,25 @@
+import GlobalLoader from "@/components/common/GlobalLoader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
+    queries: {
+      // do not retry failed queries automatically
+      retry: false,
+      // data considered fresh forever until you manually refetch
+      staleTime: Infinity,
+      // do not auto-refetch on focus or reconnect
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchInterval: false,
+    },
   },
 });
 
 export default function MainLayout({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <GlobalLoader>{children}</GlobalLoader>
+    </QueryClientProvider>
   );
 }

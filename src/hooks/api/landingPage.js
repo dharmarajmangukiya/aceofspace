@@ -6,6 +6,7 @@ export const useGetHeroImages = () => {
   return useQuery({
     queryKey: ["heroImages"],
     enabled: true,
+    meta: { globalLoader: true },
     queryFn: async () => {
       try {
         const response = await api.get("/landing/hero-images");
