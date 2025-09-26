@@ -46,7 +46,8 @@
                 rm -rf .next
                 mkdir -p .next
                 # Copy build output from GitHub Actions workspace to server
-                scp -r /home/ubuntu/.next/* root@host:/var/www/html/aceofspace/.next/
+                mv /home/ubuntu/.next/ root@host:/var/www/html/aceofspace/.next/
+                rm -rf /home/ubunut/.next
                 # If using a Next.js server
                 pm2 restart aceofspace # Example using PM2
                 # If using static export with Nginx, update Nginx config and reload
