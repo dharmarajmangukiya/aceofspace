@@ -20,6 +20,7 @@ export default function MainLayout({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalLoader>{children}</GlobalLoader>
+      {/* <Toaster position="top-right" richColors duration={4000} /> */}
     </QueryClientProvider>
   );
 }

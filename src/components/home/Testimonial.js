@@ -1,10 +1,14 @@
 "use client";
 import testimonialData from "@/data/testimonials";
+import { useGetTestimonials } from "@/hooks/api/landingPage";
 import Image from "next/image";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const Testimonial = () => {
+  // Queries
+  const { data: testimonialsData } = useGetTestimonials();
+
   return (
     <>
       <Swiper

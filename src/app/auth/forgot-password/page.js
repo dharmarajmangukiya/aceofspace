@@ -1,4 +1,4 @@
-import SignIn from "@/components/common/login-signup-modal/SignIn";
+import ForgotPassword from "@/components/common/login-signup-modal/ForgotPassword";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -29,19 +29,18 @@ const Login = () => {
                     <Image
                       width={138}
                       height={44}
-                      className="mb25"
+                      className="mb25 object-fit-contain"
                       // src="/images/header-logo2.svg"
                       src="/images/settlewise-logo.jpg"
-                      className="object-fit-contain"
                       alt="logo"
                     />
                   </Link>
-                  <h2>Sign in</h2>
+                  <h2>Forgot your password?</h2>
                   <p className="text">
-                    Sign in with this account across the following sites.
+                    Enter your email to reset your password.
                   </p>
                 </div>
-                <SignIn />
+                <ForgotPassword />
               </div>
             </div>
           </div>

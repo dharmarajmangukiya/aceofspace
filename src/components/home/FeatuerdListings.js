@@ -1,10 +1,14 @@
 "use client";
 import listings from "@/data/listings";
+import { useGetFeaturedListings } from "@/hooks/api/landingPage";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import PropertyCard from "./PropertyCard";
 
 const FeaturedListings = () => {
+  // Queries
+  const { data: featuredListingsData } = useGetFeaturedListings();
+
   return (
     <>
       <Swiper

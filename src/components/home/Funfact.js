@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetStatistics } from "@/hooks/api/landingPage";
 import { useEffect, useRef, useState } from "react";
 import CountUp from "react-countup";
 
@@ -10,6 +11,9 @@ const Funfact = () => {
     { number: 200, text: "Property Ready" },
     // Add more fun facts if needed
   ];
+
+  // Queries
+  const { data: statisticsData } = useGetStatistics();
 
   return (
     <>

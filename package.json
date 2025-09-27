@@ -19,6 +19,7 @@
     "bootstrap": "5.3.6",
     "classnames": "^2.5.1",
     "eslint": "9.27.0",
+    "formik": "^2.4.6",
     "next": "15.1.8",
     "photoswipe": "^5.4.4",
     "prop-types": "15.8.1",
@@ -33,6 +34,8 @@
     "react-tooltip": "^5.28.1",
     "recharts": "2.15.3",
     "sass": "^1.89.0",
-    "swiper": "^11.2.8"
+    "sonner": "^2.0.7",
+    "swiper": "^11.2.8",
+    "yup": "^1.7.1"
   }
 }
