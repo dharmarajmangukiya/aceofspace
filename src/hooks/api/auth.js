@@ -37,7 +37,7 @@ export const useSignIn = () => {
         const response = await api.post("/auth/signin", credentials);
 
         // Handle successful login - store token in localStorage
-        if (response.data?.token || response.data?.accessToken) {
+        if (response?.data?.token || response?.data?.accessToken) {
           const token = response.data.token || response.data.accessToken;
           localStorage.setItem("authToken", token);
 

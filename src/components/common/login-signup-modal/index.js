@@ -1,7 +1,10 @@
+"use client";
+import { useRef } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
 const LoginSignupModal = () => {
+  const closeModal = useRef(null);
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -10,6 +13,7 @@ const LoginSignupModal = () => {
         </h5>
         <button
           type="button"
+          ref={closeModal}
           className="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
@@ -57,7 +61,7 @@ const LoginSignupModal = () => {
                 role="tabpanel"
                 aria-labelledby="nav-home-tab"
               >
-                <SignIn />
+                <SignIn closeModal={closeModal} />
               </div>
               {/* End signin content */}
 
@@ -67,7 +71,7 @@ const LoginSignupModal = () => {
                 role="tabpanel"
                 aria-labelledby="nav-profile-tab"
               >
-                <SignUp />
+                <SignUp closeModal={closeModal} />
               </div>
               {/* End signup content */}
             </div>

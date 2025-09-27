@@ -29,10 +29,9 @@ const Register = () => {
                     <Image
                       width={138}
                       height={44}
-                      className="mb25"
+                      className="mb25 object-fit-contain"
                       // src="/images/header-logo2.svg"
                       src="/images/settlewise-logo.jpg"
-                      className="object-fit-contain"
                       alt="logo"
                     />
                   </Link>

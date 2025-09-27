@@ -1,33 +1,185 @@
-import Link from "next/link";
+"use client";
+import { useSignUp } from "@/hooks/api/auth";
+import { signUpValidationSchema } from "@/validation/auth";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const SignUp = () => {
+const SignUp = ({ closeModal }) => {
+  const router = useRouter();
+  const { mutate: signUp, isPending } = useSignUp();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      firstName: "",
+      lastName: "",
+    },
+    validationSchema: signUpValidationSchema,
+    onSubmit: (values) => {
+      signUp(
+        {
+          email: values.email,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Account created successfully!", {
+              description: `Welcome ${values.firstName}! Your account has been created and you're now signed in.`,
+              duration: 4000,
+            });
+            // Close modal and redirect on success
+            closeModal?.current?.click();
+            router.push("/");
+          },
+          onError: (error) => {
+            const errorMessage =
+              error?.response?.data?.message ||
+              error?.message ||
+              "Failed to create account. Please try again.";
+
+            toast.error("Sign Up Failed", {
+              description: errorMessage,
+              duration: 5000,
+            });
+            console.error("Sign up error:", error);
+          },
+        }
+      );
+    },
+  });
+
   return (
-    <form className="form-style1">
+    <form className="form-style1" onSubmit={formik.handleSubmit}>
+      <div className="row">
+        <div className="col-md-6 mb25">
+          <label className="form-label fw600 dark-color">First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            className={`form-control ${
+              formik.touched.firstName && formik.errors.firstName
+                ? "is-invalid"
+                : ""
+            }`}
+            placeholder="Enter First Name"
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.firstName && formik.errors.firstName && (
+            <div className="invalid-feedback">{formik.errors.firstName}</div>
+          )}
+        </div>
+        <div className="col-md-6 mb25">
+          <label className="form-label fw600 dark-color">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            className={`form-control ${
+              formik.touched.lastName && formik.errors.lastName
+                ? "is-invalid"
+                : ""
+            }`}
+            placeholder="Enter Last Name"
+            value={formik.values.lastName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.lastName && formik.errors.lastName && (
+            <div className="invalid-feedback">{formik.errors.lastName}</div>
+          )}
+        </div>
+      </div>
+      {/* End Name fields */}
+
       <div className="mb25">
         <label className="form-label fw600 dark-color">Email</label>
         <input
           type="email"
-          className="form-control"
+          name="email"
+          className={`form-control ${
+            formik.touched.email && formik.errors.email ? "is-invalid" : ""
+          }`}
           placeholder="Enter Email"
-          required
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
+        {formik.touched.email && formik.errors.email && (
+          <div className="invalid-feedback">{formik.errors.email}</div>
+        )}
       </div>
       {/* End Email */}
 
       <div className="mb20">
         <label className="form-label fw600 dark-color">Password</label>
         <input
-          type="text"
-          className="form-control"
+          type="password"
+          name="password"
+          className={`form-control ${
+            formik.touched.password && formik.errors.password
+              ? "is-invalid"
+              : ""
+          }`}
           placeholder="Enter Password"
-          required
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
+        {formik.touched.password && formik.errors.password && (
+          <div className="invalid-feedback">{formik.errors.password}</div>
+        )}
       </div>
       {/* End Password */}
 
+      <div className="mb20">
+        <label className="form-label fw600 dark-color">Confirm Password</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          className={`form-control ${
+            formik.touched.confirmPassword && formik.errors.confirmPassword
+              ? "is-invalid"
+              : ""
+          }`}
+          placeholder="Confirm Password"
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+          <div className="invalid-feedback">
+            {formik.errors.confirmPassword}
+          </div>
+        )}
+      </div>
+      {/* End Confirm Password */}
+
       <div className="d-grid mb20">
-        <button className="ud-btn btn-thm" type="submit">
-          Create account <i className="fal fa-arrow-right-long" />
+        <button
+          className="ud-btn btn-thm"
+          type="submit"
+          disabled={isPending || !formik.isValid}
+        >
+          {isPending ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Creating account...
+            </>
+          ) : (
+            <>
+              Create account <i className="fal fa-arrow-right-long" />
+            </>
+          )}
         </button>
       </div>
       {/* <div className="hr_content mb20">
@@ -52,9 +204,17 @@ const SignUp = () => {
       </div> */}
       <p className="dark-color text-center mb0 mt10">
         Already Have an Account?{" "}
-        <Link className="dark-color fw600" href="/login">
+        <a
+          className="dark-color fw600"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            closeModal?.current?.click(); // close modal
+            router.push("/auth/login"); // then navigate
+          }}
+        >
           Login
-        </Link>
+        </a>
       </p>
     </form>
   );
