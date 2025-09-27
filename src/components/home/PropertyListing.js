@@ -1,11 +1,14 @@
 "use client";
 import listings from "@/data/listings";
-
+import { useGetBestDeals } from "@/hooks/api/landingPage";
 import { useState } from "react";
 import PopularListings from "./PopularListings";
 
 export default function PropertyListing() {
   const [currentType, setCurrentType] = useState("rent");
+  // Queries
+  const { data: bestDealsData } = useGetBestDeals();
+
   return (
     <section className="bgc-thm pb90 pb40-md">
       <div className="container">
