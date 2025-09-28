@@ -6,9 +6,9 @@ export const metadata = {
   title: "Property Single V1 || Settle Wise - Real Estate NextJS Template",
 };
 
-const SingleV1 = async (props) => {
+const PropertyDetailPage = async (props) => {
   const params = await props.params;
   return <PropertyInfo id={params?.id} />;
 };
 
-export default SingleV1;
+export default PropertyDetailPage;

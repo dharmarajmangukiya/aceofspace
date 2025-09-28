@@ -3,6 +3,7 @@
 import CommercialAdvanceFilterModal from "@/components/common/filters/commercial-advance-filter";
 import RentalAdvanceFilterModal from "@/components/common/filters/rental-advance-filter";
 import listings from "@/data/listings";
+import { useGetProperties } from "@/hooks/api/property";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PaginationTwo from "../../PaginationTwo";
@@ -12,6 +13,8 @@ import TopFilterBar from "./TopFilterBar";
 
 export default function ProperteyFiltering() {
   const searchParams = useSearchParams();
+
+  const { data: properties } = useGetProperties(searchParams);
 
   const params = Object.fromEntries([...searchParams]);
   const rentOrLease = ["rent", "lease"].includes(params?.rl)
