@@ -48,7 +48,7 @@
                 # Copy build output from GitHub Actions workspace to server
                 sudo mv /home/ubuntu/.next /var/www/html/aceofspace-front/
                 echo "Folder moved"
-                rm -rf /home/ubunut/.next
+                rm -rf /home/ubuntu/.next
                 # If using a Next.js server
                 pm2 restart aceofspace # Example using PM2
                 # If using static export with Nginx, update Nginx config and reload
