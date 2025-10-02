@@ -13,11 +13,14 @@ import AllReviews from "@/components/property/property-single-style/common/revie
 import ContactWithAgent from "@/components/property/property-single-style/sidebar/ContactWithAgent";
 import ScheduleTour from "@/components/property/property-single-style/sidebar/ScheduleTour";
 import PropertyGallery from "@/components/property/property-single-style/single-v1/PropertyGallery";
+import { useGetPropertyDetail } from "@/hooks/api/property";
 
 // const isRentOrLease = "rent";
 const isRentOrLease = "lease";
 
 const PropertyInfo = ({ id }) => {
+  // Queries
+  const { data: propertyData } = useGetPropertyDetail(id);
   const isRental = isRentOrLease === "rent";
   return (
     <>

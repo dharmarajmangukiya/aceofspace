@@ -18,6 +18,7 @@ export const metadata = {
 
 const BlogSingle = async (props) => {
   const params = await props.params;
+
   return (
     <>
       {/* Main Header Nav */}

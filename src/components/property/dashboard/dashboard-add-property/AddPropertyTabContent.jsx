@@ -1,4 +1,5 @@
 "use client";
+import { useAddProperty } from "@/hooks/api/property";
 import { customSelectStyles } from "@/utilis/helper";
 import { useState } from "react";
 import Select from "react-select";
@@ -8,6 +9,8 @@ import ResidentialForm from "./residential/ResidentialForm";
 const AddPropertyTabContent = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedSubType, setSelectedSubType] = useState("");
+
+  const { mutate: addProperty } = useAddProperty();
 
   const propertyTypes = [
     {
