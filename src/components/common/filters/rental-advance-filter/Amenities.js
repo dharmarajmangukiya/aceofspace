@@ -2,10 +2,16 @@
 
 import { amenitiesOptions } from "@/utilis/constants";
 import classNames from "classnames";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Amenities = ({ onSelectionChange }) => {
-  const [selected, setSelected] = useState([]);
+const Amenities = ({ onSelectionChange, formik, fieldName }) => {
+  const [selected, setSelected] = useState(formik?.values?.[fieldName] || []);
+
+  useEffect(() => {
+    if (formik?.values?.[fieldName]) {
+      setSelected(formik.values[fieldName]);
+    }
+  }, [formik?.values, fieldName]);
 
   const handleClick = (amenity) => {
     setSelected((prev) => {
@@ -14,6 +20,7 @@ const Amenities = ({ onSelectionChange }) => {
         ? prev.filter((val) => val !== amenity.value)
         : [...prev, amenity.value];
 
+      formik?.setFieldValue(fieldName, newSelection);
       onSelectionChange?.(newSelection);
       return newSelection;
     });

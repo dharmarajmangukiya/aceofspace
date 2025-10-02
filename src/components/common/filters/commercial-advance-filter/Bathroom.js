@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-const Bathroom = ({ filterFunctions }) => {
-  const [bathrooms, setBathrooms] = useState();
+const Bathroom = ({ filterFunctions, formik, fieldName }) => {
+  const [bathrooms, setBathrooms] = useState(formik?.values?.[fieldName] || 0);
   const bathOptions = [
     { id: "yany", label: "any", value: 0 },
     { id: "yoneplus", label: "1+", value: 1 },
@@ -13,6 +13,12 @@ const Bathroom = ({ filterFunctions }) => {
     { id: "yfiveplus", label: "5+", value: 5 },
   ];
 
+  const handleChange = (value) => {
+    setBathrooms(value);
+    formik?.setFieldValue(fieldName, value);
+    filterFunctions?.handlebathroms?.(value);
+  };
+
   return (
     <>
       {bathOptions.map((option, index) => (
@@ -21,7 +27,7 @@ const Bathroom = ({ filterFunctions }) => {
             id={option.id}
             type="radio"
             checked={bathrooms == option.value}
-            onChange={() => setBathrooms(option.value)}
+            onChange={() => handleChange(option.value)}
           />
           <label htmlFor={option.id}>{option.label}</label>
         </div>

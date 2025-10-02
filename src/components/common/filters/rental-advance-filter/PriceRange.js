@@ -1,13 +1,20 @@
 "use client";
 import Slider from "rc-slider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const PriceRange = ({ filterFunctions }) => {
-  const [price, setPrice] = useState([20, 70987]);
+const PriceRange = ({ filterFunctions, formik, fieldName }) => {
+  const [price, setPrice] = useState(formik?.values?.[fieldName] || [0, 100000]);
+
+  useEffect(() => {
+    if (formik?.values?.[fieldName]) {
+      setPrice(formik.values[fieldName]);
+    }
+  }, [formik?.values, fieldName]);
 
   // price range handler
   const handleOnChange = (value) => {
     setPrice(value);
+    formik?.setFieldValue(fieldName, value);
     filterFunctions?.handlepriceRange(value);
   };
 
@@ -18,10 +25,7 @@ const PriceRange = ({ filterFunctions }) => {
           range
           max={100000}
           min={0}
-          defaultValue={[
-            filterFunctions?.priceRange[0],
-            filterFunctions?.priceRange[1],
-          ]}
+          value={price}
           onChange={(value) => handleOnChange(value)}
           id="slider"
         />

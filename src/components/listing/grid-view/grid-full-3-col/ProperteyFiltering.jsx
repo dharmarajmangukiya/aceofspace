@@ -3,7 +3,7 @@
 import CommercialAdvanceFilterModal from "@/components/common/filters/commercial-advance-filter";
 import RentalAdvanceFilterModal from "@/components/common/filters/rental-advance-filter";
 import listings from "@/data/listings";
-import { useGetProperties } from "@/hooks/api/property";
+import { useAddProperty, useGetProperties } from "@/hooks/api/property";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PaginationTwo from "../../PaginationTwo";
@@ -13,6 +13,7 @@ import TopFilterBar from "./TopFilterBar";
 
 export default function ProperteyFiltering() {
   const searchParams = useSearchParams();
+  const addPropertyMutation = useAddProperty();
 
   const { data: properties } = useGetProperties(searchParams);
 
@@ -52,6 +53,90 @@ export default function ProperteyFiltering() {
   const [squirefeet, setSquirefeet] = useState([]);
   const [yearBuild, setyearBuild] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  // Handle form submission from advance filters
+  const handleFormSubmit = async (formValues, formType) => {
+    try {
+      console.log(`${formType} Filter Values:`, formValues);
+
+      // Transform form values to API format
+      const apiData = {
+        propertyType: formValues.propertyType?.value || formValues.propertyType,
+        location: formValues.location?.value || formValues.location,
+        priceRange: formValues.priceRange,
+        bedrooms: formValues.bedrooms,
+        bathrooms: formValues.bathrooms,
+        squareFeet:
+          formValues.squareFeetMin && formValues.squareFeetMax
+            ? [formValues.squareFeetMin, formValues.squareFeetMax]
+            : formValues.squirefeet,
+        availableFrom: formValues.availableFrom,
+        furnishingStatus:
+          formValues.furnishingStatus?.value || formValues.furnishingStatus,
+        ageOfProperty:
+          formValues.ageOfProperty?.value || formValues.ageOfProperty,
+        amenities: formValues.amenities || [],
+        // Commercial specific fields
+        ...(formType === "commercial" && {
+          zoneType: formValues.zoneType?.map((z) => z.value) || [],
+          carpetArea:
+            formValues.carpetAreaMin && formValues.carpetAreaMax
+              ? [formValues.carpetAreaMin, formValues.carpetAreaMax]
+              : [],
+          floorPreference:
+            formValues.floorPreference?.map((f) => f.value) || [],
+          seatCount:
+            formValues.seatCountMin && formValues.seatCountMax
+              ? [formValues.seatCountMin, formValues.seatCountMax]
+              : [],
+          cabins: formValues.cabins,
+          washrooms: formValues.washrooms,
+          entranceWidth: formValues.entranceWidth,
+          clearHeight: formValues.clearHeight,
+          parking: formValues.parking,
+          safetyMeasures: formValues.safetyMeasures,
+          facilities: formValues.facilities || [],
+        }),
+        // Rental specific fields
+        ...(formType === "rental" && {
+          gatedCommunities: formValues.gatedCommunities,
+          availableFor:
+            formValues.availableFor?.value || formValues.availableFor,
+        }),
+      };
+
+      // You can either call the add property API or update the search
+      // For now, let's just log the data and update the search filters
+      console.log("API Data:", apiData);
+
+      // Update the local filter state
+      if (formValues.propertyType) {
+        setPropertyTypes([
+          formValues.propertyType.value || formValues.propertyType,
+        ]);
+      }
+      if (formValues.location) {
+        setLocation(formValues.location.value || formValues.location);
+      }
+      if (formValues.priceRange) {
+        setPriceRange(formValues.priceRange);
+      }
+      if (formValues.bedrooms !== undefined) {
+        setBedrooms(formValues.bedrooms);
+      }
+      if (formValues.bathrooms !== undefined) {
+        setBathroms(formValues.bathrooms);
+      }
+      if (formValues.squareFeetMin && formValues.squareFeetMax) {
+        setSquirefeet([formValues.squareFeetMin, formValues.squareFeetMax]);
+      }
+
+      // If you want to actually add a property, uncomment the following:
+      // await addPropertyMutation.mutateAsync(apiData);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
   const resetFilter = () => {
     setListingStatus(rentOrLease);
@@ -128,7 +213,6 @@ export default function ProperteyFiltering() {
     listingStatus,
     propertyTypes,
     resetFilter,
-
     bedrooms,
     bathroms,
     location,
@@ -136,6 +220,7 @@ export default function ProperteyFiltering() {
     yearBuild,
     categories,
     setPropertyTypes,
+    onSearch: handleFormSubmit, // Add form submission handler
   };
 
   return (
@@ -175,9 +260,17 @@ export default function ProperteyFiltering() {
             aria-hidden="true"
           >
             {filterFunctions?.listingStatus == "rent" ? (
-              <RentalAdvanceFilterModal filterFunctions={filterFunctions} />
+              <RentalAdvanceFilterModal
+                filterFunctions={filterFunctions}
+                onFormSubmit={(values) => handleFormSubmit(values, "rental")}
+              />
             ) : (
-              <CommercialAdvanceFilterModal filterFunctions={filterFunctions} />
+              <CommercialAdvanceFilterModal
+                filterFunctions={filterFunctions}
+                onFormSubmit={(values) =>
+                  handleFormSubmit(values, "commercial")
+                }
+              />
             )}
           </div>
         </div>

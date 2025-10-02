@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-const Bedroom = ({ filterFunctions }) => {
-  const [bedrooms, setBedrooms] = useState();
+const Bedroom = ({ filterFunctions, formik, fieldName }) => {
+  const [bedrooms, setBedrooms] = useState(formik?.values?.[fieldName] || 0);
   const bedOptions = [
     { id: "xany", label: "any", value: 0 },
     { id: "xoneplus", label: "1+", value: 1 },
@@ -13,6 +13,12 @@ const Bedroom = ({ filterFunctions }) => {
     { id: "xfiveplus", label: "5+", value: 5 },
   ];
 
+  const handleChange = (value) => {
+    setBedrooms(value);
+    formik?.setFieldValue(fieldName, value);
+    filterFunctions?.handlebedrooms?.(value);
+  };
+
   return (
     <>
       {bedOptions.map((option, index) => (
@@ -20,9 +26,7 @@ const Bedroom = ({ filterFunctions }) => {
           <input
             id={option.id}
             type="radio"
-            // onChange={(e) => filterFunctions?.handlebedrooms(option.value)}
-            // checked={filterFunctions?.bedrooms == option.value}
-            onChange={(e) => setBedrooms(option.value)}
+            onChange={(e) => handleChange(option.value)}
             checked={bedrooms == option.value}
           />
           <label htmlFor={option.id}>{option.label}</label>
