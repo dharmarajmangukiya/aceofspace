@@ -86,7 +86,10 @@ export const useSignUp = () => {
     mutationKey: ["signUp"],
     mutationFn: async (payload) => {
       try {
-        const response = await api.post("/auth/register", payload);
+        const response = await api.post("/auth/register", {
+          ...payload,
+          role: "user",
+        });
 
         // Handle successful registration - store token in localStorage if auto-login
         if (response.data?.token || response.data?.accessToken) {
