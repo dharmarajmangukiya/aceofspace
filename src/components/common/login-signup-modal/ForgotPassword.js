@@ -4,7 +4,7 @@ import { forgotPasswordValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
 const ForgotPassword = () => {
   const [isSuccess, setIsSuccess] = useState(false);

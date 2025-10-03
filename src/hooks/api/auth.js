@@ -1,17 +1,20 @@
 import api from "@/utilis/axiosInstance";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 // Utility functions for localStorage token management
 export const getAuthToken = () => {
   if (typeof window !== "undefined") {
-    return localStorage.getItem("authToken");
+    return (
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken")
+    );
   }
   return null;
 };
 
 export const getUserData = () => {
   if (typeof window !== "undefined") {
-    const userData = localStorage.getItem("userData");
+    const userData =
+      localStorage.getItem("userData") || sessionStorage.getItem("userData");
     return userData ? JSON.parse(userData) : null;
   }
   return null;
@@ -21,10 +24,17 @@ export const isAuthenticated = () => {
   return !!getAuthToken();
 };
 
+export const isRememberMe = () => {
+  return typeof window !== "undefined" && localStorage.getItem("rememberMe");
+};
+
 export const clearAuthData = () => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("userData");
+    localStorage.removeItem("rememberMe");
   }
 };
 
@@ -34,19 +44,31 @@ export const useSignIn = () => {
     mutationKey: ["signIn"],
     mutationFn: async (credentials) => {
       try {
-        const response = await api.post("/auth/signin", credentials);
+        const { rememberMe, ...data } = credentials;
+        const response = await api.post("/auth/login", data);
 
         // Handle successful login - store token in localStorage
         if (response?.data?.token || response?.data?.accessToken) {
           const token = response.data.token || response.data.accessToken;
-          localStorage.setItem("authToken", token);
+          if (rememberMe) {
+            localStorage.setItem("authToken", token);
+          } else {
+            sessionStorage.setItem("authToken", token);
+          }
 
           // Store user data if provided
           if (response.data?.user) {
-            localStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.user)
-            );
+            if (rememberMe) {
+              localStorage.setItem(
+                "userData",
+                JSON.stringify(response.data.user)
+              );
+            } else {
+              sessionStorage.setItem(
+                "userData",
+                JSON.stringify(response.data.user)
+              );
+            }
           }
         }
 
@@ -103,48 +125,24 @@ export const useForgotPassword = () => {
   });
 };
 
-// Reset password mutation
-export const useResetPassword = () => {
-  return useMutation({
-    mutationKey: ["resetPassword"],
-    mutationFn: async (payload) => {
-      try {
-        const response = await api.post("/auth/reset-password", payload);
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
-    },
-  });
-};
-
-// Get current user profile
-export const useGetProfile = () => {
-  return useQuery({
-    queryKey: ["profile"],
-    enabled: isAuthenticated(),
-    queryFn: async () => {
-      try {
-        const response = await api.get("/auth/profile");
-
-        // Update user data in localStorage if profile is fetched
-        if (response.data?.user) {
-          localStorage.setItem("userData", JSON.stringify(response.data.user));
-        }
-
-        return response.data;
-      } catch (error) {
-        // If profile fetch fails, clear auth data
-        clearAuthData();
-        throw error;
-      }
-    },
-  });
-};
-
 // Get user data from localStorage (synchronous)
 export const useGetUserData = () => {
   return getUserData();
+};
+
+// OTP Verification mutation
+export const useVerifyOtp = () => {
+  return useMutation({
+    mutationKey: ["verifyOtp"],
+    mutationFn: async (payload) => {
+      try {
+        const response = await api.post("/auth/verify-otp", payload);
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+  });
 };
 
 // Logout mutation

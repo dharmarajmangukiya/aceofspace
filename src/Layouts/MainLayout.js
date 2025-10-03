@@ -1,5 +1,6 @@
 import GlobalLoader from "@/components/common/GlobalLoader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +21,7 @@ export default function MainLayout({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalLoader>{children}</GlobalLoader>
-      {/* <Toaster position="top-right" richColors duration={4000} /> */}
+      <Toaster duration={4000} />
     </QueryClientProvider>
   );
 }

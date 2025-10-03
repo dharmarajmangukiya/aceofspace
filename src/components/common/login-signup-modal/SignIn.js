@@ -4,11 +4,14 @@ import { useSignIn } from "@/hooks/api/auth";
 import { signInValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useState } from "react";
+import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const SignIn = ({ closeModal }) => {
   const router = useRouter();
   const { mutate: signIn, isPending } = useSignIn();
+  const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -18,35 +21,26 @@ const SignIn = ({ closeModal }) => {
     },
     validationSchema: signInValidationSchema,
     onSubmit: (values) => {
-      signIn(
-        {
-          email: values.email,
-          password: values.password,
+      signIn(values, {
+        onSuccess: (data) => {
+          toast.success(data?.message || "Sign in successful");
+          // Close modal and redirect on success
+          closeModal?.current?.click();
+          router.push("/");
         },
-        {
-          onSuccess: () => {
-            toast.success("Welcome back! You've been signed in successfully.", {
-              description: "Redirecting to your dashboard...",
-              duration: 3000,
-            });
-            // Close modal and redirect on success
-            closeModal?.current?.click();
-            router.push("/");
-          },
-          onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.message ||
-              error?.message ||
-              "Failed to sign in. Please check your credentials and try again.";
+        onError: (error) => {
+          const errorMessage =
+            error?.response?.data?.message ||
+            error?.message ||
+            "Failed to sign in. Please check your credentials and try again.";
 
-            toast.error("Sign In Failed", {
-              description: errorMessage,
-              duration: 5000,
-            });
-            console.error("Sign in error:", error);
-          },
-        }
-      );
+          toast.error("Sign In Failed", {
+            description: errorMessage,
+            duration: 5000,
+          });
+          console.error("Sign in error:", error);
+        },
+      });
     },
   });
 
@@ -73,19 +67,30 @@ const SignIn = ({ closeModal }) => {
 
       <div className="mb15">
         <label className="form-label fw600 dark-color">Password</label>
-        <input
-          type="password"
-          name="password"
-          className={`form-control ${
-            formik.touched.password && formik.errors.password
-              ? "is-invalid"
-              : ""
-          }`}
-          placeholder="Enter Password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+        <div className="input-group">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className={`form-control ${
+              formik.touched.password && formik.errors.password
+                ? "is-invalid"
+                : ""
+            }`}
+            placeholder="Enter Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <span
+            className="input-group-text"
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i
+              className={`fal ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+            ></i>
+          </span>
+        </div>
         {formik.touched.password && formik.errors.password && (
           <div className="invalid-feedback">{formik.errors.password}</div>
         )}

@@ -1,50 +1,63 @@
-import React from "react";
+"use client";
+import { useGetProfile, useUpdateUser } from "@/hooks/api/user";
+import { personalInfoValidationSchema } from "@/validation/auth";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
 
 const PersonalInfo = () => {
-  return (
-    <form className="form-style1">
-      <div className="row">
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Username
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
+  // Get user data from localStorage
 
+  const { mutate: updateUser } = useUpdateUser();
+  const { data: userData, refetch: refetchProfile } = useGetProfile();
+  // Formik configuration
+  const formik = useFormik({
+    initialValues: {
+      email: userData?.email || "",
+      firstName: userData?.firstName || userData?.first_name || "",
+      lastName: userData?.lastName || userData?.last_name || "",
+    },
+    validationSchema: personalInfoValidationSchema,
+    onSubmit: ({ firstName, lastName }) => {
+      // Handle form submission
+      updateUser(
+        { firstName, lastName },
+        {
+          onSuccess: (data) => {
+            toast.success(data?.message || "User updated successfully");
+            refetchProfile();
+          },
+          onError: (error) => {
+            const errorMessage =
+              error?.response?.data?.message ||
+              error?.message ||
+              "Failed to update user. Please try again.";
+            toast.error(errorMessage);
+          },
+        }
+      );
+    },
+  });
+
+  return (
+    <form className="form-style1" onSubmit={formik.handleSubmit}>
+      <div className="row">
+        {/* Email Field - Read Only */}
         <div className="col-sm-6 col-xl-4">
           <div className="mb20">
             <label className="heading-color ff-heading fw600 mb10">Email</label>
             <input
               type="email"
               className="form-control"
-              placeholder="Your Name"
-              required
+              value={formik.values.email}
+              readOnly
+              style={{ backgroundColor: "#f8f9fa", cursor: "not-allowed" }}
             />
+            <small className="text-muted">Email cannot be changed</small>
           </div>
         </div>
         {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">Phone</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
+        {/* First Name Field */}
         <div className="col-sm-6 col-xl-4">
           <div className="mb20">
             <label className="heading-color ff-heading fw600 mb10">
@@ -52,14 +65,25 @@ const PersonalInfo = () => {
             </label>
             <input
               type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
+              className={`form-control ${
+                formik.touched.firstName && formik.errors.firstName
+                  ? "is-invalid"
+                  : ""
+              }`}
+              placeholder="Enter your first name"
+              name="firstName"
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            {formik.touched.firstName && formik.errors.firstName && (
+              <div className="invalid-feedback">{formik.errors.firstName}</div>
+            )}
           </div>
         </div>
         {/* End .col */}
 
+        {/* Last Name Field */}
         <div className="col-sm-6 col-xl-4">
           <div className="mb20">
             <label className="heading-color ff-heading fw600 mb10">
@@ -67,108 +91,33 @@ const PersonalInfo = () => {
             </label>
             <input
               type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
+              className={`form-control ${
+                formik.touched.lastName && formik.errors.lastName
+                  ? "is-invalid"
+                  : ""
+              }`}
+              placeholder="Enter your last name"
+              name="lastName"
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            {formik.touched.lastName && formik.errors.lastName && (
+              <div className="invalid-feedback">{formik.errors.lastName}</div>
+            )}
           </div>
         </div>
         {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Position
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Language
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Company Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Tax Number
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-xl-12">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Address
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-md-12">
-          <div className="mb10">
-            <label className="heading-color ff-heading fw600 mb10">
-              About me
-            </label>
-            <textarea
-              cols={30}
-              rows={4}
-              placeholder="There are many variations of passages."
-              defaultValue={""}
-            />
-          </div>
-        </div>
-        {/* End .col */}
-
+        {/* Submit Button */}
         <div className="col-md-12">
           <div className="text-end">
-            <button type="submit" className="ud-btn btn-dark">
-              Update Profile
+            <button
+              type="submit"
+              className="ud-btn btn-dark"
+              disabled={formik.isSubmitting || !formik.isValid}
+            >
+              {formik.isSubmitting ? "Updating..." : "Update Profile"}
               <i className="fal fa-arrow-right-long" />
             </button>
           </div>
