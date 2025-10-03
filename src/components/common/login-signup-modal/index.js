@@ -6,13 +6,8 @@ import SignUp from "./SignUp";
 
 const LoginSignupModal = () => {
   const closeModal = useRef(null);
-  const [isOtpSent, setIsOtpSent] = useState(true);
-  const [signUpData, setSignUpData] = useState({
-    firstName: "Manthan",
-    lastName: "Patel",
-    email: "0xmanthanpatel@gmail.com",
-    password: "signUpData",
-  });
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [signUpData, setSignUpData] = useState({});
 
   return (
     <div className="modal-content">
