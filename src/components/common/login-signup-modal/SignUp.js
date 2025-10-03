@@ -3,11 +3,14 @@ import { useSignUp } from "@/hooks/api/auth";
 import { signUpValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
-const SignUp = ({ closeModal }) => {
+const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
   const router = useRouter();
   const { mutate: signUp, isPending } = useSignUp();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -21,20 +24,20 @@ const SignUp = ({ closeModal }) => {
     onSubmit: (values) => {
       signUp(
         {
-          email: values.email,
-          password: values.password,
           firstName: values.firstName,
           lastName: values.lastName,
+          email: values.email,
+          password: values.password,
         },
         {
-          onSuccess: () => {
-            toast.success("Account created successfully!", {
-              description: `Welcome ${values.firstName}! Your account has been created and you're now signed in.`,
-              duration: 4000,
-            });
+          onSuccess: (data) => {
+            toast.success(data?.message || "OTP sent to your email");
+            setIsOtpSent(true);
+            setSignUpData(values);
+            console.log(data);
             // Close modal and redirect on success
-            closeModal?.current?.click();
-            router.push("/");
+            // closeModal?.current?.click();
+            // router.push("/");
           },
           onError: (error) => {
             const errorMessage =
@@ -118,19 +121,30 @@ const SignUp = ({ closeModal }) => {
 
       <div className="mb20">
         <label className="form-label fw600 dark-color">Password</label>
-        <input
-          type="password"
-          name="password"
-          className={`form-control ${
-            formik.touched.password && formik.errors.password
-              ? "is-invalid"
-              : ""
-          }`}
-          placeholder="Enter Password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+        <div className="input-group">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className={`form-control ${
+              formik.touched.password && formik.errors.password
+                ? "is-invalid"
+                : ""
+            }`}
+            placeholder="Enter Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <span
+            className="input-group-text"
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i
+              className={`fal ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+            ></i>
+          </span>
+        </div>
         {formik.touched.password && formik.errors.password && (
           <div className="invalid-feedback">{formik.errors.password}</div>
         )}
@@ -139,19 +153,32 @@ const SignUp = ({ closeModal }) => {
 
       <div className="mb20">
         <label className="form-label fw600 dark-color">Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          className={`form-control ${
-            formik.touched.confirmPassword && formik.errors.confirmPassword
-              ? "is-invalid"
-              : ""
-          }`}
-          placeholder="Confirm Password"
-          value={formik.values.confirmPassword}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
+        <div className="input-group">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            className={`form-control ${
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+                ? "is-invalid"
+                : ""
+            }`}
+            placeholder="Confirm Password"
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <span
+            className="input-group-text"
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <i
+              className={`fal ${
+                showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+              }`}
+            ></i>
+          </span>
+        </div>
         {formik.touched.confirmPassword && formik.errors.confirmPassword && (
           <div className="invalid-feedback">
             {formik.errors.confirmPassword}

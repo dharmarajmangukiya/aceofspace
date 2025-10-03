@@ -43,3 +43,34 @@ export const resetPasswordValidationSchema = Yup.object({
     .required("Please confirm your password"),
   token: Yup.string().required("Reset token is required"),
 });
+
+// OTP Verification validation schema
+export const otpVerificationValidationSchema = Yup.object({
+  otp: Yup.string()
+    .length(6, "OTP must be exactly 6 digits")
+    .matches(/^\d{6}$/, "OTP must contain only numbers")
+    .required("OTP is required"),
+});
+
+// Personal Info validation schema
+export const personalInfoValidationSchema = Yup.object({
+  firstName: Yup.string()
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name must be less than 50 characters")
+    .required("First name is required"),
+  lastName: Yup.string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name must be less than 50 characters")
+    .required("Last name is required"),
+});
+
+// Change Password validation schema
+export const changePasswordValidationSchema = Yup.object({
+  oldPassword: Yup.string().required("Old password is required"),
+  newPassword: Yup.string()
+    .min(6, "New password must be at least 6 characters")
+    .required("New password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+    .required("Please confirm your new password"),
+});
