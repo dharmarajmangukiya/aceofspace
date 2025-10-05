@@ -165,6 +165,25 @@ const FileUpload = ({
     return typeNames.join(", ");
   };
 
+  // New: Remove file handler
+  const handleRemoveFile = (removeIndex) => {
+    if (!value) return;
+    // value can be FileList or array
+    let filesArr = Array.from(value);
+    filesArr.splice(removeIndex, 1);
+    // Create a new FileList-like object for onChange
+    // If you want to keep it as FileList, you need to use DataTransfer
+    if (value instanceof FileList) {
+      const dt = new DataTransfer();
+      filesArr.forEach((file) => dt.items.add(file));
+      onChange(dt.files);
+      if (onFileSelect) onFileSelect(dt.files);
+    } else {
+      onChange(filesArr);
+      if (onFileSelect) onFileSelect(filesArr);
+    }
+  };
+
   return (
     <div className={`file-upload-container ${className}`} style={style}>
       {label && (
@@ -258,6 +277,42 @@ const FileUpload = ({
                 className="preview-item position-relative"
                 style={{ maxWidth: "200px" }}
               >
+                {/* Cross button at top-left */}
+                <button
+                  type="button"
+                  aria-label="Remove file"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveFile(index);
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "6px",
+                    left: "6px",
+                    zIndex: 10,
+                    background: "rgba(255,255,255,0.85)",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "28px",
+                    height: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                    padding: 0,
+                  }}
+                  tabIndex={0}
+                >
+                  <i
+                    className="fal fa-times"
+                    style={{
+                      color: "var(--primary-color)",
+                      fontSize: "18px",
+                      pointerEvents: "none",
+                    }}
+                  ></i>
+                </button>
                 {file.type.startsWith("image/") ? (
                   <img
                     src={getFilePreview(file)}
