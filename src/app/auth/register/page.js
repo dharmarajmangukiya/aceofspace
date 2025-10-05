@@ -37,7 +37,7 @@ const Register = () => {
                   </Link>
                   <h2>Create account</h2>
                   <p className="text">
-                    Sign in with this account across the following sites.
+                    Login with this account across the following sites.
                   </p>
                 </div>
                 <SignUp />

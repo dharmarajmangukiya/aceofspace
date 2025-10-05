@@ -1,11 +1,11 @@
-import api from "@/utilis/axiosInstance";
+import api from "@/utils/axiosInstance";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 // Hero Section - Get Hero Images
 export const useGetHeroImages = () => {
   return useQuery({
     queryKey: ["heroImages"],
-    enabled: true,
+    enabled: false,
     meta: { globalLoader: true },
     queryFn: async () => {
       try {
@@ -22,7 +22,7 @@ export const useGetHeroImages = () => {
 export const useGetFeaturedListings = (params) => {
   return useQuery({
     queryKey: ["featuredListings", params],
-    enabled: true,
+    enabled: false,
     queryFn: async () => {
       try {
         const response = await api.get("/landing/featured-listings", {
@@ -40,7 +40,7 @@ export const useGetFeaturedListings = (params) => {
 export const useGetTestimonials = (params) => {
   return useQuery({
     queryKey: ["testimonials", params],
-    enabled: true,
+    enabled: false,
     queryFn: async () => {
       try {
         const response = await api.get("/landing/testimonials", { params });
@@ -56,7 +56,7 @@ export const useGetTestimonials = (params) => {
 export const useGetBestDeals = (params) => {
   return useQuery({
     queryKey: ["bestDeals", params],
-    enabled: true,
+    enabled: false,
     queryFn: async () => {
       try {
         const response = await api.get("/landing/best-deals", { params });
@@ -72,7 +72,7 @@ export const useGetBestDeals = (params) => {
 export const useGetTrustedCompanies = () => {
   return useQuery({
     queryKey: ["trustedCompanies"],
-    enabled: true,
+    enabled: false,
     queryFn: async () => {
       try {
         const response = await api.get("/landing/trusted-companies");
@@ -88,7 +88,7 @@ export const useGetTrustedCompanies = () => {
 export const useGetStatistics = () => {
   return useQuery({
     queryKey: ["statistics"],
-    enabled: true,
+    enabled: false,
     queryFn: async () => {
       try {
         const response = await api.get("/landing/statistics");
@@ -105,7 +105,7 @@ export const useGetStatistics = () => {
 export const useGetInfinite = (key, url, params) => {
   return useInfiniteQuery({
     queryKey: [key, params],
-    enabled: true,
+    enabled: false,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       try {

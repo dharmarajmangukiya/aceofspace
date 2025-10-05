@@ -1,18 +1,19 @@
 "use client";
 
 import { useSignIn } from "@/hooks/api/auth";
+import { pickErrorMessage } from "@/utils/helper";
 import { signInValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 // import toast from "react-hot-toast";
 
-const SignIn = ({ closeModal }) => {
+const SignIn = ({ closeModal, setIsOtpSent, signUpTabButton }) => {
   const router = useRouter();
+  const location = usePathname();
   const { mutate: signIn, isPending } = useSignIn();
   const [showPassword, setShowPassword] = useState(false);
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -23,22 +24,18 @@ const SignIn = ({ closeModal }) => {
     onSubmit: (values) => {
       signIn(values, {
         onSuccess: (data) => {
-          toast.success(data?.message || "Sign in successful");
+          toast.success(data?.message || "Login successful");
           // Close modal and redirect on success
-          closeModal?.current?.click();
           router.push("/");
+          setIsOtpSent(false);
+          closeModal?.current?.click();
         },
         onError: (error) => {
-          const errorMessage =
-            error?.response?.data?.message ||
-            error?.message ||
-            "Failed to sign in. Please check your credentials and try again.";
-
-          toast.error("Sign In Failed", {
-            description: errorMessage,
-            duration: 5000,
-          });
-          console.error("Sign in error:", error);
+          const errorMessage = pickErrorMessage(
+            error,
+            "Failed to sign in. Please check your credentials and try again."
+          );
+          toast.error(errorMessage);
         },
       });
     },
@@ -90,10 +87,10 @@ const SignIn = ({ closeModal }) => {
               className={`fal ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
             ></i>
           </span>
+          {formik.touched.password && formik.errors.password && (
+            <div className="invalid-feedback">{formik.errors.password}</div>
+          )}
         </div>
-        {formik.touched.password && formik.errors.password && (
-          <div className="invalid-feedback">{formik.errors.password}</div>
-        )}
       </div>
       {/* End Password */}
 
@@ -139,7 +136,7 @@ const SignIn = ({ closeModal }) => {
             </>
           ) : (
             <>
-              Sign in <i className="fal fa-arrow-right-long" />
+              Login <i className="fal fa-arrow-right-long" />
             </>
           )}
         </button>
@@ -172,9 +169,12 @@ const SignIn = ({ closeModal }) => {
           className="dark-color fw600"
           href="#"
           onClick={(e) => {
-            e.preventDefault();
-            closeModal?.current?.click(); // close modal
-            router.push("/auth/register"); // then navigate
+            if (location === "/auth/login") {
+              router.push("/auth/register");
+            } else {
+              e.preventDefault();
+              signUpTabButton?.current?.click(); // then navigate
+            }
           }}
         >
           Create an account.

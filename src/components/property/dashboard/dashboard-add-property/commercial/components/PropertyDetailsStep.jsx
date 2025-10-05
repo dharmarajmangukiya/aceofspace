@@ -1,4 +1,4 @@
-import { smallSelectStyles } from "@/utilis/helper";
+import { smallSelectStyles } from "@/utils/helper";
 import Select from "react-select";
 
 const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {

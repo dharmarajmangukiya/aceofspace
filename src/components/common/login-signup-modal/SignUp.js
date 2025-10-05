@@ -1,13 +1,15 @@
 "use client";
 import { useSignUp } from "@/hooks/api/auth";
+import { pickErrorMessage } from "@/utils/helper";
 import { signUpValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
+const SignUp = ({ setIsOtpSent, setSignUpData, loginTabButton }) => {
   const router = useRouter();
+  const location = usePathname();
   const { mutate: signUp, isPending } = useSignUp();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -34,27 +36,29 @@ const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
             toast.success(data?.message || "OTP sent to your email");
             setIsOtpSent(true);
             setSignUpData(values);
+            formik.resetForm();
+
             console.log(data);
-            // Close modal and redirect on success
-            // closeModal?.current?.click();
-            // router.push("/");
           },
           onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.message ||
-              error?.message ||
-              "Failed to create account. Please try again.";
+            console.log(error);
+            const errorMessage = pickErrorMessage(
+              error,
+              "Failed to create account. Please try again."
+            );
 
-            toast.error("Sign Up Failed", {
-              description: errorMessage,
-              duration: 5000,
-            });
-            console.error("Sign up error:", error);
+            toast.error(errorMessage);
           },
         }
       );
     },
   });
+
+  console.log(
+    formik.touched.confirmPassword,
+    formik.submitCount > 0,
+    formik.errors.confirmPassword
+  );
 
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>
@@ -144,10 +148,10 @@ const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
               className={`fal ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
             ></i>
           </span>
+          {formik.touched.password && formik.errors.password && (
+            <div className="invalid-feedback">{formik.errors.password}</div>
+          )}
         </div>
-        {formik.touched.password && formik.errors.password && (
-          <div className="invalid-feedback">{formik.errors.password}</div>
-        )}
       </div>
       {/* End Password */}
 
@@ -178,21 +182,17 @@ const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
               }`}
             ></i>
           </span>
+          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+            <div className="invalid-feedback">
+              {formik.errors.confirmPassword}
+            </div>
+          )}
         </div>
-        {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-          <div className="invalid-feedback">
-            {formik.errors.confirmPassword}
-          </div>
-        )}
       </div>
       {/* End Confirm Password */}
 
       <div className="d-grid mb20">
-        <button
-          className="ud-btn btn-thm"
-          type="submit"
-          disabled={isPending || !formik.isValid}
-        >
+        <button className="ud-btn btn-thm" type="submit" disabled={isPending}>
           {isPending ? (
             <>
               <span
@@ -235,9 +235,12 @@ const SignUp = ({ closeModal, setIsOtpSent, setSignUpData }) => {
           className="dark-color fw600"
           href="#"
           onClick={(e) => {
-            e.preventDefault();
-            closeModal?.current?.click(); // close modal
-            router.push("/auth/login"); // then navigate
+            if (location === "/auth/register") {
+              router.push("/auth/login");
+            } else {
+              e.preventDefault();
+              loginTabButton?.current?.click(); // then navigate
+            }
           }}
         >
           Login

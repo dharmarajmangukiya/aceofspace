@@ -5,7 +5,7 @@ import {
   furnishingStatusOptions,
   locationOptions,
   propertyTypeOptions,
-} from "@/utilis/constants";
+} from "@/utils/constants";
 import Select from "react-select";
 import Amenities from "./Amenities";
 import Bathroom from "./Bathroom";

@@ -1,6 +1,6 @@
 "use client";
 
-import { facilitiesOptions } from "@/utilis/constants";
+import { facilitiesOptions } from "@/utils/constants";
 import classNames from "classnames";
 import { useState } from "react";
 

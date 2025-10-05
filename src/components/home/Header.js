@@ -2,13 +2,16 @@
 
 import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
+import { AuthContext } from "@/Layouts/AuthProvider";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LoginSignupModal from "../common/login-signup-modal";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isAuth } = useContext(AuthContext);
 
   const changeBackground = () => {
     if (window.scrollY >= 10) {
@@ -17,8 +20,13 @@ const Header = () => {
       setNavbar(false);
     }
   };
+  useEffect(() => {
+    setIsLoggedIn(isAuth);
+  }, [isAuth]);
 
   useEffect(() => {
+    // Set authentication status after component mounts
+
     window.addEventListener("scroll", changeBackground);
     return () => {
       window.removeEventListener("scroll", changeBackground);
@@ -69,47 +77,54 @@ const Header = () => {
 
               <div className="col-auto">
                 <div className="d-flex align-items-center">
-                  <Link
-                    href="#"
-                    // href="/auth/login"
-                    className="login-info d-flex align-items-center"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginSignupModal"
-                    role="button"
-                  >
-                    <i className="far fa-user-circle fz16 me-2" />{" "}
-                    <span className="d-none d-xl-block">Login / Register</span>
-                  </Link>
-                  <Link
-                    className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
-                    href="/dashboard-add-property"
-                  >
-                    Add Property
-                    <i className="fal fa-arrow-right-long" />
-                  </Link>
-                  <a
-                    className="sidemenu-btn filter-btn-right"
-                    href="#"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#SidebarPanel"
-                    aria-controls="SidebarPanelLabel"
-                  >
-                    <Image
-                      width={25}
-                      height={9}
-                      className="img-1"
-                      src="/images/icon/nav-icon-white.svg"
-                      alt="humberger menu"
-                    />
+                  {isLoggedIn ? (
+                    <>
+                      <Link
+                        className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
+                        href="/dashboard-add-property"
+                      >
+                        Add Property
+                        <i className="fal fa-arrow-right-long" />
+                      </Link>
+                      <a
+                        className="sidemenu-btn filter-btn-right"
+                        href="#"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#LandingPageSidebarPanel"
+                        aria-controls="LandingPageSidebarPanelLabel"
+                      >
+                        <Image
+                          width={25}
+                          height={9}
+                          className="img-1"
+                          src="/images/icon/nav-icon-white.svg"
+                          alt="humberger menu"
+                        />
 
-                    <Image
-                      width={25}
-                      height={9}
-                      className="img-2"
-                      src="/images/icon/nav-icon-dark.svg"
-                      alt="humberger menu"
-                    />
-                  </a>
+                        <Image
+                          width={25}
+                          height={9}
+                          className="img-2"
+                          src="/images/icon/nav-icon-dark.svg"
+                          alt="humberger menu"
+                        />
+                      </a>
+                    </>
+                  ) : (
+                    <Link
+                      href="#"
+                      // href="/auth/login"
+                      className="login-info d-flex align-items-center"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginSignupModal"
+                      role="button"
+                    >
+                      <i className="far fa-user-circle fz16 me-2" />{" "}
+                      <span className="d-none d-xl-block">
+                        Login / Register
+                      </span>
+                    </Link>
+                  )}
                 </div>
               </div>
               {/* End .col-auto */}
@@ -128,6 +143,8 @@ const Header = () => {
           tabIndex={-1}
           aria-labelledby="loginSignupModalLabel"
           aria-hidden="true"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
         >
           <div className="modal-dialog  modal-dialog-scrollable modal-dialog-centered">
             <LoginSignupModal />
@@ -140,8 +157,8 @@ const Header = () => {
       <div
         className="offcanvas offcanvas-end"
         tabIndex="-1"
-        id="SidebarPanel"
-        aria-labelledby="SidebarPanelLabel"
+        id="LandingPageSidebarPanel"
+        aria-labelledby="LandingPageSidebarPanelLabel"
       >
         <SidebarPanel />
       </div>

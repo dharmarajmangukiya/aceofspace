@@ -11,6 +11,17 @@ const DashboardHeader = () => {
 
   const menuItems = [
     {
+      title: "MANAGE ACCOUNT",
+      items: [
+        {
+          icon: "flaticon-user",
+          text: "My Profile",
+          href: "/dashboard-my-profile",
+        },
+        { icon: "flaticon-exit", text: "Logout", href: "/login" },
+      ],
+    },
+    {
       title: "MAIN",
       items: [
         {
@@ -49,22 +60,6 @@ const DashboardHeader = () => {
           href: "/dashboard-saved-search",
         },
         { icon: "flaticon-review", text: "Reviews", href: "/dashboard-review" },
-      ],
-    },
-    {
-      title: "MANAGE ACCOUNT",
-      items: [
-        {
-          icon: "flaticon-protection",
-          text: "My Package",
-          href: "/dashboard-my-package",
-        },
-        {
-          icon: "flaticon-user",
-          text: "My Profile",
-          href: "/dashboard-my-profile",
-        },
-        { icon: "flaticon-exit", text: "Logout", href: "/login" },
       ],
     },
   ];

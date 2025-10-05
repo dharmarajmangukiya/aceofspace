@@ -33,17 +33,6 @@ export const forgotPasswordValidationSchema = Yup.object({
     .required("Email is required"),
 });
 
-// Reset Password validation schema (for future use)
-export const resetPasswordValidationSchema = Yup.object({
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Please confirm your password"),
-  token: Yup.string().required("Reset token is required"),
-});
-
 // OTP Verification validation schema
 export const otpVerificationValidationSchema = Yup.object({
   otp: Yup.string()
@@ -67,6 +56,18 @@ export const personalInfoValidationSchema = Yup.object({
 // Change Password validation schema
 export const changePasswordValidationSchema = Yup.object({
   oldPassword: Yup.string().required("Old password is required"),
+  newPassword: Yup.string()
+    .min(6, "New password must be at least 6 characters")
+    .required("New password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+    .required("Please confirm your new password"),
+});
+
+export const resetPasswordValidationSchema = Yup.object({
+  email: Yup.string()
+    .email("Please enter a valid email")
+    .required("Email is required"),
   newPassword: Yup.string()
     .min(6, "New password must be at least 6 characters")
     .required("New password is required"),

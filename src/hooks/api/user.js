@@ -1,16 +1,19 @@
-import api from "@/utilis/axiosInstance";
+import { AuthContext } from "@/Layouts/AuthProvider";
+import api from "@/utils/axiosInstance";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { clearAuthData, isAuthenticated, isRememberMe } from "./auth";
+import { useContext } from "react";
+import { clearAuthData, isRememberMe } from "./auth";
 
 // Get current user profile
 export const useGetProfile = () => {
+  const { isAuth } = useContext(AuthContext);
   return useQuery({
-    queryKey: ["profile"],
-    enabled: isAuthenticated(),
+    queryKey: ["profile", isAuth],
+    enabled: isAuth,
     meta: { globalLoader: true },
     queryFn: async () => {
       try {
-        const response = await api.get("/auth/profile");
+        const response = await api.get("/user/profile");
 
         // Update user data in localStorage if profile is fetched
         if (response.data?.user) {

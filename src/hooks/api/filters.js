@@ -1,4 +1,4 @@
-import api from "@/utilis/axiosInstance";
+import api from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
 // Get Rent Amenities

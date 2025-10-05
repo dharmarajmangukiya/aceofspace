@@ -1,5 +1,6 @@
 "use client";
 import { useForgotPassword } from "@/hooks/api/auth";
+import { pickErrorMessage } from "@/utils/helper";
 import { forgotPasswordValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -17,24 +18,16 @@ const ForgotPassword = () => {
     validationSchema: forgotPasswordValidationSchema,
     onSubmit: (values) => {
       forgotPassword(values.email, {
-        onSuccess: () => {
-          toast.success("Password reset email sent!", {
-            description: `We've sent a password reset link to ${values.email}. Please check your inbox.`,
-            duration: 5000,
-          });
+        onSuccess: (data) => {
+          toast.success(data?.message || "Password reset email sent!");
           setIsSuccess(true);
         },
         onError: (error) => {
-          const errorMessage =
-            error?.response?.data?.message ||
-            error?.message ||
-            "Failed to send reset email. Please try again.";
-
-          toast.error("Reset Email Failed", {
-            description: errorMessage,
-            duration: 5000,
-          });
-          console.error("Forgot password error:", error);
+          const errorMessage = pickErrorMessage(
+            error,
+            "Failed to send reset email. Please try again."
+          );
+          toast.error(errorMessage);
         },
       });
     },

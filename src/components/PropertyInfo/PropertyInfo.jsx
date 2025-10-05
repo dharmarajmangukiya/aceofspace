@@ -1,3 +1,4 @@
+"use client";
 import NearbySimilarProperty from "@/components/property/property-single-style/common/NearbySimilarProperty";
 import OverView from "@/components/property/property-single-style/common/OverView";
 import PropertyAddress from "@/components/property/property-single-style/common/PropertyAddress";

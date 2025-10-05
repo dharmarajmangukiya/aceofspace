@@ -1,5 +1,5 @@
-import { residentialAmenities } from "@/utilis/constants";
-import { smallSelectStyles } from "@/utilis/helper";
+import { residentialAmenities } from "@/utils/constants";
+import { smallSelectStyles } from "@/utils/helper";
 import classNames from "classnames";
 import Select from "react-select";
 
