@@ -1,11 +1,8 @@
+"use client";
 import ChangePasswordForm from "@/components/property/dashboard/dashboard-profile/ChangePasswordForm";
 import PersonalInfo from "@/components/property/dashboard/dashboard-profile/PersonalInfo";
 // import ProfileBox from "@/components/property/dashboard/dashboard-profile/ProfileBox";
 import KycSection from "@/components/property/dashboard/dashboard-profile/KycSection";
-
-export const metadata = {
-  title: "Dashboard My Profile || Settle Wise - Real Estate NextJS Template",
-};
 
 const DashboardMyProfile = () => {
   return (

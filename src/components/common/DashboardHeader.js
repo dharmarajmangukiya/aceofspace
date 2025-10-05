@@ -4,11 +4,11 @@ import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const DashboardHeader = () => {
   const pathname = usePathname();
-
+  const router = useRouter();
   const menuItems = [
     {
       title: "MANAGE ACCOUNT",
@@ -18,7 +18,17 @@ const DashboardHeader = () => {
           text: "My Profile",
           href: "/dashboard-my-profile",
         },
-        { icon: "flaticon-exit", text: "Logout", href: "/login" },
+        {
+          icon: "flaticon-exit",
+          text: "Logout",
+          href: "#",
+          props: {
+            role: "button",
+            id: "logoutButton",
+            "data-bs-toggle": "modal",
+            "data-bs-target": "#logoutModal",
+          },
+        },
       ],
     },
     {
@@ -150,16 +160,22 @@ const DashboardHeader = () => {
                                   {section.title}
                                 </p>
                                 {section.items.map((item, itemIndex) => (
-                                  <Link
+                                  <a
                                     key={itemIndex}
                                     className={`dropdown-item ${
                                       pathname == item.href ? "-is-active" : ""
                                     } `}
-                                    href={item.href}
+                                    href={"#"}
+                                    {...(item?.props ?? {})}
+                                    onClick={() => {
+                                      if (item?.href !== "#") {
+                                        router.push(item?.href);
+                                      }
+                                    }}
                                   >
                                     <i className={`${item.icon} mr10`} />
                                     {item.text}
-                                  </Link>
+                                  </a>
                                 ))}
                               </div>
                             ))}
@@ -187,6 +203,45 @@ const DashboardHeader = () => {
         aria-labelledby="SidebarPanelLabel"
       >
         <SidebarPanel />
+      </div>
+      <div
+        className="modal fade"
+        id="logoutModal"
+        tabIndex={-1}
+        aria-labelledby="logoutModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content border-0 shadow-lg">
+            <div className="modal-body p-4">
+              <div className="text-center mb-4">
+                <h4 className="mb-2 text-dark fw-bold">Confirm Logout</h4>
+                <p className="text-muted mb-0">
+                  Are you sure you want to logout? You'll need to sign in again
+                  to access your account.
+                </p>
+              </div>
+              <div className="d-flex justify-content-center gap-3">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary  px-4 py-2"
+                  data-bs-dismiss="modal"
+                  // ref={cancelButtonRef}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger text-white px-4 py-2"
+                  // onClick={handleLogout}
+                >
+                  <i className="fas fa-sign-out-alt me-2"></i>
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {/* Sidebar Panel End */}
     </>

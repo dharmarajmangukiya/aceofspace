@@ -1,43 +1,96 @@
 "use client";
+import { useKycUpload } from "@/hooks/api/kyc";
 import FileUpload from "@/theme components/common/FileUpload";
-import { smallSelectStyles } from "@/utils/helper";
+import { pickErrorMessage, smallSelectStyles } from "@/utils/helper";
 import { useFormik } from "formik";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import Select from "react-select";
 import * as Yup from "yup";
 
 const KycSection = () => {
+  const { mutate: kycUpload, isPending } = useKycUpload();
   const formik = useFormik({
     initialValues: {
       documentType: "",
-      documentId: "",
-      documentImageFront: null,
-      documentImageBack: null,
+      documentNumber: "",
+      documentImageFront: [],
+      documentImageBack: [],
     },
     validationSchema: Yup.object({
       documentType: Yup.string().required("Document type is required"),
-      documentId: Yup.string().required("Document ID is required"),
-      documentImageFront: Yup.mixed().required(
-        "Document image front is required"
-      ),
-      documentImageBack: Yup.mixed().required(
-        "Document image back is required"
-      ),
+      documentNumber: Yup.string().required("Document ID is required"),
+      documentImageFront: Yup.mixed()
+        .test("fileRequired", "Document image front is required", (value) => {
+          if (!value) return false;
+          try {
+            return Array.from(value).length > 0;
+          } catch (e) {
+            return !!value?.length;
+          }
+        })
+        .required("Document image front is required"),
+      documentImageBack: Yup.mixed().when("documentType", {
+        is: (val) => val === "Aadhar" || val === "Pan",
+        then: (schema) =>
+          schema
+            .test(
+              "fileRequired",
+              "Document image back is required",
+              (value) => {
+                if (!value) return false;
+                try {
+                  return Array.from(value).length > 0;
+                } catch (e) {
+                  return !!value?.length;
+                }
+              }
+            )
+            .required("Document image back is required"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      const formData = new FormData();
+      formData.append("documentType", values.documentType);
+      formData.append("documentNumber", values?.documentNumber);
+      if (
+        values?.documentImageFront &&
+        Array.from(values.documentImageFront)[0]
+      )
+        formData.append(
+          "documentFile",
+          Array.from(values.documentImageFront)[0]
+        );
+      if (values?.documentImageBack && Array.from(values.documentImageBack)[0])
+        formData.append(
+          "documentFile",
+          Array.from(values.documentImageBack)[0]
+        );
+
+      kycUpload(formData, {
+        onSuccess: (data) => {
+          toast.success(data?.message || "KYC submitted successfully");
+        },
+        onError: (error) => {
+          const errorMessage = pickErrorMessage(error, "Failed to submit KYC");
+          toast.error(errorMessage);
+        },
+      });
     },
   });
 
+  useEffect(() => {
+    if (formik.submitCount > 0) {
+      formik?.setFieldTouched("documentImageBack");
+      formik?.setFieldTouched("documentImageFront");
+    }
+  }, [formik.values.documentImageFront, formik.values.documentImageBack]);
+
   const handleFileChange = (field, files) => {
     formik.setFieldValue(field, files);
+    formik.setFieldTouched(field, true, true);
   };
-
-  useEffect(() => {
-    console.log(formik.values);
-    console.log(formik.errors);
-    console.log(formik.submitCount);
-  }, [formik]);
 
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>
@@ -64,11 +117,12 @@ const KycSection = () => {
               onChange={(e) => formik.setFieldValue("documentType", e.value)}
               placeholder="Select document type"
             />
-            {formik.touched.documentType && formik.errors.documentType && (
-              <div className="text-danger small mt-1">
-                {formik.errors.documentType}
-              </div>
-            )}
+            {(formik.touched.documentType || formik.submitCount > 0) &&
+              formik.errors.documentType && (
+                <div className="text-danger small mt-1">
+                  {formik.errors.documentType}
+                </div>
+              )}
           </div>
         </div>
         {/* End .col */}
@@ -81,16 +135,17 @@ const KycSection = () => {
               type="text"
               className="form-control"
               placeholder="Enter your document ID"
-              value={formik.values.documentId}
+              value={formik?.values?.documentNumber ?? ""}
               onChange={(e) =>
-                formik.setFieldValue("documentId", e.target.value)
+                formik.setFieldValue("documentNumber", e.target.value)
               }
             />
-            {formik.touched.documentId && formik.errors.documentId && (
-              <div className="text-danger small mt-1">
-                {formik.errors.documentId}
-              </div>
-            )}
+            {(formik.touched.documentNumber || formik.submitCount > 0) &&
+              formik.errors.documentNumber && (
+                <div className="text-danger small mt-1">
+                  {formik.errors.documentNumber}
+                </div>
+              )}
           </div>
         </div>
         {/* End .col */}
@@ -105,7 +160,9 @@ const KycSection = () => {
             value={formik.values.documentImageFront}
             onChange={(files) => handleFileChange("documentImageFront", files)}
             error={formik.errors.documentImageFront}
-            touched={formik.touched.documentImageFront}
+            touched={
+              formik.touched.documentImageFront || formik.submitCount > 0
+            }
             accept="image/*,application/pdf"
             maxFiles={1}
             maxSize={5}
@@ -124,7 +181,7 @@ const KycSection = () => {
             value={formik.values.documentImageBack}
             onChange={(files) => handleFileChange("documentImageBack", files)}
             error={formik.errors.documentImageBack}
-            touched={formik.touched.documentImageBack}
+            touched={formik.touched.documentImageBack || formik.submitCount > 0}
             accept="image/*,application/pdf"
             maxFiles={1}
             maxSize={5}
@@ -174,8 +231,12 @@ const KycSection = () => {
 
       <div className="col-md-12">
         <div className="text-end">
-          <button type="submit" className="ud-btn btn-dark">
-            Submit KYC
+          <button
+            type="submit"
+            className="ud-btn btn-dark"
+            disabled={isPending}
+          >
+            {isPending ? "Submitting..." : "Submit KYC"}
             <i className="fal fa-arrow-right-long" />
           </button>
         </div>
