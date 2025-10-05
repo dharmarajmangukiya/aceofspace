@@ -1,6 +1,6 @@
 "use client";
 
-import { amenitiesOptions } from "@/utilis/constants";
+import { amenitiesOptions } from "@/utils/constants";
 import classNames from "classnames";
 import { useState } from "react";
 

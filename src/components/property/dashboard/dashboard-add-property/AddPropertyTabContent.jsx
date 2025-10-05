@@ -1,6 +1,6 @@
 "use client";
 import { useAddProperty } from "@/hooks/api/property";
-import { customSelectStyles } from "@/utilis/helper";
+import { customSelectStyles } from "@/utils/helper";
 import { useState } from "react";
 import Select from "react-select";
 import CommercialForm from "./commercial/CommercialForm";

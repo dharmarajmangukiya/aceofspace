@@ -1,9 +1,9 @@
-import SignIn from "@/components/common/login-signup-modal/SignIn";
+import ResetPassword from "@/components/common/login-signup-modal/ResetPassword";
 import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Login  || Settle Wise - Real Estate NextJS Template",
+  title: "Reset Password  || Settle Wise - Real Estate NextJS Template",
 };
 
 const Login = () => {
@@ -35,12 +35,10 @@ const Login = () => {
                       alt="logo"
                     />
                   </Link>
-                  <h2>Login</h2>
-                  <p className="text">
-                    Login with this account across the following sites.
-                  </p>
+                  <h2>Reset your password</h2>
+                  <p className="text">Enter your email and new password.</p>
                 </div>
-                <SignIn />
+                <ResetPassword />
               </div>
             </div>
           </div>

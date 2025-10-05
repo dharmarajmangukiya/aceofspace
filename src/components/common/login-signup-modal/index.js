@@ -1,11 +1,13 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import OtpVerification from "./OtpVerification";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
-const LoginSignupModal = () => {
+const LoginSignupModalComponent = () => {
   const closeModal = useRef(null);
+  const loginTabButton = useRef(null);
+  const signUpTabButton = useRef(null);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [signUpData, setSignUpData] = useState({});
 
@@ -13,7 +15,7 @@ const LoginSignupModal = () => {
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalToggleLabel">
-          Welcome to Realton
+          Welcome to Settle Wise
         </h5>
         <button
           type="button"
@@ -32,13 +34,14 @@ const LoginSignupModal = () => {
               signUpData={signUpData}
               setSignUpData={setSignUpData}
               setIsOtpSent={setIsOtpSent}
-              closeModal={closeModal}
+              loginTabButton={loginTabButton}
             />
           ) : (
             <div className="navtab-style2">
               <nav>
                 <div className="nav nav-tabs mb20" id="nav-tab" role="tablist">
                   <button
+                    ref={loginTabButton}
                     className="nav-link active fw600"
                     id="nav-home-tab"
                     data-bs-toggle="tab"
@@ -51,6 +54,7 @@ const LoginSignupModal = () => {
                     Sign In
                   </button>
                   <button
+                    ref={signUpTabButton}
                     className="nav-link fw600"
                     id="nav-profile-tab"
                     data-bs-toggle="tab"
@@ -73,7 +77,11 @@ const LoginSignupModal = () => {
                   role="tabpanel"
                   aria-labelledby="nav-home-tab"
                 >
-                  <SignIn closeModal={closeModal} />
+                  <SignIn
+                    closeModal={closeModal}
+                    setIsOtpSent={setIsOtpSent}
+                    signUpTabButton={signUpTabButton}
+                  />
                 </div>
                 {/* End signin content */}
 
@@ -84,9 +92,9 @@ const LoginSignupModal = () => {
                   aria-labelledby="nav-profile-tab"
                 >
                   <SignUp
-                    closeModal={closeModal}
                     setIsOtpSent={setIsOtpSent}
                     setSignUpData={setSignUpData}
+                    loginTabButton={loginTabButton}
                   />
                 </div>
                 {/* End signup content */}
@@ -97,6 +105,29 @@ const LoginSignupModal = () => {
       </div>
     </div>
   );
+};
+
+const LoginSignupModal = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    // Bootstrap event listeners for modal show/hide
+    const modalEl = document.getElementById("loginSignupModal");
+    const handleShow = () => setIsModalOpen(true);
+    const handleHide = () => setIsModalOpen(false);
+
+    modalEl.addEventListener("show.bs.modal", handleShow);
+    modalEl.addEventListener("hidden.bs.modal", handleHide);
+
+    return () => {
+      modalEl.removeEventListener("show.bs.modal", handleShow);
+      modalEl.removeEventListener("hidden.bs.modal", handleHide);
+    };
+  }, []);
+
+  if (!isModalOpen) return null;
+
+  return <LoginSignupModalComponent />;
 };
 
 export default LoginSignupModal;

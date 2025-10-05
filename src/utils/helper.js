@@ -42,3 +42,10 @@ export const smallSelectStyles = createCustomSelectStyles({
     maxHeight: 120,
   }),
 });
+
+export const pickErrorMessage = (
+  error,
+  defaultMessage = "Something went wrong"
+) => {
+  return error?.message || error?.response?.data?.message || defaultMessage;
+};

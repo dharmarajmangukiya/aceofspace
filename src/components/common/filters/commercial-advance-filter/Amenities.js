@@ -1,6 +1,6 @@
 "use client";
 
-import { buildingAmenitiesOptions } from "@/utilis/constants";
+import { buildingAmenitiesOptions } from "@/utils/constants";
 import classNames from "classnames";
 import { useState } from "react";
 

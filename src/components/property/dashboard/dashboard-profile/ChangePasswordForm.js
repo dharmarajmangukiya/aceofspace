@@ -1,5 +1,6 @@
 "use client";
 import { useChangePassword } from "@/hooks/api/user";
+import { pickErrorMessage } from "@/utils/helper";
 import { changePasswordValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import { useState } from "react";
@@ -30,10 +31,10 @@ const ChangePasswordForm = () => {
             resetForm();
           },
           onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.message ||
-              error?.message ||
-              "Failed to change password";
+            const errorMessage = pickErrorMessage(
+              error,
+              "Failed to change password"
+            );
             toast.error(errorMessage);
           },
         }

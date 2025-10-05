@@ -1,5 +1,6 @@
 "use client";
 import { useGetProfile, useUpdateUser } from "@/hooks/api/user";
+import { pickErrorMessage } from "@/utils/helper";
 import { personalInfoValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
@@ -9,12 +10,14 @@ const PersonalInfo = () => {
 
   const { mutate: updateUser } = useUpdateUser();
   const { data: userData, refetch: refetchProfile } = useGetProfile();
+
   // Formik configuration
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      email: userData?.email || "",
-      firstName: userData?.firstName || userData?.first_name || "",
-      lastName: userData?.lastName || userData?.last_name || "",
+      email: userData?.data?.email || "",
+      firstName: userData?.data?.firstName || "",
+      lastName: userData?.data?.lastName || "",
     },
     validationSchema: personalInfoValidationSchema,
     onSubmit: ({ firstName, lastName }) => {
@@ -27,10 +30,10 @@ const PersonalInfo = () => {
             refetchProfile();
           },
           onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.message ||
-              error?.message ||
-              "Failed to update user. Please try again.";
+            const errorMessage = pickErrorMessage(
+              error,
+              "Failed to update user. Please try again."
+            );
             toast.error(errorMessage);
           },
         }

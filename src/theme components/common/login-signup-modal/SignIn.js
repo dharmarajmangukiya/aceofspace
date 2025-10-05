@@ -39,7 +39,7 @@ const SignIn = () => {
 
       <div className="d-grid mb20">
         <button className="ud-btn btn-thm" type="submit">
-          Sign in <i className="fal fa-arrow-right-long" />
+          Login <i className="fal fa-arrow-right-long" />
         </button>
       </div>
       {/* End submit */}
@@ -66,7 +66,7 @@ const SignIn = () => {
       </div>
       <p className="dark-color text-center mb0 mt10">
         Not signed up?{" "}
-        <Link className="dark-color fw600" href="/register">
+        <Link className="dark-color fw600" href="/auth/register">
           Create an account.
         </Link>
       </p>

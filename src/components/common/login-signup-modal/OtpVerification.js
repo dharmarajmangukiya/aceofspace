@@ -1,21 +1,23 @@
 "use client";
 
-import { useSignUp, useVerifyOtp } from "@/hooks/api/auth";
+import { useResendOtp, useVerifyOtp } from "@/hooks/api/auth";
+import { pickErrorMessage } from "@/utils/helper";
 import { otpVerificationValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 const OtpVerification = ({
   signUpData,
   setIsOtpSent,
-  closeModal,
+  loginTabButton,
   setSignUpData,
 }) => {
   const router = useRouter();
+  const location = usePathname();
   const { mutate: verifyOtp, isPending: isVerifying } = useVerifyOtp();
-  const { mutate: resendOtp, isPending: isResending } = useSignUp();
+  const { mutate: resendOtp, isPending: isResending } = useResendOtp();
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
@@ -49,19 +51,22 @@ const OtpVerification = ({
         {
           onSuccess: (data) => {
             toast.success(data?.message || "Account verified successfully!");
-            closeModal?.current?.click();
-            router.push("/");
+            if (location === "/auth/register") {
+              router.push("/auth/login");
+            } else {
+              setIsOtpSent(false);
+              loginTabButton?.current?.click();
+            }
+
+            formik.resetForm();
           },
           onError: (error) => {
-            const errorMessage =
-              error?.response?.data?.message ||
-              error?.message ||
-              "Invalid OTP. Please try again.";
-            toast.error("Verification Failed", {
-              description: errorMessage,
-              duration: 5000,
-            });
-            console.error("OTP verification error:", error);
+            const errorMessage = pickErrorMessage(
+              error,
+              "Invalid OTP. Please try again."
+            );
+            toast.error(errorMessage);
+            formik.setFieldValue("otp", "");
           },
         }
       );
@@ -103,33 +108,33 @@ const OtpVerification = ({
   };
 
   const handleResendOtp = () => {
-    if (!canResend || !signUpData) return;
+    if (!canResend) return;
+    if (!signUpData?.email) {
+      const errorMessage = pickErrorMessage(null, "Error while resending OTP");
+      toast.error(errorMessage);
+      setIsOtpSent(false);
+      setSignUpData(null);
+      formik.resetForm();
+      return;
+    }
 
     resendOtp(
-      {
-        firstName: signUpData.firstName,
-        lastName: signUpData.lastName,
-        email: signUpData.email,
-        password: signUpData.password,
-      },
+      { email: signUpData?.email || "" },
       {
         onSuccess: (data) => {
           toast.success(data?.message || "OTP resent successfully!");
           setTimer(60);
           setCanResend(false);
           setOtp(["", "", "", "", "", ""]);
-          formik.setFieldValue("otp", "");
+          formik.resetForm();
           inputRefs.current[0]?.focus();
         },
         onError: (error) => {
-          const errorMessage =
-            error?.response?.data?.message ||
-            error?.message ||
-            "Failed to resend OTP. Please try again.";
-          toast.error("Resend Failed", {
-            description: errorMessage,
-            duration: 5000,
-          });
+          const errorMessage = pickErrorMessage(
+            error,
+            "Failed to resend OTP. Please try again."
+          );
+          toast.error(errorMessage);
         },
       }
     );
@@ -251,15 +256,15 @@ const OtpVerification = ({
 
       {/* Help Text */}
       <div className="text-center">
-        <p className="text-muted small">
-          Didn't receive the code? Check your spam folder or{" "}
+        <p className="text-muted small d-flex justify-content-center align-items-center gap-1">
+          Didn't receive the code? Check your spam folder or
           <button
             type="button"
             className="btn btn-link p-0"
             onClick={handleResendOtp}
             disabled={!canResend || isResending}
           >
-            resend
+            Resend
           </button>
         </p>
       </div>

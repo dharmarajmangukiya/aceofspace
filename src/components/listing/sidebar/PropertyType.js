@@ -1,6 +1,6 @@
 "use client";
 
-import { propertyTypeOptions } from "@/utilis/constants";
+import { propertyTypeOptions } from "@/utils/constants";
 
 const PropertyType = ({ filterFunctions, rentOrLease = "residential" }) => {
   return (

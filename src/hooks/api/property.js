@@ -1,11 +1,13 @@
-import api from "@/utilis/axiosInstance";
+"use client";
+import api from "@/utils/axiosInstance";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
 // Get Property Detail by ID
 export const useGetPropertyDetail = (propertyId) => {
   return useQuery({
     queryKey: ["propertyDetail", propertyId],
-    enabled: !!propertyId,
+    enabled: false,
+    // enabled: !!propertyId,
     queryFn: async () => {
       try {
         const response = await api.get(`/properties/${propertyId}`);
@@ -21,7 +23,8 @@ export const useGetPropertyDetail = (propertyId) => {
 export const useGetProperties = (searchParams) => {
   return useInfiniteQuery({
     queryKey: ["properties", searchParams],
-    enabled: true,
+    enabled: false,
+    // enabled: true,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       try {

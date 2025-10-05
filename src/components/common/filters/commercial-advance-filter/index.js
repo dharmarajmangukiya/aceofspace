@@ -6,11 +6,11 @@ import {
   locationOptions,
   propertyTypeOptions,
   zoneTypeOptions,
-} from "@/utilis/constants";
+} from "@/utils/constants";
 import {
   customSelectStyles,
   multiSelectCustomSelectStyles,
-} from "@/utilis/helper";
+} from "@/utils/helper";
 import Select from "react-select";
 import Amenities from "./Amenities";
 import Bathroom from "./Bathroom";

@@ -69,6 +69,7 @@ const DefaultHeader = () => {
 
               <div className="col-auto">
                 <div className="d-flex align-items-center">
+                  {}
                   <a
                     href="#"
                     className="login-info d-flex align-items-cente"
