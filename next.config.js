@@ -10,6 +10,14 @@ const nextConfig = {
       "global-builtin",
     ],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https", // or 'http' if needed
+        hostname: "**", // matches any domain
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

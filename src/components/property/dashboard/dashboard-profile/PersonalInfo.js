@@ -1,17 +1,13 @@
 "use client";
-import { useGetProfile, useUpdateUser } from "@/hooks/api/user";
+import { useUpdateUser } from "@/hooks/api/user";
 import { pickErrorMessage } from "@/utils/helper";
 import { personalInfoValidationSchema } from "@/validation/auth";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 
-const PersonalInfo = () => {
-  // Get user data from localStorage
-
+const PersonalInfo = ({ userData, refetchProfile }) => {
   const { mutate: updateUser } = useUpdateUser();
-  const { data: userData, refetch: refetchProfile } = useGetProfile();
 
-  // Formik configuration
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -21,7 +17,6 @@ const PersonalInfo = () => {
     },
     validationSchema: personalInfoValidationSchema,
     onSubmit: ({ firstName, lastName }) => {
-      // Handle form submission
       updateUser(
         { firstName, lastName },
         {
@@ -44,7 +39,6 @@ const PersonalInfo = () => {
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>
       <div className="row">
-        {/* Email Field - Read Only */}
         <div className="col-sm-6 col-xl-4">
           <div className="mb20">
             <label className="heading-color ff-heading fw600 mb10">Email</label>

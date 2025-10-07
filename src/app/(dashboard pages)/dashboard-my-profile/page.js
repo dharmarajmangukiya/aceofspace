@@ -3,8 +3,10 @@ import ChangePasswordForm from "@/components/property/dashboard/dashboard-profil
 import PersonalInfo from "@/components/property/dashboard/dashboard-profile/PersonalInfo";
 // import ProfileBox from "@/components/property/dashboard/dashboard-profile/ProfileBox";
 import KycSection from "@/components/property/dashboard/dashboard-profile/KycSection";
+import { useGetProfile } from "@/hooks/api/user";
 
 const DashboardMyProfile = () => {
+  const { data: userData, refetch: refetchProfile } = useGetProfile();
   return (
     <>
       <div className="row align-items-center pb40">
@@ -26,7 +28,10 @@ const DashboardMyProfile = () => {
             {/* End ProfileBox */}
 
             <div className="col-lg-12">
-              <PersonalInfo />
+              <PersonalInfo
+                userData={userData}
+                refetchProfile={refetchProfile}
+              />
             </div>
             {/* End PersonalInfo */}
           </div>
@@ -34,7 +39,7 @@ const DashboardMyProfile = () => {
 
           <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
             <h4 className="title fz17 mb30">Update KYC</h4>
-            <KycSection />
+            <KycSection userData={userData} refetchProfile={refetchProfile} />
           </div>
           {/* End .ps-widget */}
 

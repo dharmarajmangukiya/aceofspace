@@ -31,47 +31,47 @@ const DashboardHeader = () => {
         },
       ],
     },
-    {
-      title: "MAIN",
-      items: [
-        {
-          icon: "flaticon-discovery",
-          text: "Dashboard",
-          href: "/dashboard-home",
-        },
-        {
-          icon: "flaticon-chat-1",
-          text: "Message",
-          href: "/dashboard-message",
-        },
-      ],
-    },
-    {
-      title: "MANAGE LISTINGS",
-      items: [
-        {
-          icon: "flaticon-new-tab",
-          text: "Add New Property",
-          href: "/dashboard-add-property",
-        },
-        {
-          icon: "flaticon-home",
-          text: "My Properties",
-          href: "/dashboard-my-properties",
-        },
-        {
-          icon: "flaticon-like",
-          text: "My Favorites",
-          href: "/dashboard-my-favourites",
-        },
-        {
-          icon: "flaticon-search-2",
-          text: "Saved Search",
-          href: "/dashboard-saved-search",
-        },
-        { icon: "flaticon-review", text: "Reviews", href: "/dashboard-review" },
-      ],
-    },
+    // {
+    //   title: "MAIN",
+    //   items: [
+    //     {
+    //       icon: "flaticon-discovery",
+    //       text: "Dashboard",
+    //       href: "/dashboard-home",
+    //     },
+    //     {
+    //       icon: "flaticon-chat-1",
+    //       text: "Message",
+    //       href: "/dashboard-message",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "MANAGE LISTINGS",
+    //   items: [
+    //     {
+    //       icon: "flaticon-new-tab",
+    //       text: "Add New Property",
+    //       href: "/dashboard-add-property",
+    //     },
+    //     {
+    //       icon: "flaticon-home",
+    //       text: "My Properties",
+    //       href: "/dashboard-my-properties",
+    //     },
+    //     {
+    //       icon: "flaticon-like",
+    //       text: "My Favorites",
+    //       href: "/dashboard-my-favourites",
+    //     },
+    //     {
+    //       icon: "flaticon-search-2",
+    //       text: "Saved Search",
+    //       href: "/dashboard-saved-search",
+    //     },
+    //     { icon: "flaticon-review", text: "Reviews", href: "/dashboard-review" },
+    //   ],
+    // },
   ];
 
   return (
@@ -124,18 +124,18 @@ const DashboardHeader = () => {
               <div className="col-6 col-lg-auto">
                 <div className="text-center text-lg-end header_right_widgets">
                   <ul className="mb0 d-flex justify-content-center justify-content-sm-end p-0">
-                    <li className="d-none d-sm-block">
+                    {/* <li className="d-none d-sm-block">
                       <Link className="text-center mr15" href="/login">
                         <span className="flaticon-email" />
                       </Link>
-                    </li>
+                    </li> */}
                     {/* End email box */}
 
-                    <li className="d-none d-sm-block">
+                    {/* <li className="d-none d-sm-block">
                       <a className="text-center mr20 notif" href="#">
                         <span className="flaticon-bell" />
                       </a>
-                    </li>
+                    </li> */}
                     {/* End notification icon */}
 
                     <li className=" user_setting">
@@ -144,7 +144,7 @@ const DashboardHeader = () => {
                           <Image
                             width={44}
                             height={44}
-                            src="/images/resource/user.png"
+                            src="https://homez-appdir.vercel.app/images/resource/user.png"
                             alt="user.png"
                           />
                         </a>
