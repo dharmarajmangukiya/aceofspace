@@ -37,8 +37,6 @@ const SignUp = ({ setIsOtpSent, setSignUpData, loginTabButton }) => {
             setIsOtpSent(true);
             setSignUpData(values);
             formik.resetForm();
-
-            console.log(data);
           },
           onError: (error) => {
             console.log(error);
@@ -53,12 +51,6 @@ const SignUp = ({ setIsOtpSent, setSignUpData, loginTabButton }) => {
       );
     },
   });
-
-  console.log(
-    formik.touched.confirmPassword,
-    formik.submitCount > 0,
-    formik.errors.confirmPassword
-  );
 
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>

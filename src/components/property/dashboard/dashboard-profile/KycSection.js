@@ -74,12 +74,6 @@ const KycSection = ({ userData, refetchProfile }) => {
       if (frontFile) formData.append("documentFile", frontFile);
       if (backFile) formData.append("documentFile", backFile);
 
-      // (Optional) Debug log — helps you verify file objects before sending
-      for (const [key, val] of formData.entries()) {
-        console.log(key, val);
-      }
-
-      // Trigger upload
       kycUpload(formData, {
         onSuccess: (data) => {
           toast.success(data?.message || "KYC submitted successfully");
@@ -101,11 +95,6 @@ const KycSection = ({ userData, refetchProfile }) => {
       }, 1000);
     }
   }, [formik.values.documentImageFront, formik.values.documentImageBack]);
-
-  console.log(
-    formik.values.documentImageFront,
-    formik.values.documentImageBack
-  );
 
   const handleFileChange = (field, files) => {
     formik.setFieldValue(field, files);

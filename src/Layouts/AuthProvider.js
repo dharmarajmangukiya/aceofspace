@@ -20,10 +20,6 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log("Current auth token:", isAuth, getAuthToken());
-  }, [isAuth]);
-
   const { mutate: logout } = useLogout();
 
   return (
