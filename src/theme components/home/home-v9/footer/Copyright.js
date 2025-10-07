@@ -26,15 +26,7 @@ const Footer = () => {
         <div className="col-sm-6">
           <div className="text-center text-lg-start">
             <p className="copyright-text ff-heading">
-              © Settle Wise {getCurrentYear()}{" "}
-              <a
-                href="https://themeforest.net/user/ib-themes"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                ib-themes
-              </a>{" "}
-              - All rights reserved
+              © Settle Wise {getCurrentYear()} - All rights reserved
             </p>
           </div>
         </div>

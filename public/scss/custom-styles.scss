@@ -19,6 +19,11 @@
   }
 }
 
+// Ensure Bootstrap modal backdrop appears above page content
+.modal-backdrop {
+  z-index: 200 !important;
+}
+
 .amenity-btn {
   transition: all 0.2s ease-in-out;
 

@@ -31,7 +31,7 @@ const DashboardHeader = () => {
         {
           icon: "flaticon-new-tab",
           text: "Add New Property",
-          href: "/dashboard-add-property",
+          href: "/add-property",
         },
         {
           icon: "flaticon-home",

@@ -52,7 +52,7 @@ const DashboardHeader = () => {
     //     {
     //       icon: "flaticon-new-tab",
     //       text: "Add New Property",
-    //       href: "/dashboard-add-property",
+    //       href: "/add-property",
     //     },
     //     {
     //       icon: "flaticon-home",
@@ -96,7 +96,7 @@ const DashboardHeader = () => {
                   </div>
                   {/* End Logo */}
 
-                  <a
+                  {/* <a
                     className="dashboard_sidebar_toggle_icon text-thm1 vam"
                     href="#"
                     data-bs-toggle="offcanvas"
@@ -110,7 +110,7 @@ const DashboardHeader = () => {
                       src="/images/dark-nav-icon.svg"
                       alt="humberger menu"
                     />
-                  </a>
+                  </a> */}
                 </div>
               </div>
               {/* End .col-auto */}

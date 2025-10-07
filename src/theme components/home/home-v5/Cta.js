@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 const Cta = () => {
   return (
@@ -15,7 +14,7 @@ const Cta = () => {
               </h1>
               <div className="d-block d-sm-flex justify-content-center">
                 <Link
-                  href="/dashboard-add-property"
+                  href="/add-property"
                   className="ud-btn btn-thm me-0 me-sm-4"
                 >
                   Submit Property

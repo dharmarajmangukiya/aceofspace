@@ -1,6 +1,7 @@
 "use client";
 import { useKycUpload } from "@/hooks/api/kyc";
 import FileUpload from "@/theme components/common/FileUpload";
+import { kycDocumentTypeOptions } from "@/utils/constants";
 import { pickErrorMessage, smallSelectStyles } from "@/utils/helper";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -144,6 +145,10 @@ const KycSection = ({ userData, refetchProfile }) => {
     );
   }
 
+  const selectedDocumentType = kycDocumentTypeOptions.find(
+    (type) => type.value === formik.values.documentType
+  );
+
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>
       <div className="row row-cols-1 row-cols-sm-2">
@@ -154,18 +159,11 @@ const KycSection = ({ userData, refetchProfile }) => {
             </label>
             <Select
               instanceId="documentType"
-              options={[
-                { value: "aadhar", label: "Aadhar" },
-                { value: "pan", label: "Pan" },
-                { value: "driving_licence", label: "Driving Licence" },
-              ]}
+              options={kycDocumentTypeOptions}
               styles={smallSelectStyles}
               className="select-custom filterSelect"
               classNamePrefix="select"
-              value={{
-                value: formik.values.documentType || "",
-                label: formik.values.documentType || "Select document type",
-              }}
+              value={selectedDocumentType ?? null}
               onChange={(e) => formik.setFieldValue("documentType", e.value)}
               placeholder="Select document type"
             />

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const DboardMobileNavigation = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -27,7 +27,7 @@ const DboardMobileNavigation = () => {
       title: "MANAGE LISTINGS",
       items: [
         {
-          href: "/dashboard-add-property",
+          href: "/add-property",
           icon: "flaticon-new-tab",
           text: "Add New Property",
         },

@@ -81,7 +81,7 @@ const Header = () => {
                   </a>
                   <Link
                     className="ud-btn add-property menu-btn bdrs12 mx-2 mx-xl-4"
-                    href="/dashboard-add-property"
+                    href="/add-property"
                   >
                     Add Property
                     <i className="fal fa-arrow-right-long" />

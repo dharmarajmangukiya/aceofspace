@@ -93,7 +93,7 @@ module.exports = [
     subMenu: [
       { label: "Dashboard Home", path: "/dashboard-home" },
       { label: "Message", path: "/dashboard-message" },
-      { label: "New Property", path: "/dashboard-add-property" },
+      { label: "New Property", path: "/add-property" },
       { label: "My Properties", path: "/dashboard-my-properties" },
       { label: "My Favorites", path: "/dashboard-my-favourites" },
       { label: "Saved Search", path: "/dashboard-saved-search" },

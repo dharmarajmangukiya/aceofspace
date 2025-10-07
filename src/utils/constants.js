@@ -1,3 +1,4 @@
+"use client";
 export const PAGE_SIZE = 10;
 
 export const propertyTypeOptions = {
@@ -326,4 +327,117 @@ export const residentialAmenities = [
   "24x7 security & surveillance",
   "EV Charging",
   "Jogging Park",
+];
+
+export const sidebarItems = (role) => {
+  if (role === "admin") {
+    return [
+      {
+        title: "MAIN",
+        items: [
+          {
+            href: "/dashboard-home",
+            icon: "flaticon-discovery",
+            text: "Dashboard",
+          },
+          {
+            href: "/kyc-approval",
+            icon: "flaticon-chat-1",
+            text: "KYC Approval",
+          },
+        ],
+      },
+    ];
+  } else {
+    return [
+      {
+        title: "MAIN",
+        items: [
+          {
+            href: "/dashboard-home",
+            icon: "flaticon-discovery",
+            text: "Dashboard",
+          },
+          {
+            href: "/dashboard-message",
+            icon: "flaticon-chat-1",
+            text: "Message",
+          },
+        ],
+      },
+      {
+        title: "MANAGE LISTINGS",
+        items: [
+          {
+            href: "/add-property",
+            icon: "flaticon-new-tab",
+            text: "Add New Property",
+          },
+          {
+            href: "/dashboard-my-properties",
+            icon: "flaticon-home",
+            text: "My Properties",
+          },
+          {
+            href: "/dashboard-my-favourites",
+            icon: "flaticon-like",
+            text: "My Favorites",
+          },
+          // {
+          //   href: "/dashboard-saved-search",
+          //   icon: "flaticon-search-2",
+          //   text: "Saved Search",
+          // },
+          // {
+          //   href: "/dashboard-reviews",
+          //   icon: "flaticon-review",
+          //   text: "Reviews",
+          // },
+        ],
+      },
+      {
+        title: "MANAGE ACCOUNT",
+        items: [
+          {
+            href: "/dashboard-my-package",
+            icon: "flaticon-protection",
+            text: "My Package",
+          },
+          {
+            href: "/dashboard-my-profile",
+            icon: "flaticon-user",
+            text: "My Profile",
+          },
+          {
+            href: "/login",
+            icon: "flaticon-logout",
+            text: "Logout",
+          },
+        ],
+      },
+    ];
+  }
+};
+
+export const addPropertyTypes = [
+  {
+    id: "residential",
+    title: "Residential",
+    description: "Flats, Bungalows, Houses, Villas",
+    icon: "🏠",
+    subTypes: ["Flat", "Bungalow", "House", "Villa"],
+  },
+  {
+    id: "commercial",
+    title: "Commercial",
+    description: "Offices, Shops, Warehouses, Showrooms",
+    icon: "🏢",
+    subTypes: ["Office", "Shop", "Warehouse", "Showroom"],
+  },
+];
+
+export const kycDocumentTypeOptions = [
+  { value: "aadhar", label: "Aadhar" },
+  { value: "pan", label: "Pan" },
+  { value: "driving_license", label: "Driving Licence" },
 ];

@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 import { authStorage } from "./storage";
 
 // Create a pre-configured Axios instance for client API calls
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/api",
+  baseURL: API_BASE_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -84,9 +85,7 @@ api.interceptors.response.use(
         }
 
         const response = await axios.post(
-          `${
-            process.env.NEXT_PUBLIC_API_BASE_URL || "/api"
-          }/auth/refresh-token`,
+          `${API_BASE_URL}/auth/refresh-token`,
           { refreshToken },
           {
             headers: {

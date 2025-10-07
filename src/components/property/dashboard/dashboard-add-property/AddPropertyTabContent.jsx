@@ -1,5 +1,6 @@
 "use client";
 import { useAddProperty } from "@/hooks/api/property";
+import { addPropertyTypes } from "@/utils/constants";
 import { customSelectStyles } from "@/utils/helper";
 import { useState } from "react";
 import Select from "react-select";
@@ -11,23 +12,6 @@ const AddPropertyTabContent = () => {
   const [selectedSubType, setSelectedSubType] = useState("");
 
   const { mutate: addProperty } = useAddProperty();
-
-  const propertyTypes = [
-    {
-      id: "residential",
-      title: "Residential",
-      description: "Flats, Bungalows, Houses, Villas",
-      icon: "🏠",
-      subTypes: ["Flat", "Bungalow", "House", "Villa"],
-    },
-    {
-      id: "commercial",
-      title: "Commercial",
-      description: "Offices, Shops, Warehouses, Showrooms",
-      icon: "🏢",
-      subTypes: ["Office", "Shop", "Warehouse", "Showroom"],
-    },
-  ];
 
   const handlePropertyTypeSelect = (propertyType) => {
     setSelectedPropertyType(propertyType);
@@ -58,7 +42,7 @@ const AddPropertyTabContent = () => {
         </div>
 
         <div className="row justify-content-center">
-          {propertyTypes.map((type) => (
+          {addPropertyTypes.map((type) => (
             <div key={type.id} className="col-lg-5 col-md-6 mb30">
               <button
                 className="card h-100 property-type-card w-100 text-start"

@@ -81,7 +81,7 @@ const DefaultHeader = () => {
                   </a>
                   <Link
                     className="ud-btn btn-white add-property bdrs60 mx-2 mx-xl-4"
-                    href="/dashboard-add-property"
+                    href="/add-property"
                   >
                     Add Property
                     <i className="fal fa-arrow-right-long" />
