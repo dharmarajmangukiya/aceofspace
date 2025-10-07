@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import Select from "react-select";
 import * as Yup from "yup";
 
-const KycSection = () => {
+const KycSection = ({ userData, refetchProfile }) => {
   const { mutate: kycUpload, isPending } = useKycUpload();
   const formik = useFormik({
     initialValues: {
@@ -31,7 +31,7 @@ const KycSection = () => {
         })
         .required("Document image front is required"),
       documentImageBack: Yup.mixed().when("documentType", {
-        is: (val) => val === "Aadhar" || val === "Pan",
+        is: (val) => val === "aadhar" || val === "pan",
         then: (schema) =>
           schema
             .test(
@@ -52,25 +52,38 @@ const KycSection = () => {
     }),
     onSubmit: (values) => {
       const formData = new FormData();
-      formData.append("documentType", values.documentType);
-      formData.append("documentNumber", values?.documentNumber);
-      if (
-        values?.documentImageFront &&
-        Array.from(values.documentImageFront)[0]
-      )
-        formData.append(
-          "documentFile",
-          Array.from(values.documentImageFront)[0]
-        );
-      if (values?.documentImageBack && Array.from(values.documentImageBack)[0])
-        formData.append(
-          "documentFile",
-          Array.from(values.documentImageBack)[0]
-        );
 
+      formData.append("documentType", values.documentType);
+      formData.append("documentNumber", values?.documentNumber || "");
+
+      // Utility to safely extract the first File (if it exists)
+      const getFirstFile = (input) => {
+        if (!input) return null;
+
+        if (input instanceof FileList) return input[0];
+        if (Array.isArray(input)) return input[0];
+        if (input.file instanceof File) return input.file; // for wrapped file objects
+        if (input instanceof File) return input;
+
+        return null;
+      };
+
+      const frontFile = getFirstFile(values.documentImageFront);
+      const backFile = getFirstFile(values.documentImageBack);
+
+      if (frontFile) formData.append("documentFile", frontFile);
+      if (backFile) formData.append("documentFile", backFile);
+
+      // (Optional) Debug log — helps you verify file objects before sending
+      for (const [key, val] of formData.entries()) {
+        console.log(key, val);
+      }
+
+      // Trigger upload
       kycUpload(formData, {
         onSuccess: (data) => {
           toast.success(data?.message || "KYC submitted successfully");
+          refetchProfile();
         },
         onError: (error) => {
           const errorMessage = pickErrorMessage(error, "Failed to submit KYC");
@@ -82,15 +95,65 @@ const KycSection = () => {
 
   useEffect(() => {
     if (formik.submitCount > 0) {
-      formik?.setFieldTouched("documentImageBack");
-      formik?.setFieldTouched("documentImageFront");
+      setTimeout(() => {
+        formik?.setFieldTouched("documentImageBack");
+        formik?.setFieldTouched("documentImageFront");
+      }, 1000);
     }
   }, [formik.values.documentImageFront, formik.values.documentImageBack]);
+
+  console.log(
+    formik.values.documentImageFront,
+    formik.values.documentImageBack
+  );
 
   const handleFileChange = (field, files) => {
     formik.setFieldValue(field, files);
     formik.setFieldTouched(field, true, true);
   };
+
+  if (userData?.data?.kyc?.status === "pending") {
+    return (
+      <div
+        className="alert alert-info d-flex align-items-center gap-3 py-3 px-4 rounded shadow-sm"
+        style={{ background: "#e9f5ff", border: "1px solid #b6e0fe" }}
+      >
+        <span className="me-2" style={{ fontSize: "1.5rem", color: "#0d6efd" }}>
+          <i className="fa fa-hourglass-half" aria-hidden="true"></i>
+        </span>
+        <div>
+          <div className="fw-bold mb-1" style={{ color: "#0d6efd" }}>
+            KYC Pending
+          </div>
+          <div className="small" style={{ color: "#333" }}>
+            Your KYC is currently under review. Please wait while we verify your
+            documents.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (userData?.data?.kyc?.status === "approved") {
+    return (
+      <div
+        className="alert alert-success d-flex align-items-center gap-3 py-3 px-4 rounded shadow-sm"
+        style={{ background: "#e6f9ed", border: "1px solid #b6f0c4" }}
+      >
+        <span className="me-2" style={{ fontSize: "1.5rem", color: "#198754" }}>
+          <i className="fa fa-check-circle" aria-hidden="true"></i>
+        </span>
+        <div>
+          <div className="fw-bold mb-1" style={{ color: "#198754" }}>
+            KYC Approved
+          </div>
+          <div className="small" style={{ color: "#333" }}>
+            Your KYC has been successfully verified and approved.
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form className="form-style1" onSubmit={formik.handleSubmit}>
@@ -103,9 +166,9 @@ const KycSection = () => {
             <Select
               instanceId="documentType"
               options={[
-                { value: "Aadhar", label: "Aadhar" },
-                { value: "Pan", label: "Pan" },
-                { value: "DL", label: "DL" },
+                { value: "aadhar", label: "Aadhar" },
+                { value: "pan", label: "Pan" },
+                { value: "driving_licence", label: "Driving Licence" },
               ]}
               styles={smallSelectStyles}
               className="select-custom filterSelect"
