@@ -1,23 +1,27 @@
+"use client";
+
 import { AuthContext } from "@/Layouts/AuthProvider";
-import { useContext, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
-const LogoutConfirmation = ({ sideBarPanelCloseRef }) => {
+const GlobalLogoutModal = () => {
   const { logout } = useContext(AuthContext);
   const cancelButtonRef = useRef(null);
+  const router = useRouter();
 
   // Set the modal backdrop z-index to 200 when the modal is shown
   useEffect(() => {
     const handleShow = () => {
       // Bootstrap 5 uses .modal-backdrop
-      const backdrops = document.querySelectorAll('.modal-backdrop');
+      const backdrops = document.querySelectorAll(".modal-backdrop");
       backdrops.forEach((backdrop) => {
-        backdrop.style.zIndex = '200';
+        backdrop.style.zIndex = "200";
       });
     };
 
     // Listen for modal show event
-    const modal = document.getElementById("logoutModal");
+    const modal = document.getElementById("globalLogoutModal");
     if (modal) {
       modal.addEventListener("shown.bs.modal", handleShow);
     }
@@ -32,7 +36,17 @@ const LogoutConfirmation = ({ sideBarPanelCloseRef }) => {
 
   const handleClose = () => {
     cancelButtonRef?.current?.click();
-    if (sideBarPanelCloseRef?.current) sideBarPanelCloseRef?.current?.click();
+    // Close any open sidebar panels
+    const sidebarCloseButtons = document.querySelectorAll(
+      '[data-bs-dismiss="offcanvas"]'
+    );
+    sidebarCloseButtons.forEach((button) => {
+      if (button.offsetParent !== null) {
+        // Check if element is visible
+        button.click();
+      }
+    });
+    router.push("/");
   };
 
   const handleLogout = () => {
@@ -50,12 +64,13 @@ const LogoutConfirmation = ({ sideBarPanelCloseRef }) => {
       }
     );
   };
+
   return (
     <div
       className="modal fade"
-      id="logoutModal"
+      id="globalLogoutModal"
       tabIndex={-1}
-      aria-labelledby="logoutModalLabel"
+      aria-labelledby="globalLogoutModalLabel"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered">
@@ -71,7 +86,7 @@ const LogoutConfirmation = ({ sideBarPanelCloseRef }) => {
             <div className="d-flex justify-content-center gap-3">
               <button
                 type="button"
-                className="btn btn-outline-secondary  px-4 py-2"
+                className="btn btn-outline-secondary px-4 py-2"
                 data-bs-dismiss="modal"
                 ref={cancelButtonRef}
               >
@@ -93,4 +108,4 @@ const LogoutConfirmation = ({ sideBarPanelCloseRef }) => {
   );
 };
 
-export default LogoutConfirmation;
+export default GlobalLogoutModal;

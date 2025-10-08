@@ -10,7 +10,7 @@ const SidebarDashboard = () => {
       title: "MAIN",
       items: [
         {
-          href: "/dashboard-home",
+          href: "/dashboard",
           icon: "flaticon-discovery",
           text: "Dashboard",
         },
@@ -60,7 +60,7 @@ const SidebarDashboard = () => {
           text: "My Package",
         },
         {
-          href: "/dashboard-my-profile",
+          href: "/my-profile",
           icon: "flaticon-user",
           text: "My Profile",
         },

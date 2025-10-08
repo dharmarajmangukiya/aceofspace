@@ -12,7 +12,7 @@ const DboardMobileNavigation = () => {
       title: "MAIN",
       items: [
         {
-          href: "/dashboard-home",
+          href: "/dashboard",
           icon: "flaticon-discovery",
           text: "Dashboard",
         },
@@ -62,7 +62,7 @@ const DboardMobileNavigation = () => {
           text: "My Package",
         },
         {
-          href: "/dashboard-my-profile",
+          href: "/my-profile",
           icon: "flaticon-user",
           text: "My Profile",
         },

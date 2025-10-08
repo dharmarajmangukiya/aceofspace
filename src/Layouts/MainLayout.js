@@ -1,4 +1,5 @@
 import GlobalLoader from "@/components/common/GlobalLoader";
+import GlobalLogoutModal from "@/components/common/GlobalLogoutModal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./AuthProvider";
@@ -23,6 +24,7 @@ export default function MainLayout({ children }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <GlobalLoader>{children}</GlobalLoader>
+        <GlobalLogoutModal />
       </AuthProvider>
       <Toaster duration={4000} />
     </QueryClientProvider>

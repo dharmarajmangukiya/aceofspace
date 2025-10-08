@@ -1,6 +1,11 @@
 "use client";
 export const PAGE_SIZE = 10;
 
+export const role_enum = {
+  USER: "user",
+  ADMIN: "admin",
+};
+
 export const propertyTypeOptions = {
   // residential - rent
   rent: [
@@ -329,24 +334,52 @@ export const residentialAmenities = [
   "Jogging Park",
 ];
 
-export const sidebarItems = (role) => {
-  if (role === "admin") {
+const commonManageAccount = {
+  title: "MANAGE ACCOUNT",
+  items: [
+    {
+      href: "/dashboard-my-package",
+      icon: "flaticon-protection",
+      text: "My Package",
+    },
+    {
+      href: "/my-profile",
+      icon: "flaticon-user",
+      text: "My Profile",
+    },
+    {
+      href: "#",
+      icon: "flaticon-logout",
+      text: "Logout",
+      props: {
+        role: "button",
+        id: "logoutButton",
+        "data-bs-toggle": "modal",
+        "data-bs-target": "#globalLogoutModal",
+      },
+    },
+  ],
+};
+
+export const getSidebarItems = (role) => {
+  if (role === role_enum.ADMIN) {
     return [
       {
         title: "MAIN",
         items: [
           {
-            href: "/dashboard-home",
+            href: "/dashboard",
             icon: "flaticon-discovery",
             text: "Dashboard",
           },
           {
             href: "/kyc-approval",
-            icon: "flaticon-chat-1",
-            text: "KYC Approval",
+            icon: "fa-solid fa-id-card",
+            text: "Pending KYC",
           },
         ],
       },
+      commonManageAccount,
     ];
   } else {
     return [
@@ -354,7 +387,7 @@ export const sidebarItems = (role) => {
         title: "MAIN",
         items: [
           {
-            href: "/dashboard-home",
+            href: "/dashboard",
             icon: "flaticon-discovery",
             text: "Dashboard",
           },
@@ -395,26 +428,7 @@ export const sidebarItems = (role) => {
           // },
         ],
       },
-      {
-        title: "MANAGE ACCOUNT",
-        items: [
-          {
-            href: "/dashboard-my-package",
-            icon: "flaticon-protection",
-            text: "My Package",
-          },
-          {
-            href: "/dashboard-my-profile",
-            icon: "flaticon-user",
-            text: "My Profile",
-          },
-          {
-            href: "/login",
-            icon: "flaticon-logout",
-            text: "Logout",
-          },
-        ],
-      },
+      commonManageAccount,
     ];
   }
 };

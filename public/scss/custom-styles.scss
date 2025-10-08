@@ -180,3 +180,22 @@
     padding-right: 16px !important;
   }
 }
+
+/* User Dropdown Styling */
+.user-dropdown-trigger {
+  color: white !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    color: #f8f9fa !important;
+    text-decoration: none !important;
+  }
+
+  &:focus {
+    color: white !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+  }
+}

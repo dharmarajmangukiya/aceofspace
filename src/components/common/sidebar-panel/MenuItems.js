@@ -1,10 +1,9 @@
 "use client";
-import LogoutConfirmation from "@/components/common/LogoutConfirmation";
 import { useRouter } from "next/navigation";
 
 const MenuItems = ({ sideBarPanelCloseRef }) => {
   const menuItems = [
-    { title: "Profile", path: "/dashboard-my-profile" },
+    { title: "Profile", path: "/my-profile" },
     { title: "Apartments" },
     { title: "Bungalow" },
     { title: "Houses" },
@@ -40,14 +39,12 @@ const MenuItems = ({ sideBarPanelCloseRef }) => {
             href="#"
             role="button"
             data-bs-toggle="modal"
-            data-bs-target="#logoutModal"
+            data-bs-target="#globalLogoutModal"
           >
             Logout
           </a>
         </li>
       </ul>
-
-      <LogoutConfirmation sideBarPanelCloseRef={sideBarPanelCloseRef} />
     </>
   );
 };

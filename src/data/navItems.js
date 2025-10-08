@@ -82,7 +82,7 @@ export const propertyItems = [
   {
     label: "Dashboard",
     subMenuItems: [
-      { label: "Dashboard Home", href: "/dashboard-home" },
+      { label: "Dashboard Home", href: "/dashboard" },
       { label: "Message", href: "/dashboard-message" },
       { label: "New Property", href: "/add-property" },
       { label: "My Properties", href: "/dashboard-my-properties" },
@@ -90,7 +90,7 @@ export const propertyItems = [
       { label: "Saved Search", href: "/dashboard-saved-search" },
       { label: "Reviews", href: "/dashboard-reviews" },
       { label: "My Package", href: "/dashboard-my-package" },
-      { label: "My Profile", href: "/dashboard-my-profile" },
+      { label: "My Profile", href: "/my-profile" },
     ],
   },
 ];

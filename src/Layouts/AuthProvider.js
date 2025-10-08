@@ -1,13 +1,15 @@
 "use client";
 
 // context/AuthContext.js
-import { getAuthToken, useLogout } from "@/hooks/api/auth";
+import { getAuthToken, getUserData, useLogout } from "@/hooks/api/auth";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(!!getAuthToken());
+  const userData = getUserData();
+  const role = userData?.role?.name ?? "";
 
   useEffect(() => {
     const handleStorageChange = () => setIsAuth(!!getAuthToken());
@@ -23,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   const { mutate: logout } = useLogout();
 
   return (
-    <AuthContext.Provider value={{ isAuth, logout }}>
+    <AuthContext.Provider value={{ isAuth, logout, userData, role }}>
       {children}
     </AuthContext.Provider>
   );

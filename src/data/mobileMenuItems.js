@@ -91,7 +91,7 @@ module.exports = [
   {
     label: "Dashboard",
     subMenu: [
-      { label: "Dashboard Home", path: "/dashboard-home" },
+      { label: "Dashboard Home", path: "/dashboard" },
       { label: "Message", path: "/dashboard-message" },
       { label: "New Property", path: "/add-property" },
       { label: "My Properties", path: "/dashboard-my-properties" },
@@ -99,7 +99,7 @@ module.exports = [
       { label: "Saved Search", path: "/dashboard-saved-search" },
       { label: "Reviews", path: "/dashboard-reviews" },
       { label: "My Package", path: "/dashboard-my-package" },
-      { label: "My Profile", path: "/dashboard-my-profile" },
+      { label: "My Profile", path: "/my-profile" },
     ],
   },
   {

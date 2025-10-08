@@ -16,7 +16,7 @@ const DashboardHeader = () => {
         {
           icon: "flaticon-discovery",
           text: "Dashboard",
-          href: "/dashboard-home",
+          href: "/dashboard",
         },
         {
           icon: "flaticon-chat-1",
@@ -62,7 +62,7 @@ const DashboardHeader = () => {
         {
           icon: "flaticon-user",
           text: "My Profile",
-          href: "/dashboard-my-profile",
+          href: "/my-profile",
         },
         { icon: "flaticon-exit", text: "Logout", href: "/login" },
       ],

@@ -67,7 +67,7 @@ const KycList = () => {
       <div className="row align-items-center pb40">
         <div className="col">
           <div className="dashboard_title_area">
-            <h2>KYC Approval</h2>
+            <h2>Pending KYC</h2>
             <p className="text">
               Review and approve pending KYC submissions below.
             </p>

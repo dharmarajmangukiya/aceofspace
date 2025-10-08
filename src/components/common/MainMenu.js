@@ -55,24 +55,6 @@ const MainMenu = () => {
       className: "megamenu_style",
       activeKey: "listing",
     },
-    {
-      href: "#",
-      label: "Menu-1",
-      className: "megamenu_style",
-      activeKey: "menu-1",
-    },
-    {
-      href: "#",
-      label: "Menu-2",
-      className: "megamenu_style",
-      activeKey: "menu-2",
-    },
-    {
-      href: "#",
-      label: "Menu-3",
-      className: "megamenu_style",
-      activeKey: "menu-3",
-    },
   ];
 
   return (
