@@ -108,77 +108,81 @@ const Header = () => {
                 <div className="d-flex align-items-center">
                   {isLoggedIn ? (
                     <>
-                      {role === role_enum.ADMIN ? (
-                        <>
-                          <li className=" user_setting">
-                            <div className="dropdown">
-                              <a
-                                className="btn p-0 user-dropdown-trigger"
-                                href="#"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                {(() => {
-                                  const name = (
-                                    (firstName || "") +
-                                    " " +
-                                    (lastName || "")
-                                  ).trim();
-                                  return name ? (
-                                    <>
-                                      <i className="far fa-user-circle fz16 me-1" />
-                                      {name}
-                                    </>
-                                  ) : (
-                                    <i className="far fa-user-circle fz16 me-1" />
-                                  );
-                                })()}
-                              </a>
-                              <div className="dropdown-menu">
-                                <div className="user_setting_content">
-                                  {menuItems.map((section, sectionIndex) => (
-                                    <div key={sectionIndex}>
-                                      <p
-                                        className={`fz15 fw400 ff-heading ${
-                                          sectionIndex === 0 ? "mb20" : "mt30"
-                                        }`}
-                                      >
-                                        {section.title}
-                                      </p>
-                                      {section.items.map((item, itemIndex) => (
-                                        <a
-                                          key={itemIndex}
-                                          className={`dropdown-item ${
-                                            pathname == item.href
-                                              ? "-is-active"
-                                              : ""
-                                          } `}
-                                          href={"#"}
-                                          {...(item?.props ?? {})}
-                                          onClick={() => {
-                                            if (item?.href !== "#") {
-                                              router.push(item?.href);
-                                            }
-                                          }}
-                                        >
-                                          <i className={`${item.icon} mr10`} />
-                                          {item.text}
-                                        </a>
-                                      ))}
-                                    </div>
+                      <li className=" user_setting">
+                        <div className="dropdown">
+                          <a
+                            className="btn p-0 user-dropdown-trigger"
+                            href="#"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            {(() => {
+                              let name = "";
+                              if (firstName && lastName) {
+                                name = (
+                                  (firstName || "") +
+                                  " " +
+                                  (lastName || "")
+                                ).trim();
+                              } else {
+                                name = "Profile";
+                              }
+
+                              return name ? (
+                                <>
+                                  <i className="far fa-user-circle fz16 me-1" />
+                                  {name}
+                                </>
+                              ) : (
+                                <i className="far fa-user-circle fz16 me-1" />
+                              );
+                            })()}
+                          </a>
+                          <div className="dropdown-menu">
+                            <div className="user_setting_content">
+                              {menuItems.map((section, sectionIndex) => (
+                                <div key={sectionIndex}>
+                                  <p
+                                    className={`fz15 fw400 ff-heading ${
+                                      sectionIndex === 0 ? "mb20" : "mt30"
+                                    }`}
+                                  >
+                                    {section.title}
+                                  </p>
+                                  {section.items.map((item, itemIndex) => (
+                                    <a
+                                      key={itemIndex}
+                                      className={`dropdown-item ${
+                                        pathname == item.href
+                                          ? "-is-active"
+                                          : ""
+                                      } `}
+                                      href={"#"}
+                                      {...(item?.props ?? {})}
+                                      onClick={() => {
+                                        if (item?.href !== "#") {
+                                          router.push(item?.href);
+                                        }
+                                      }}
+                                    >
+                                      <i className={`${item.icon} mr10`} />
+                                      {item.text}
+                                    </a>
                                   ))}
                                 </div>
-                              </div>
+                              ))}
                             </div>
-                          </li>
-                          <Link
-                            className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
-                            href="/dashboard"
-                          >
-                            Dashboard
-                            <i className="fal fa-arrow-right-long" />
-                          </Link>
-                        </>
+                          </div>
+                        </div>
+                      </li>
+                      {role === role_enum.ADMIN ? (
+                        <Link
+                          className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
+                          href="/dashboard"
+                        >
+                          Dashboard
+                          <i className="fal fa-arrow-right-long" />
+                        </Link>
                       ) : (
                         <Link
                           className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
