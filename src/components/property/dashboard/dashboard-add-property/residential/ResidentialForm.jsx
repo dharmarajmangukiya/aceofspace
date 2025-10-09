@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 import AddressStep from "./components/AddressStep";
 import AgreementTypeStep from "./components/AgreementTypeStep";
 import AreaDetailsStep from "./components/AreaDetailsStep";
@@ -8,9 +7,22 @@ import OtherDetailsStep from "./components/OtherDetailsStep";
 import RentDetailsStep from "./components/RentDetailsStep";
 import RoomDetailsStep from "./components/RoomDetailsStep";
 
-const ResidentialForm = ({ subType, onBackToSelection }) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({});
+const ResidentialForm = ({
+  subType,
+  onBackToSelection,
+  formikProps,
+  currentStep,
+  setCurrentStep,
+}) => {
+  const {
+    values,
+    setFieldValue,
+    isSubmitting,
+    errors,
+    touched,
+    handleSubmit,
+    setFieldTouched,
+  } = formikProps;
 
   // Define steps - ALL residential subtypes use the same 7 steps
   const getSteps = () => {
@@ -49,7 +61,10 @@ const ResidentialForm = ({ subType, onBackToSelection }) => {
   };
 
   const handleFormDataChange = (stepData) => {
-    setFormData((prev) => ({ ...prev, ...stepData }));
+    // Update Formik values instead of local state
+    Object.keys(stepData).forEach((key) => {
+      setFieldValue(key, stepData[key]);
+    });
   };
 
   const CurrentStepComponent = steps.find(
@@ -90,9 +105,12 @@ const ResidentialForm = ({ subType, onBackToSelection }) => {
           <div className="ps-widget bgc-white bdrs12 p30 overflow-hidden position-relative">
             {CurrentStepComponent && (
               <CurrentStepComponent
-                formData={formData}
+                formData={values}
                 onDataChange={handleFormDataChange}
                 subType={subType}
+                errors={errors}
+                touched={touched}
+                setFieldTouched={setFieldTouched}
               />
             )}
           </div>
@@ -123,9 +141,11 @@ const ResidentialForm = ({ subType, onBackToSelection }) => {
               ) : (
                 <button
                   className="ud-btn btn-thm"
-                  onClick={() => console.log("Submit form:", formData)}
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
                 >
-                  Submit Property
+                  {isSubmitting ? "Submitting..." : "Submit Property"}
                 </button>
               )}
             </div>
@@ -139,6 +159,11 @@ const ResidentialForm = ({ subType, onBackToSelection }) => {
 ResidentialForm.propTypes = {
   subType: PropTypes.string.isRequired,
   onBackToSelection: PropTypes.func.isRequired,
+  formikProps: PropTypes.shape({
+    values: PropTypes.object.isRequired,
+    setFieldValue: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default ResidentialForm;

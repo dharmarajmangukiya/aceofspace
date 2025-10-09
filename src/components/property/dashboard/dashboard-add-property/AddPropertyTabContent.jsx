@@ -2,16 +2,23 @@
 import { useAddProperty } from "@/hooks/api/property";
 import { addPropertyTypes } from "@/utils/constants";
 import { customSelectStyles } from "@/utils/helper";
+import { useFormik } from "formik";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import Select from "react-select";
-import CommercialForm from "./commercial/CommercialForm";
+import {
+  convertToFormData,
+  getInitialValues,
+  validationSchema,
+} from "./formConfig";
 import ResidentialForm from "./residential/ResidentialForm";
 
 const AddPropertyTabContent = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState(null);
   const [selectedSubType, setSelectedSubType] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
 
-  const { mutate: addProperty } = useAddProperty();
+  const { mutate: addProperty, isPending: isAddingProperty } = useAddProperty();
 
   const handlePropertyTypeSelect = (propertyType) => {
     setSelectedPropertyType(propertyType);
@@ -26,6 +33,41 @@ const AddPropertyTabContent = () => {
   const handleSubTypeChange = (subType) => {
     setSelectedSubType(subType);
   };
+
+  const formik = useFormik({
+    initialValues: getInitialValues(selectedPropertyType?.id, selectedSubType),
+    validationSchema: validationSchema,
+    enableReinitialize: true,
+    validateOnBlur: true,
+    validateOnChange: true,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const formData = convertToFormData(values);
+
+        await new Promise((resolve, reject) => {
+          addProperty(formData, {
+            onSuccess: (response) => {
+              toast.success("Property added successfully!");
+              resetForm();
+              setSelectedPropertyType(null);
+              setSelectedSubType("");
+              resolve(response);
+            },
+            onError: (error) => {
+              toast.error(
+                error.response?.data?.message || "Failed to add property"
+              );
+              reject(error);
+            },
+          });
+        });
+      } catch (error) {
+        console.error("Form submission error:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   if (!selectedPropertyType) {
     return (
@@ -104,6 +146,7 @@ const AddPropertyTabContent = () => {
                       Property Sub-type
                     </label>
                     <Select
+                      isDisabled={currentStep !== 1}
                       options={selectedPropertyType.subTypes.map((subType) => ({
                         value: subType,
                         label: subType,
@@ -130,7 +173,13 @@ const AddPropertyTabContent = () => {
                         value: selectedSubType,
                         label: selectedSubType,
                       }}
-                      onChange={(e) => handleSubTypeChange(e?.value ?? "")}
+                      onChange={(e) => {
+                        const newSubType = e?.value ?? "";
+                        handleSubTypeChange(newSubType);
+                        formik.resetForm();
+                        setCurrentStep(1);
+                        formik.setFieldValue("subType", newSubType);
+                      }}
                     />
                   </div>
 
@@ -150,6 +199,29 @@ const AddPropertyTabContent = () => {
                     <i className="fas fa-arrow-left"></i>
                     Back to Selection
                   </button>
+
+                  {/* Debug button to test validation */}
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      formik.handleSubmit();
+                      formik.validateForm().then((errors) => {
+                        console.log("Form errors:", errors);
+                        console.log("Form values:", formik.values);
+                        console.log("Touched fields:", formik.touched);
+                      });
+                    }}
+                    style={{
+                      borderRadius: "8px",
+                      fontWeight: "600",
+                      minHeight: "45px",
+                      padding: "10px 16px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Debug Validation
+                  </button>
                 </div>
               </div>
             </div>
@@ -162,11 +234,20 @@ const AddPropertyTabContent = () => {
         <ResidentialForm
           subType={selectedSubType}
           onBackToSelection={handleBackToSelection}
+          formikProps={formik}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
         />
       ) : (
-        <CommercialForm
+        <Commercbedrooms
+          bathrooms
+          balconies
+          livingRoomsialForm
           subType={selectedSubType}
           onBackToSelection={handleBackToSelection}
+          formikProps={formik}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
         />
       )}
     </div>

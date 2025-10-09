@@ -10,9 +10,10 @@ const MediaStep = ({ formData, onDataChange, subType }) => {
   };
 
   const handleFileUpload = (field, files) => {
-    // In a real application, you would handle file upload here
-    console.log(`Uploading files for ${field}:`, files);
-    handleInputChange(field, files);
+    // Convert FileList to Array and update the media field
+    const fileArray = Array.from(files);
+    console.log(`Uploading files for ${field}:`, fileArray);
+    handleInputChange("media", fileArray);
   };
 
   const handleDragOver = (e, field) => {
@@ -118,17 +119,15 @@ const MediaStep = ({ formData, onDataChange, subType }) => {
               type="file"
               className="d-none"
               accept="video/*"
-              onChange={(e) =>
-                handleFileUpload("propertyVideo", e.target.files)
-              }
+              onChange={(e) => handleFileUpload("video", e.target.files)}
             />
           </div>
-          {formData.propertyVideo && formData.propertyVideo.length > 0 && (
+          {formData.media && formData.media.length > 0 && (
             <div className="mt-2">
               <small
                 style={{ color: "var(--primary-color)", fontWeight: "500" }}
               >
-                ✓ {formData.propertyVideo.length} video(s) selected
+                ✓ {formData.media.length} file(s) selected
               </small>
             </div>
           )}
@@ -206,17 +205,15 @@ const MediaStep = ({ formData, onDataChange, subType }) => {
               className="d-none"
               multiple
               accept="image/*"
-              onChange={(e) =>
-                handleFileUpload("propertyImages", e.target.files)
-              }
+              onChange={(e) => handleFileUpload("images", e.target.files)}
             />
           </div>
-          {formData.propertyImages && formData.propertyImages.length > 0 && (
+          {formData.media && formData.media.length > 0 && (
             <div className="mt-2">
               <small
                 style={{ color: "var(--primary-color)", fontWeight: "500" }}
               >
-                ✓ {formData.propertyImages.length}/10 image(s) selected
+                ✓ {formData.media.length} file(s) selected
               </small>
             </div>
           )}
