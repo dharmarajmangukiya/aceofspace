@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import OtpVerification from "./OtpVerification";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -143,7 +143,11 @@ const LoginSignupModal = () => {
 
   if (!isModalOpen) return null;
 
-  return <LoginSignupModalComponent />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginSignupModalComponent />
+    </Suspense>
+  );
 };
 
 export default LoginSignupModal;

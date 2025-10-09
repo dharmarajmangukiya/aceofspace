@@ -11,6 +11,7 @@ import Testimonial from "@/components/home/Testimonial";
 import FilterWithProperties from "@/components/home/filter-with-property";
 import Footer from "@/components/home/footer";
 import Link from "next/link";
+import { Suspense } from "react";
 import Wrapper from "./layout-wrapper/wrapper";
 
 export const metadata = {
@@ -21,7 +22,9 @@ export default function MainRoot() {
   return (
     <Wrapper>
       {/* Main Header Nav */}
-      <Header />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+      </Suspense>
       {/* End Main Header Nav */}
 
       {/* Mobile Nav  */}
