@@ -1,4 +1,5 @@
 "use client";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import OtpVerification from "./OtpVerification";
 import SignIn from "./SignIn";
@@ -8,8 +9,22 @@ const LoginSignupModalComponent = () => {
   const closeModal = useRef(null);
   const loginTabButton = useRef(null);
   const signUpTabButton = useRef(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [signUpData, setSignUpData] = useState({});
+
+  const handleClose = () => {
+    const openParam = searchParams.get("open");
+    if (openParam === "login") {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("open");
+      const newQuery = params.toString();
+      router.replace(
+        `${window.location.pathname}${newQuery ? `?${newQuery}` : ""}`
+      );
+    }
+  };
 
   return (
     <div className="modal-content">
@@ -23,6 +38,7 @@ const LoginSignupModalComponent = () => {
           className="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          onClick={handleClose}
         />
       </div>
       {/* End header */}

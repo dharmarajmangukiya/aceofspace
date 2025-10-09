@@ -1,3 +1,4 @@
+import ClientOnly from "@/components/common/ClientOnly";
 import DashboardHeader from "@/components/common/DashboardHeader";
 import MobileMenu from "@/components/common/mobile-menu";
 import DboardMobileNavigation from "@/components/property/dashboard/DboardMobileNavigation";
@@ -6,7 +7,18 @@ import SidebarDashboard from "@/components/property/dashboard/SidebarDashboard";
 
 const Layout = ({ children }) => {
   return (
-    <>
+    <ClientOnly
+      fallback={
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ minHeight: "50vh" }}
+        >
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      }
+    >
       {/* Main Header Nav */}
       <DashboardHeader />
       {/* End Main Header Nav */}
@@ -41,7 +53,7 @@ const Layout = ({ children }) => {
         </div>
       </div>
       {/* dashboard_content_wrapper */}
-    </>
+    </ClientOnly>
   );
 };
 

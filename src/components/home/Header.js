@@ -6,8 +6,8 @@ import { AuthContext } from "@/Layouts/AuthProvider";
 import { role_enum } from "@/utils/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
 import LoginSignupModal from "../common/login-signup-modal";
 const menuItems = [
   {
@@ -41,6 +41,16 @@ const Header = () => {
   const { firstName, lastName } = userData || {};
   const router = useRouter();
   const pathname = usePathname();
+  const loginButtonRef = useRef(null);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!searchParams) return;
+    const openParam = searchParams.get("open");
+    if (openParam === "login" && loginButtonRef.current) {
+      loginButtonRef.current.click();
+    }
+  }, [searchParams, pathname]);
 
   const changeBackground = () => {
     if (window.scrollY >= 10) {
@@ -219,6 +229,7 @@ const Header = () => {
                   ) : (
                     <Link
                       href="#"
+                      ref={loginButtonRef}
                       // href="/auth/login"
                       className="login-info d-flex align-items-center"
                       data-bs-toggle="modal"
