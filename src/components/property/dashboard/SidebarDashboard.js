@@ -36,7 +36,7 @@ const SidebarDashboard = () => {
                     }
                   }}
                   className={`items-center   ${
-                    pathname == item.href ? "-is-active" : ""
+                    pathname === item.href ? "-is-active" : ""
                   } `}
                 >
                   <i className={`${item.icon} mr15`} />

@@ -12,6 +12,10 @@ export const customSelectStyles = {
       backgroundColor,
     };
   },
+  menu: (provided) => ({
+    ...provided,
+    zIndex: 4,
+  }),
 };
 
 export const multiSelectCustomSelectStyles = {
