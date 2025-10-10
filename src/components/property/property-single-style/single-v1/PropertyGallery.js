@@ -3,28 +3,10 @@ import listings from "@/data/listings";
 import Image from "next/image";
 import "photoswipe/dist/photoswipe.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
+import { API_BASE_DOCUMENT_URL } from "@/utils/config";
 
-const images = [
-  {
-    src: "/images/properties/detail/listing-single-6-1.webp",
-    alt: "2.jpg",
-  },
-  {
-    src: "/images/properties/detail/listing-single-6-2.webp",
-    alt: "3.jpg",
-  },
-  {
-    src: "/images/properties/detail/listing-single-6-3.webp",
-    alt: "4.jpg",
-  },
-  {
-    src: "/images/properties/detail/listing-single-6-4.webp",
-    alt: "5.jpg",
-  },
-];
 
-const PropertyGallery = ({ id }) => {
-  const data = listings.filter((elm) => elm.id == id)[0] || listings[0];
+const PropertyGallery = ({ id, images = [] }) => {
   return (
     <>
       <Gallery>
@@ -32,14 +14,14 @@ const PropertyGallery = ({ id }) => {
           <div className="sp-img-content mb15-md">
             <div className="popup-img preview-img-1 sp-img">
               <Item
-                original={"/images/properties/detail/listing-single-6-1.webp"}
-                thumbnail={"/images/properties/detail/listing-single-6-1.webp"}
+                original={`${API_BASE_DOCUMENT_URL}/${images[0]}`}
+                thumbnail={`${API_BASE_DOCUMENT_URL}/${images[0]}`}
                 width={610}
                 height={510}
               >
                 {({ ref, open }) => (
                   <Image
-                    src={"/images/properties/detail/listing-single-6-1.webp"}
+                    src={`${API_BASE_DOCUMENT_URL}/${images[0]}`}
                     width={591}
                     height={558}
                     ref={ref}
@@ -54,18 +36,18 @@ const PropertyGallery = ({ id }) => {
           </div>
         </div>
         {/* End .col-6 */}
-
+        
         <div className="col-sm-6">
           <div className="row">
-            {images.map((image, index) => (
+            {images?.map((image, index) => (
               <div className="col-6 ps-sm-0" key={index}>
                 <div className="sp-img-content">
                   <div
                     className={`popup-img preview-img-${index + 2} sp-img mb10`}
                   >
                     <Item
-                      original={image.src}
-                      thumbnail={image.src}
+                      original={`${API_BASE_DOCUMENT_URL}/${image}`}
+                      thumbnail={`${API_BASE_DOCUMENT_URL}/${image}`}
                       width={270}
                       height={250}
                     >
@@ -77,8 +59,8 @@ const PropertyGallery = ({ id }) => {
                           ref={ref}
                           onClick={open}
                           role="button"
-                          src={image.src}
-                          alt={image.alt}
+                          src={`${API_BASE_DOCUMENT_URL}/${image}`}
+                          alt={'image'}
                         />
                       )}
                     </Item>
