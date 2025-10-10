@@ -2,8 +2,8 @@
 
 const ListingStatus = ({ filterFunctions }) => {
   const options = [
-    { id: "rent", label: "Rent", defaultChecked: true },
-    { id: "lease", label: "Lease" },
+    { id: "residential", label: "Residential" },
+    { id: "commercial", label: "Commercial" },
   ];
 
   return (

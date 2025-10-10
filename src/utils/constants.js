@@ -8,7 +8,7 @@ export const role_enum = {
 
 export const propertyTypeOptions = {
   // residential - rent
-  rent: [
+  residential: [
     {
       label: "All",
       value: "All",
@@ -20,7 +20,7 @@ export const propertyTypeOptions = {
     { label: "Villa", value: "Villa" },
   ],
   // commercial - lease
-  lease: [
+  commercial: [
     {
       label: "All",
       value: "All",

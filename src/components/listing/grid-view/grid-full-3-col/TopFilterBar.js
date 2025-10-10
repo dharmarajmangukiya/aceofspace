@@ -25,7 +25,7 @@ const TopFilterBar = ({
                 data-bs-auto-close="outside"
               >
                 For{" "}
-                {filterFunctions?.listingStatus === "rent" ? "Rent" : "Lease"}
+                {filterFunctions?.listingStatus === "residential" ? "Residential" : "Commercial"}
                 <i className="fa fa-angle-down ms-2" />
               </button>
               <div className="dropdown-menu">
@@ -117,7 +117,7 @@ const TopFilterBar = ({
                 data-bs-toggle="dropdown"
                 data-bs-auto-close="outside"
               >
-                {filterFunctions?.listingStatus === "rent"
+                {filterFunctions?.listingStatus === "residential"
                   ? "Rent"
                   : "Lease Amount"}
                 <i className="fa fa-angle-down ms-2" />
@@ -126,9 +126,9 @@ const TopFilterBar = ({
               <div className="dropdown-menu dd3">
                 <div className="widget-wrapper bdrb1 pb25 mb0 pl20 pr20">
                   <h6 className="list-title">
-                    {filterFunctions?.listingStatus === "rent"
-                      ? "Rent"
-                      : "Lease"}{" "}
+                    {filterFunctions?.listingStatus === "residential"
+                      ? "Residential"
+                      : "Commercial"}{" "}
                     Range
                   </h6>
                   {/* Range Slider Desktop Version */}
@@ -150,7 +150,7 @@ const TopFilterBar = ({
 
             {/* TBD from client */}
 
-            {filterFunctions?.listingStatus === "rent" && (
+            {filterFunctions?.listingStatus === "residential" && (
               <li className="list-inline-item position-relative">
                 <button
                   type="button"

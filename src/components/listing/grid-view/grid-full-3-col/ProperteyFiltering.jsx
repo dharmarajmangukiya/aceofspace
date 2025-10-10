@@ -2,9 +2,9 @@
 
 import CommercialAdvanceFilterModal from "@/components/common/filters/commercial-advance-filter";
 import RentalAdvanceFilterModal from "@/components/common/filters/rental-advance-filter";
-import listings from "@/data/listings";
+// import listings from "@/data/listings";
 import { useGetProperties } from "@/hooks/api/property";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PaginationTwo from "../../PaginationTwo";
 import ListingSidebar from "../../sidebar";
@@ -12,38 +12,37 @@ import FeaturedListings from "./FeatuerdListings";
 import TopFilterBar from "./TopFilterBar";
 
 export default function ProperteyFiltering() {
+  
   const searchParams = useSearchParams();
-
-  const { data: properties } = useGetProperties(searchParams);
+  const router = useRouter();
+  
+  const { data: properties, isLoading, error, refetch } = useGetProperties(searchParams);
 
   const params = Object.fromEntries([...searchParams]);
-  const rentOrLease = ["rent", "lease"].includes(params?.rl)
-    ? params?.rl
-    : "rent";
 
-  const [currentSortingOption, setCurrentSortingOption] = useState("Newest");
+  const rentOrLease = ["residential", "commercial"].includes(params?.Type) ? params?.Type : "residential";
+  const sortOption = ["latest", "bestMatch", "priceLow", "priceHigh"].includes(params?.Sort) ? params?.Sort : "latest";
 
-  const [sortedFilteredData, setSortedFilteredData] = useState(
-    listings.slice(0, 18)
-  );
+  const [sortedFilteredData, setSortedFilteredData] = useState([]);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [colstyle, setColstyle] = useState(false);
   const [pageItems, setPageItems] = useState([]);
-  const [pageContentTrac, setPageContentTrac] = useState([]);
 
   useEffect(() => {
-    setPageItems(
-      sortedFilteredData.slice((pageNumber - 1) * 9, pageNumber * 9)
-    );
-    setPageContentTrac([
-      (pageNumber - 1) * 9 + 1,
-      pageNumber * 9,
-      sortedFilteredData.length,
-    ]);
-  }, [pageNumber, sortedFilteredData]);
-
+    setPageNumber(1);
+  }, [searchParams]);
+  
+  useEffect(() => {
+    if (properties) {
+      setPageItems((properties?.pages[0].status == 1 || properties?.pages[0].data?.list.length) ? properties?.pages[0].data?.list : []);
+    }
+  }, [properties]);
+  
+  const [pageContentTrac, setPageContentTrac] = useState([]);
+  
   const [listingStatus, setListingStatus] = useState(rentOrLease);
+  const [currentSortingOption, setCurrentSortingOption] = useState(sortOption);
   const [propertyTypes, setPropertyTypes] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [bedrooms, setBedrooms] = useState(0);
@@ -63,7 +62,7 @@ export default function ProperteyFiltering() {
     setSquirefeet([]);
     setyearBuild([0, 2050]);
     setCategories([]);
-    setCurrentSortingOption("Newest");
+    setCurrentSortingOption();
     document.querySelectorAll(".filterInput").forEach(function (element) {
       element.value = null;
     });
@@ -71,11 +70,25 @@ export default function ProperteyFiltering() {
     document.querySelectorAll(".filterSelect").forEach(function (element) {
       element.value = "All Cities";
     });
+    
+    // Reset URL search parameters and trigger refetch
+    router.replace(window.location.pathname, { scroll: false });
   };
 
   const handlelistingStatus = (elm) => {
+    const currentParams = new URLSearchParams(searchParams);
+    currentParams.set('Type', elm);
+    const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+    router.replace(newUrl, { scroll: false });
     setListingStatus(elm);
   };
+
+  useEffect(() => {
+    const currentParams = new URLSearchParams(searchParams);
+    currentParams.set('Sort', currentSortingOption);
+    const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+    router.replace(newUrl, { scroll: false });
+  }, [currentSortingOption]);
 
   const handlepropertyTypes = (elm) => {
     if (elm == "All") {
@@ -96,7 +109,6 @@ export default function ProperteyFiltering() {
     setBathroms(elm);
   };
   const handlelocation = (elm) => {
-    console.log(elm);
     setLocation(elm);
   };
   const handlesquirefeet = (elm) => {
@@ -128,7 +140,6 @@ export default function ProperteyFiltering() {
     listingStatus,
     propertyTypes,
     resetFilter,
-
     bedrooms,
     bathroms,
     location,
@@ -174,7 +185,7 @@ export default function ProperteyFiltering() {
             aria-labelledby="advanceSeachModalLabel"
             aria-hidden="true"
           >
-            {filterFunctions?.listingStatus == "rent" ? (
+            {filterFunctions?.listingStatus == "residential" ? (
               <RentalAdvanceFilterModal filterFunctions={filterFunctions} />
             ) : (
               <CommercialAdvanceFilterModal filterFunctions={filterFunctions} />
@@ -194,7 +205,34 @@ export default function ProperteyFiltering() {
         {/* End TopFilterBar */}
 
         <div className="row">
-          <FeaturedListings colstyle={colstyle} data={pageItems} />
+          {isLoading ? (
+            <div className="col-12 text-center py-5">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mt-3">Loading properties...</p>
+            </div>
+          ) : error ? (
+            <div className="col-12 text-center py-5">
+              <div className="alert alert-danger" role="alert">
+                <h5>Error loading properties</h5>
+                <p>{error.message || 'Failed to fetch properties. Please try again.'}</p>
+                <button 
+                  className="btn btn-primary mt-2" 
+                  onClick={() => refetch()}
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          ) : pageItems.length === 0 ? (
+            <div className="col-12 text-center py-5">
+              <h5>No properties found</h5>
+              <p>Try adjusting your search criteria or filters.</p>
+            </div>
+          ) : (
+            <FeaturedListings colstyle={colstyle} data={pageItems} />
+          )}
         </div>
         {/* End .row */}
 

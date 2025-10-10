@@ -18,7 +18,7 @@ import Bedroom from "./Bedroom";
 import Facilities from "./Facility";
 import PriceRange from "./PriceRange";
 
-const catOptions = propertyTypeOptions["lease"];
+const catOptions = propertyTypeOptions["commercial"];
 
 const CommercialAdvanceFilterModal = ({ filterFunctions }) => {
   return (

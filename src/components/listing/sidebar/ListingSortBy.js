@@ -2,10 +2,10 @@
 
 const ListingSortBy = ({ setCurrentSortingOption, currentSortingOption }) => {
   const options = [
-    { id: "flexRadioDefault1", label: "Newest", defaultChecked: true },
-    { id: "flexRadioDefault2", label: "Best match" },
-    { id: "flexRadioDefault3", label: "Price low" },
-    { id: "flexRadioDefault4", label: "Price high" },
+    { id: "latest", label: "Newest" },
+    { id: "bestMatch", label: "Best match" },
+    { id: "priceLow", label: "Price low" },
+    { id: "priceHigh", label: "Price high" },
   ];
 
   return (
@@ -18,8 +18,8 @@ const ListingSortBy = ({ setCurrentSortingOption, currentSortingOption }) => {
           <input
             className="form-check-input"
             type="radio"
-            checked={currentSortingOption == option.label}
-            onChange={() => setCurrentSortingOption(option.label)}
+            checked={currentSortingOption == option.id}
+            onChange={() => setCurrentSortingOption(option.id)}
           />
           <label className="form-check-label" htmlFor={option.id}>
             {option.label}

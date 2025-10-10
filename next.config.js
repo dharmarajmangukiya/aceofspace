@@ -16,6 +16,11 @@ const nextConfig = {
         protocol: "https", // or 'http' if needed
         hostname: "**", // matches any domain
       },
+      {
+        protocol: "http", // or 'http' if needed
+        hostname: 'settlewise.in',
+        hostname: "**", // matches any domain
+      },
     ],
   },
 };

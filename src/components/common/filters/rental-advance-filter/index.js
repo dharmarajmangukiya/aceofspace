@@ -12,7 +12,7 @@ import Bathroom from "./Bathroom";
 import Bedroom from "./Bedroom";
 import PriceRange from "./PriceRange";
 
-const catOptions = propertyTypeOptions["rent"];
+const catOptions = propertyTypeOptions["residential"];
 
 const RentalAdvanceFilterModal = ({ filterFunctions }) => {
   const customStyles = {

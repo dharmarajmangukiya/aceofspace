@@ -15,7 +15,7 @@ const page = () => {
                 <h2 className="title">Property Listing</h2>
                 <div className="breadcumb-list">
                   <Link href="/">Home</Link>
-                  <a>Residential Listing</a>
+                  <a>Properties</a>
                 </div>
                 <a
                   className="filter-btn-left mobile-filter-btn d-block d-lg-none"

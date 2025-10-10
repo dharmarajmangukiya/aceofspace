@@ -20,14 +20,17 @@ export const useGetPropertyDetail = (propertyId) => {
 
 // Get Properties with Infinite Scroll
 export const useGetProperties = (searchParams) => {
+  // Convert URLSearchParams to a serializable object for query key
+  const searchParamsObj = searchParams ? Object.fromEntries([...searchParams]) : {};
+  
   return useInfiniteQuery({
-    queryKey: ["properties", searchParams],
+    queryKey: ["properties", searchParamsObj],
     enabled: true,
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       try {
-        const response = await api.get("/properties", {
-          params: { ...searchParams, page: pageParam },
+        const response = await api.get("/property/list", {
+          params: { ...searchParamsObj, page: pageParam },
         });
         return response.data;
       } catch (error) {
@@ -38,6 +41,9 @@ export const useGetProperties = (searchParams) => {
       if (!lastPage.pagination?.isNextPage) return undefined;
       return allPages.length + 1;
     },
+    // Ensure fresh data when search parameters change
+    refetchOnMount: "always",
+    staleTime: 0,
   });
 };
 
