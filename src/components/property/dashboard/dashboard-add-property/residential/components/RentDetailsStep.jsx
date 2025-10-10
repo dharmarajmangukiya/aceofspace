@@ -1,9 +1,19 @@
 import { smallSelectStyles } from "@/utils/helper";
 import Select from "react-select";
 
-const RentDetailsStep = ({ formData, onDataChange, subType }) => {
+const RentDetailsStep = ({
+  formData,
+  onDataChange,
+  subType,
+  errors,
+  touched,
+}) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
+  };
+
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] && errors[fieldName] ? errors[fieldName] : null;
   };
 
   return (
@@ -19,7 +29,9 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
             <div className="input-group">
               <input
                 type="number"
-                className="form-control filterInput"
+                className={`form-control filterInput no-spinner ${
+                  getFieldError("expectedRent") ? "is-invalid" : ""
+                }`}
                 placeholder="Enter expected rent"
                 value={formData.expectedRent || ""}
                 onChange={(e) =>
@@ -28,10 +40,13 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
               />
               <span className="input-group-text">₹/month</span>
             </div>
+            {getFieldError("expectedRent") && (
+              <div className="text-danger">{getFieldError("expectedRent")}</div>
+            )}
           </div>
 
           <div className="col mb-3">
-            <label className="form-label">Maintenance</label>
+            <label className="form-label">Maintenance *</label>
             <Select
               instanceId="maintenance"
               options={[
@@ -40,7 +55,7 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
                 { value: "Quarterly", label: "Quarterly" },
                 { value: "Yearly", label: "Yearly" },
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("maintenance"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
@@ -49,6 +64,9 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
               }}
               onChange={(e) => handleInputChange("maintenance", e.value)}
             />
+            {getFieldError("maintenance") && (
+              <div className="text-danger">{getFieldError("maintenance")}</div>
+            )}
           </div>
 
           <div className="col mb-3">
@@ -72,6 +90,11 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
                 Electricity and water charges excluded
               </label>
             </div>
+            {getFieldError("electricityWaterExcluded") && (
+              <div className="text-danger">
+                {getFieldError("electricityWaterExcluded")}
+              </div>
+            )}
           </div>
 
           <div className="col mb-3">
@@ -92,43 +115,51 @@ const RentDetailsStep = ({ formData, onDataChange, subType }) => {
                 Price Negotiation
               </label>
             </div>
+            {getFieldError("priceNegotiation") && (
+              <div className="text-danger">
+                {getFieldError("priceNegotiation")}
+              </div>
+            )}
           </div>
 
           <div className="col mb-3">
-            <div className="form-check d-flex align-items-center gap-2">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="bookingAmount"
-                checked={formData.bookingAmount || false}
-                onChange={(e) =>
-                  handleInputChange("bookingAmount", e.target.checked)
-                }
-              />
-              <label className="form-check-label mb-0" htmlFor="bookingAmount">
-                Booking amount
-              </label>
-            </div>
+            <label className="form-label">Booking amount</label>
+            <input
+              type="number"
+              className={`form-control no-spinner filterInput ${
+                getFieldError("bookingAmount") ? "is-invalid" : ""
+              }`}
+              placeholder="Enter booking amount"
+              value={formData.bookingAmount || ""}
+              onChange={(e) =>
+                handleInputChange("bookingAmount", e.target.value)
+              }
+            />
+            {getFieldError("bookingAmount") && (
+              <div className="text-danger">
+                {getFieldError("bookingAmount")}
+              </div>
+            )}
           </div>
 
           <div className="col mb-3">
-            <div className="form-check d-flex align-items-center gap-2">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="membershipCharge"
-                checked={formData.membershipCharge || false}
-                onChange={(e) =>
-                  handleInputChange("membershipCharge", e.target.checked)
-                }
-              />
-              <label
-                className="form-check-label mb-0"
-                htmlFor="membershipCharge"
-              >
-                Membership charge
-              </label>
-            </div>
+            <label className="form-label">Membership charge</label>
+            <input
+              type="number"
+              className={`form-control no-spinner filterInput ${
+                getFieldError("membershipCharge") ? "is-invalid" : ""
+              }`}
+              placeholder="Enter membership charge"
+              value={formData.membershipCharge || ""}
+              onChange={(e) =>
+                handleInputChange("membershipCharge", e.target.value)
+              }
+            />
+            {getFieldError("membershipCharge") && (
+              <div className="text-danger">
+                {getFieldError("membershipCharge")}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { smallSelectStyles } from "@/utils/helper";
 import Select from "react-select";
 
-const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
+const RoomDetailsStep = ({ formData, onDataChange, errors, touched }) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
   };
@@ -10,13 +10,17 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
     onDataChange({ [field]: value, [`${field}Other`]: "" });
   };
 
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] && errors[fieldName] ? errors[fieldName] : null;
+  };
+
   return (
     <div className="room-details-step">
       <h4 className="title fz17 mb30">Room Details</h4>
 
       <div className="row row-cols-1 row-cols-xl-4 row-cols-md-2">
         <div className="col mb-3">
-          <label className="form-label">No of bedrooms *</label>
+          <label className="form-label">No of bedrooms</label>
           <div className="form-style2 input-group">
             <Select
               instanceId="bedrooms"
@@ -27,7 +31,7 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
                 { value: "4", label: "4" },
                 { value: "Others", label: "Others" },
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("bedrooms"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
@@ -41,8 +45,10 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
 
           {formData.bedrooms === "Others" && (
             <input
-              type="text"
-              className="form-control filterInput mt-2"
+              type="number"
+              className={`form-control filterInput no-spinner mt-2 ${
+                getFieldError("bedroomsOther") ? "is-invalid" : ""
+              }`}
               placeholder="Enter number of bedrooms"
               value={formData.bedroomsOther || ""}
               onChange={(e) =>
@@ -50,10 +56,13 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
               }
             />
           )}
+          {formData.bedrooms === "Others" && getFieldError("bedroomsOther") && (
+            <div className="text-danger">{getFieldError("bedroomsOther")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">No of bathrooms *</label>
+          <label className="form-label">No of bathrooms</label>
           <div className="form-style2 input-group">
             <Select
               instanceId="bathrooms"
@@ -64,7 +73,7 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
                 { value: "4", label: "4" },
                 { value: "Others", label: "Others" },
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("bathrooms"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
@@ -77,8 +86,10 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
           {formData.bathrooms === "Others" && (
             <input
-              type="text"
-              className="form-control filterInput mt-2"
+              type="number"
+              className={`form-control filterInput no-spinner mt-2 ${
+                getFieldError("bathroomsOther") ? "is-invalid" : ""
+              }`}
               placeholder="Enter number of bathrooms"
               value={formData.bathroomsOther || ""}
               onChange={(e) =>
@@ -86,6 +97,12 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
               }
             />
           )}
+          {formData.bathrooms === "Others" &&
+            getFieldError("bathroomsOther") && (
+              <div className="text-danger">
+                {getFieldError("bathroomsOther")}
+              </div>
+            )}
         </div>
 
         <div className="col mb-3">
@@ -100,7 +117,7 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
                 { value: "3", label: "3" },
                 { value: "More than 3", label: "More than 3" },
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("balconies"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
@@ -114,7 +131,7 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">No of living rooms *</label>
+          <label className="form-label">No of living rooms</label>
           <div className="form-style2 input-group">
             <Select
               instanceId="livingRooms"
@@ -125,7 +142,7 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
                 { value: "4", label: "4" },
                 { value: "Others", label: "Others" },
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("livingRooms"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
@@ -138,8 +155,10 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
           </div>
           {formData.livingRooms === "Others" && (
             <input
-              type="text"
-              className="form-control filterInput mt-2"
+              type="number"
+              className={`form-control filterInput no-spinner mt-2 ${
+                getFieldError("livingRoomsOther") ? "is-invalid" : ""
+              }`}
               placeholder="Enter number of living rooms"
               value={formData.livingRoomsOther || ""}
               onChange={(e) =>
@@ -147,6 +166,12 @@ const RoomDetailsStep = ({ formData, onDataChange, subType }) => {
               }
             />
           )}
+          {formData.livingRooms === "Others" &&
+            getFieldError("livingRoomsOther") && (
+              <div className="text-danger">
+                {getFieldError("livingRoomsOther")}
+              </div>
+            )}
         </div>
       </div>
 

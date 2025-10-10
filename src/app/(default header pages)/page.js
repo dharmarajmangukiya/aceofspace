@@ -12,7 +12,7 @@ import FilterWithProperties from "@/components/home/filter-with-property";
 import Footer from "@/components/home/footer";
 import Link from "next/link";
 import { Suspense } from "react";
-import Wrapper from "./layout-wrapper/wrapper";
+import Wrapper from "../layout-wrapper/wrapper";
 
 export const metadata = {
   title: "Ace Of Space - Real Estate",

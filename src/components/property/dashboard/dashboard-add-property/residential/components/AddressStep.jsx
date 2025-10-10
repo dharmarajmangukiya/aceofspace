@@ -38,7 +38,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("address")}
           />
           {getFieldError("address") && (
-            <div className="invalid-feedback">{getFieldError("address")}</div>
+            <div className="text-danger">{getFieldError("address")}</div>
           )}
         </div>
       </div>
@@ -47,17 +47,17 @@ const AddressStep = ({
         <div className="col-md-6 mb-3">
           <label className="form-label">House No *</label>
           <input
-            type="text"
-            className={`form-control filterInput ${
+            className={`form-control filterInput no-spinner ${
               getFieldError("houseNo") ? "is-invalid" : ""
             }`}
             placeholder="Enter house number"
             value={formData.houseNo || ""}
+            type="number"
             onChange={(e) => handleInputChange("houseNo", e.target.value)}
             onBlur={() => handleBlur("houseNo")}
           />
           {getFieldError("houseNo") && (
-            <div className="invalid-feedback">{getFieldError("houseNo")}</div>
+            <div className="text-danger">{getFieldError("houseNo")}</div>
           )}
         </div>
 
@@ -80,9 +80,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("apartmentName")}
           />
           {getFieldError("apartmentName") && (
-            <div className="invalid-feedback">
-              {getFieldError("apartmentName")}
-            </div>
+            <div className="text-danger">{getFieldError("apartmentName")}</div>
           )}
         </div>
       </div>
@@ -101,7 +99,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("area")}
           />
           {getFieldError("area") && (
-            <div className="invalid-feedback">{getFieldError("area")}</div>
+            <div className="text-danger">{getFieldError("area")}</div>
           )}
         </div>
 
@@ -118,7 +116,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("landmark")}
           />
           {getFieldError("landmark") && (
-            <div className="invalid-feedback">{getFieldError("landmark")}</div>
+            <div className="text-danger">{getFieldError("landmark")}</div>
           )}
         </div>
       </div>
@@ -137,7 +135,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("city")}
           />
           {getFieldError("city") && (
-            <div className="invalid-feedback">{getFieldError("city")}</div>
+            <div className="text-danger">{getFieldError("city")}</div>
           )}
         </div>
 
@@ -154,15 +152,15 @@ const AddressStep = ({
             onBlur={() => handleBlur("state")}
           />
           {getFieldError("state") && (
-            <div className="invalid-feedback">{getFieldError("state")}</div>
+            <div className="text-danger">{getFieldError("state")}</div>
           )}
         </div>
 
         <div className="col-md-4 mb-3">
           <label className="form-label">Pincode *</label>
           <input
-            type="text"
-            className={`form-control filterInput ${
+            type="number"
+            className={`form-control filterInput no-spinner ${
               getFieldError("pincode") ? "is-invalid" : ""
             }`}
             placeholder="Enter pincode"
@@ -171,7 +169,7 @@ const AddressStep = ({
             onBlur={() => handleBlur("pincode")}
           />
           {getFieldError("pincode") && (
-            <div className="invalid-feedback">{getFieldError("pincode")}</div>
+            <div className="text-danger">{getFieldError("pincode")}</div>
           )}
         </div>
       </div>

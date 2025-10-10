@@ -1,167 +1,58 @@
 import * as Yup from "yup";
 
-// Initial values for the form
+// Initial values for the form - only fields used in validation schema
 export const getInitialValues = (
   propertyType = "residential",
   subType = "Apartment"
 ) => ({
-  // Basic property info
+  // Basic property info (common)
   propertyType: propertyType,
   subType: subType,
-
-  // Address fields
-  address: "",
   city: "",
   state: "",
   pincode: "",
-  houseNo: "",
-  apartmentName: "", // Will be mapped from propertyName in UI
   area: "",
   landmark: "",
+  ageOfProperty: "",
+  availableFrom: "",
+  media: [], // Array of files, will be handled in FormData
+  video: [], // Array of files, will be handled in FormData
+  carpetArea: "",
+  builtUpArea: "",
+  clearHeight: "",
+  totalFloors: "",
+  propertyOnFloor: "",
+  maintenance: "",
+  securityDeposit: "",
 
-  // Room details
+  // Residential specific fields
+  address: "",
+  houseNo: "",
+  apartmentName: "", // Will be mapped from propertyName in UI
   bedrooms: "",
   bathrooms: "",
   balconies: "",
   livingRooms: "",
   otherRooms: [], // Array in UI, will be stringified for FormData
-
-  // Area details
-  carpetArea: "",
-  builtUpArea: "",
-  clearHeight: "",
-
-  // Property specifications
   furnishing: "",
   specifications: "",
-  totalFloors: "",
-  propertyOnFloor: "",
-  buildingName: "",
-  ageOfProperty: "",
-
-  // Availability and pricing
-  availableFrom: "",
   expectedRent: "",
-  maintenance: "",
   priceNegotiation: false,
   bookingAmount: "",
   membershipCharge: "",
-
-  // Description and terms
-  description: "",
-  securityDeposit: "",
   durationOfAgreement: "",
   noticePeriod: "",
-
-  // Parking and location
   coveredParking: "",
-  officeNo: "",
   openParking: "",
   facing: "",
   facingDetails: "",
+
+  // Commercial specific fields
+  buildingName: "",
+  officeNo: "",
   lockInPeriod: "",
-
-  // Media files
-  media: [], // Array of files, will be handled in FormData
+  description: "",
 });
-
-// Validation schema
-export const _validationSchema = Yup.object({
-  // Basic property info
-  propertyType: Yup.string().required("Property type is required"),
-  subType: Yup.string().required("Property sub-type is required"),
-
-  // Address fields
-  address: Yup.string().required("Address is required"),
-  city: Yup.string().required("City is required"),
-  state: Yup.string().required("State is required"),
-  pincode: Yup.string()
-    .required("Pincode is required")
-    .matches(/^\d{6}$/, "Pincode must be 6 digits"),
-  houseNo: Yup.string().required("House number is required"),
-  apartmentName: Yup.string().required("Apartment/Property name is required"),
-  area: Yup.string().required("Area is required"),
-  landmark: Yup.string(),
-
-  // Room details - numbers
-  bedrooms: Yup.number()
-    .typeError("Bedrooms must be a number")
-    .min(0, "Bedrooms cannot be negative")
-    .required("Bedrooms is required"),
-  bathrooms: Yup.number()
-    .typeError("Bathrooms must be a number")
-    .min(0, "Bathrooms cannot be negative")
-    .required("Bathrooms is required"),
-  balconies: Yup.number()
-    .typeError("Balconies must be a number")
-    .min(0, "Balconies cannot be negative"),
-  livingRooms: Yup.number()
-    .typeError("Living rooms must be a number")
-    .min(0, "Living rooms cannot be negative"),
-  otherRooms: Yup.array().of(Yup.string()),
-
-  // Area details - numbers
-  carpetArea: Yup.number()
-    .typeError("Carpet area must be a number")
-    .min(0, "Carpet area cannot be negative")
-    .required("Carpet area is required"),
-  builtUpArea: Yup.number()
-    .typeError("Built-up area must be a number")
-    .min(0, "Built-up area cannot be negative"),
-  clearHeight: Yup.number()
-    .typeError("Clear height must be a number")
-    .min(0, "Clear height cannot be negative"),
-
-  // Property specifications
-  furnishing: Yup.string(),
-  specifications: Yup.string(),
-  totalFloors: Yup.number()
-    .typeError("Total floors must be a number")
-    .min(1, "Total floors must be at least 1"),
-  propertyOnFloor: Yup.number()
-    .typeError("Property floor must be a number")
-    .min(0, "Property floor cannot be negative"),
-  buildingName: Yup.string(),
-  ageOfProperty: Yup.string(),
-
-  // Availability and pricing
-  availableFrom: Yup.date().typeError("Available from must be a valid date"),
-  expectedRent: Yup.number()
-    .typeError("Expected rent must be a number")
-    .min(0, "Expected rent cannot be negative"),
-  maintenance: Yup.number()
-    .typeError("Maintenance must be a number")
-    .min(0, "Maintenance cannot be negative"),
-  priceNegotiation: Yup.boolean(),
-  bookingAmount: Yup.number()
-    .typeError("Booking amount must be a number")
-    .min(0, "Booking amount cannot be negative"),
-  membershipCharge: Yup.number()
-    .typeError("Membership charge must be a number")
-    .min(0, "Membership charge cannot be negative"),
-
-  // Description and terms
-  description: Yup.string(),
-  securityDeposit: Yup.string(),
-  durationOfAgreement: Yup.string(),
-  noticePeriod: Yup.string(),
-
-  // Parking and location
-  coveredParking: Yup.number()
-    .typeError("Covered parking must be a number")
-    .min(0, "Covered parking cannot be negative"),
-  officeNo: Yup.string().required("Office number is required"),
-  openParking: Yup.number()
-    .typeError("Open parking must be a number")
-    .min(0, "Open parking cannot be negative"),
-  facing: Yup.string(),
-  facingDetails: Yup.string(),
-  lockInPeriod: Yup.string(),
-
-  // Media files
-  media: Yup.array().of(Yup.mixed()),
-});
-
 export const validationSchema = Yup.lazy((values) => {
   // Base required fields for all property types
   let baseSchema = {
@@ -176,27 +67,30 @@ export const validationSchema = Yup.lazy((values) => {
     landmark: Yup.string(),
     ageOfProperty: Yup.string().required("Age of property is required"),
     availableFrom: Yup.string().required("Available from is required"),
-    media: Yup.array()
-      .of(
-        Yup.mixed().test("fileType", "Only image files are allowed", (file) => {
-          if (!file) return true;
-          return (
-            file.type === "image/jpeg" ||
-            file.type === "image/png" ||
-            file.type === "image/jpg" ||
-            file.type === "image/webp"
-          );
-        })
-      )
-      .min(1, "At least one image is required")
-      .required("At least one image is required"),
-    carpetArea: Yup.string().required("Carpet area is required"),
-    builtUpArea: Yup.string().required("Built up area is required"),
-    clearHeight: Yup.string().required("Clear height is required"),
+    media: Yup.mixed()
+      .test("required", "At least one image is required", (value) => {
+        if (!value) return false;
+        const files = Array.isArray(value) ? value : Array.from(value);
+        return files.length > 0;
+      })
+      .test("fileType", "Only image files are allowed", (value) => {
+        if (!value) return true; // skip if empty — required test will handle it
+        const files = Array.isArray(value) ? value : Array.from(value);
+        return files.every((file) => file && file.type.startsWith("image/"));
+      })
+      .test("fileCount", "You can upload up to 10 images", (value) => {
+        if (!value) return true;
+        const files = Array.isArray(value) ? value : Array.from(value);
+        return files.length <= 10;
+      }),
+    carpetArea: Yup.number().required("Carpet area is required"),
+    builtUpArea: Yup.number().required("Built up area is required"),
+    clearHeight: Yup.number().required("Clear height is required"),
     totalFloors: Yup.string().required("Total floors is required"),
-    propertyOnFloor: Yup.string().required("Property on floor is required"), //Your floor No
-    maintenance: Yup.string().required("Maintenance is required"),
-    securityDeposit: Yup.string().required("Security deposit is required"),
+    propertyOnFloor: Yup.string().required("Property on floor is required"),
+    // maintenance: Yup.string().required("Maintenance is required"),
+    maintenance: Yup.string(),
+    securityDeposit: Yup.string().nullable(),
   };
 
   if (values.propertyType === "residential") {
@@ -211,18 +105,10 @@ export const validationSchema = Yup.lazy((values) => {
       // state : in common ✅
       // pincode : in common ✅
 
-      bedrooms: Yup.number()
-        .typeError("Bedrooms must be a number")
-        .min(0, "Bedrooms cannot be negative"),
-      bathrooms: Yup.number()
-        .typeError("Bathrooms must be a number")
-        .min(0, "Bathrooms cannot be negative"),
-      balconies: Yup.number()
-        .typeError("Balconies must be a number")
-        .min(0, "Balconies cannot be negative"),
-      livingRooms: Yup.number()
-        .typeError("Living rooms must be a number")
-        .min(0, "Living rooms cannot be negative"),
+      bedrooms: Yup.number().typeError("Bedrooms must be a number"),
+      bathrooms: Yup.number().typeError("Bathrooms must be a number"),
+      balconies: Yup.number().typeError("Balconies must be a number"),
+      livingRooms: Yup.number().typeError("Living rooms must be a number"),
       otherRooms: Yup.array().of(Yup.string()),
       // carpetArea:  in common ✅
       // builtUpArea: in common ✅
@@ -242,6 +128,9 @@ export const validationSchema = Yup.lazy((values) => {
         .required("Expected rent is required"),
       // maintenance: in common ✅
 
+      priceNegotiation: Yup.boolean(),
+      bookingAmount: Yup.number().required("Booking amount is required"),
+      membershipCharge: Yup.number().nullable(),
       // ❌ Electricity and water charges excluded : not in payload
       // ❌ Price Negotiation       : not in payload
       // ❌ Booking amount : not in payload
@@ -255,12 +144,10 @@ export const validationSchema = Yup.lazy((values) => {
       noticePeriod: Yup.string().required("Notice period is required"),
       coveredParking: Yup.number()
         .typeError("Covered parking must be a number")
-        .min(0, "Covered parking cannot be negative")
-        .required("Covered parking is required"),
+        .nullable(),
       openParking: Yup.number()
         .typeError("Open parking must be a number")
-        .min(0, "Open parking cannot be negative")
-        .required("Open parking is required"),
+        .nullable(),
       facing: Yup.string().required("Facing is required"),
       facingDetails: Yup.string(),
       // ❌ Amenities and facilities : not in payload
@@ -323,87 +210,122 @@ export const validationSchema = Yup.lazy((values) => {
   return Yup.object().shape(baseSchema);
 });
 
-// Helper function to convert form values to FormData
+// Helper function to convert form values to FormData - only fields used in validation schema
 export const convertToFormData = (values) => {
   const formData = new FormData();
 
-  // Helper function to safely append values
-  const safeAppend = (key, value) => {
-    if (value !== null && value !== undefined) {
-      formData.append(key, value);
-    } else {
-      formData.append(key, "");
+  // Helper function to convert area units to sq ft
+  const convertToSqFt = (value, unit) => {
+    if (!value || !unit) return value;
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return value;
+
+    switch (unit) {
+      case "sq yd":
+        return (numValue * 9).toString(); // 1 sq yd = 9 sq ft
+      case "sq mtr":
+        return (numValue * 10.764).toString(); // 1 sq m = 10.764 sq ft
+      case "sq ft":
+      default:
+        return value;
     }
   };
 
-  // Basic property info
+  // Helper function to safely append values - skip null/undefined/empty values
+  const safeAppend = (key, value) => {
+    if (value !== null && value !== undefined && value !== "") {
+      formData.append(key, value);
+    }
+  };
+
+  // Helper function to append converted area values
+  const safeAppendArea = (key, value, unit) => {
+    const convertedValue = convertToSqFt(value, unit);
+    safeAppend(key, convertedValue);
+  };
+
+  // Common fields (base schema)
   safeAppend("propertyType", values.propertyType);
   safeAppend("subType", values.subType);
-
-  // Address fields
-  safeAppend("address", values.address);
   safeAppend("city", values.city);
   safeAppend("state", values.state);
   safeAppend("pincode", values.pincode);
-  safeAppend("houseNo", values.houseNo);
-  safeAppend("apartmentName", values.apartmentName);
   safeAppend("area", values.area);
   safeAppend("landmark", values.landmark);
-
-  // Room details - convert numbers to strings
-  safeAppend("bedrooms", values.bedrooms?.toString() || "");
-  safeAppend("bathrooms", values.bathrooms?.toString() || "");
-  safeAppend("balconies", values.balconies?.toString() || "");
-  safeAppend("livingRooms", values.livingRooms?.toString() || "");
-  safeAppend("otherRooms", JSON.stringify(values.otherRooms || []));
-
-  // Area details - convert numbers to strings
-  safeAppend("carpetArea", values.carpetArea?.toString() || "");
-  safeAppend("builtUpArea", values.builtUpArea?.toString() || "");
-  safeAppend("clearHeight", values.clearHeight?.toString() || "");
-
-  // Property specifications
-  safeAppend("furnishing", values.furnishing);
-  safeAppend("specifications", values.specifications);
-  safeAppend("totalFloors", values.totalFloors?.toString() || "");
-  safeAppend("propertyOnFloor", values.propertyOnFloor?.toString() || "");
-  safeAppend("buildingName", values.buildingName);
   safeAppend("ageOfProperty", values.ageOfProperty);
-
-  // Availability and pricing
   safeAppend("availableFrom", values.availableFrom);
-  safeAppend("expectedRent", values.expectedRent?.toString() || "");
-  safeAppend("maintenance", values.maintenance?.toString() || "");
-  safeAppend(
-    "priceNegotiation",
-    values.priceNegotiation?.toString() || "false"
+
+  // Convert area fields to sq ft
+  safeAppendArea("carpetArea", values.carpetArea, values.carpetAreaUnit);
+  safeAppendArea("builtUpArea", values.builtUpArea, values.builtUpAreaUnit);
+  safeAppendArea(
+    "superBuiltUpArea",
+    values.superBuiltUpArea,
+    values.plotAreaUnit
   );
-  safeAppend("bookingAmount", values.bookingAmount?.toString() || "");
-  safeAppend("membershipCharge", values.membershipCharge?.toString() || "");
 
-  // Description and terms
-  safeAppend("description", values.description);
-  safeAppend("securityDeposit", values.securityDeposit);
-  safeAppend("durationOfAgreement", values.durationOfAgreement);
-  safeAppend("noticePeriod", values.noticePeriod);
+  safeAppend("clearHeight", values.clearHeight?.toString());
+  safeAppend("totalFloors", values.totalFloors?.toString());
+  safeAppend("propertyOnFloor", values.propertyOnFloor?.toString());
+  safeAppend("maintenance", values.maintenance?.toString());
 
-  // Parking and location
-  safeAppend("coveredParking", values.coveredParking?.toString() || "");
-  safeAppend("officeNo", values.officeNo);
-  safeAppend("openParking", values.openParking?.toString() || "");
-  safeAppend("facing", values.facing);
-  safeAppend("facingDetails", values.facingDetails);
-  safeAppend("lockInPeriod", values.lockInPeriod);
+  // Handle security deposit based on type
+  if (values.securityDeposit === "Fixed") {
+    safeAppend("securityDeposit", values.securityDepositAmount?.toString());
+  } else if (values.securityDeposit === "Multiple of rent") {
+    safeAppend("securityDeposit", values.securityDepositMonths?.toString());
+  } else {
+    safeAppend("securityDeposit", values.securityDeposit);
+  }
+
+  // Residential specific fields
+  if (values.propertyType === "residential") {
+    safeAppend("address", values.address);
+    safeAppend("houseNo", values.houseNo);
+    safeAppend("apartmentName", values.apartmentName);
+    safeAppend("bedrooms", values.bedrooms?.toString());
+    safeAppend("bathrooms", values.bathrooms?.toString());
+    safeAppend("balconies", values.balconies?.toString());
+    safeAppend("livingRooms", values.livingRooms?.toString());
+
+    // Only append otherRooms if it has content
+    if (
+      values.otherRooms &&
+      Array.isArray(values.otherRooms) &&
+      values.otherRooms.length > 0
+    ) {
+      safeAppend("otherRooms", JSON.stringify(values.otherRooms));
+    }
+
+    safeAppend("furnishing", values.furnishing);
+    safeAppend("specifications", values.specifications);
+    safeAppend("expectedRent", values.expectedRent?.toString());
+    safeAppend("priceNegotiation", values.priceNegotiation?.toString());
+    safeAppend("bookingAmount", values.bookingAmount?.toString());
+    safeAppend("membershipCharge", values.membershipCharge?.toString());
+    safeAppend("durationOfAgreement", values.durationOfAgreement);
+    safeAppend("noticePeriod", values.noticePeriod);
+    safeAppend("coveredParking", values.coveredParking?.toString());
+    safeAppend("openParking", values.openParking?.toString());
+    safeAppend("facing", values.facing);
+    safeAppend("facingDetails", values.facingDetails);
+  }
+
+  // Commercial specific fields
+  if (values.propertyType === "commercial") {
+    safeAppend("buildingName", values.buildingName);
+    safeAppend("officeNo", values.officeNo);
+    safeAppend("lockInPeriod", values.lockInPeriod);
+    safeAppend("description", values.description);
+  }
 
   // Media files - handle file uploads
-  if (values.media && values.media.length > 0) {
+  if (values.media && Array.isArray(values.media) && values.media.length > 0) {
     values.media.forEach((file, index) => {
       if (file instanceof File) {
         formData.append("media", file);
       }
     });
-  } else {
-    formData.append("media", "");
   }
 
   return formData;
@@ -462,6 +384,7 @@ exampleFormData.append("lockInPeriod", "150 days");
 exampleFormData.append("media", ""); // Empty string if no files, or actual files if selected
 */
 
+// Commented out - only fields used in validation schema are included above
 // Missing fields that need to be added to UI components:
 // - officeNo (commercial only)
 // - facing, facingDetails, lockInPeriod (residential only)

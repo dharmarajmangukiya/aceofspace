@@ -1,7 +1,7 @@
 "use client";
 import { useAddProperty } from "@/hooks/api/property";
 import { addPropertyTypes } from "@/utils/constants";
-import { customSelectStyles } from "@/utils/helper";
+import { cleanPayload, customSelectStyles } from "@/utils/helper";
 import { useFormik } from "formik";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -42,7 +42,7 @@ const AddPropertyTabContent = () => {
     validateOnChange: true,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        const formData = convertToFormData(values);
+        const formData = convertToFormData(cleanPayload(values));
 
         await new Promise((resolve, reject) => {
           addProperty(formData, {

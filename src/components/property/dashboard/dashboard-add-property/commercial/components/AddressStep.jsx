@@ -123,7 +123,7 @@ const AddressStep = ({
           <Select
             instanceId="zone"
             options={[{ value: "", label: "Select zone" }, ...zoneOptions]}
-            styles={smallSelectStyles}
+            styles={smallSelectStyles()}
             className="select-custom filterSelect"
             classNamePrefix="select"
             value={{
@@ -144,7 +144,7 @@ const AddressStep = ({
               { value: "", label: "Select location" },
               ...locationInsideOptions,
             ]}
-            styles={smallSelectStyles}
+            styles={smallSelectStyles()}
             className="select-custom filterSelect"
             classNamePrefix="select"
             value={{

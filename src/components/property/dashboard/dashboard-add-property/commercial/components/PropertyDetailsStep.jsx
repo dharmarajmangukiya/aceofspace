@@ -159,7 +159,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                     { value: "Elevator", label: "Elevator" },
                     { value: "Stairs", label: "Stairs" },
                   ]}
-                  styles={smallSelectStyles}
+                  styles={smallSelectStyles()}
                   className="select-custom filterSelect"
                   classNamePrefix="select"
                   placeholder="Select nearby features"
@@ -520,7 +520,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                         label: (i + 1).toString(),
                       })),
                     ]}
-                    styles={smallSelectStyles}
+                    styles={smallSelectStyles()}
                     className="select-custom filterSelect"
                     classNamePrefix="select"
                     value={{
@@ -752,7 +752,7 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               { value: "10+", label: "10+" },
             ]}
             menuPlacement="top"
-            styles={smallSelectStyles}
+            styles={smallSelectStyles()}
             className="select-custom filterSelect"
             classNamePrefix="select"
             value={{

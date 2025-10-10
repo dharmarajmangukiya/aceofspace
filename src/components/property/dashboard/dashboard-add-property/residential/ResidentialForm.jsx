@@ -142,7 +142,10 @@ const ResidentialForm = ({
                 <button
                   className="ud-btn btn-thm"
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={() => {
+                    console.log("values", values);
+                    handleSubmit();
+                  }}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit Property"}
