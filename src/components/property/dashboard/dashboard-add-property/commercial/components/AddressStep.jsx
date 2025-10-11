@@ -147,12 +147,6 @@ const AddressStep = ({
             }}
             onChange={(e) => handleInputChange("zone", e.value)}
           />
-          {console.log(
-            getFieldError("zone"),
-            "zone error",
-            touched["zone"],
-            errors["zone"]
-          )}
           {getFieldError("zone") && (
             <div className="text-danger">{getFieldError("zone")}</div>
           )}

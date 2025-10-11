@@ -202,7 +202,7 @@ const AddPropertyTabContent = () => {
                   </button>
 
                   {/* Debug button to test validation */}
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={() => {
@@ -220,7 +220,7 @@ const AddPropertyTabContent = () => {
                     }}
                   >
                     Debug Validation
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

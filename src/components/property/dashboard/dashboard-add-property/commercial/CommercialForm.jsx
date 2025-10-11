@@ -125,7 +125,11 @@ const CommercialForm = ({
                 <button
                   className="ud-btn btn-thm"
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={() => {
+                    console.log("Form errors:", formik.errors);
+                    console.log("Form values:", formik.values);
+                    handleSubmit();
+                  }}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit Property"}

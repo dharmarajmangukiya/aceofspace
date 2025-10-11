@@ -164,10 +164,10 @@ export const validationSchema = Yup.lazy((values) => {
       // state : in common ✅
       // pincode : in common ✅
 
-      bedrooms: Yup.number().typeError("Bedrooms must be a number"),
-      bathrooms: Yup.number().typeError("Bathrooms must be a number"),
-      balconies: Yup.number().typeError("Balconies must be a number"),
-      livingRooms: Yup.number().typeError("Living rooms must be a number"),
+      bedrooms: Yup.string().typeError("Bedrooms must be a number"),
+      bathrooms: Yup.string().typeError("Bathrooms must be a number"),
+      balconies: Yup.string().typeError("Balconies must be a number"),
+      livingRooms: Yup.string().typeError("Living rooms must be a number"),
       otherRooms: Yup.array().of(Yup.string()),
       // carpetArea:  in common ✅
       // builtUpArea: in common ✅
@@ -188,8 +188,8 @@ export const validationSchema = Yup.lazy((values) => {
         .required("Expected rent is required"),
       // maintenance: in common ✅
 
-      bookingAmount: Yup.number().required("Booking amount is required"),
-      membershipCharge: Yup.number().nullable(),
+      bookingAmount: Yup.string().nullable(),
+      membershipCharge: Yup.string().nullable(),
       // ❌ Electricity and water charges excluded : not in payload
       // Media : in common ✅
       // securityDeposit: in common ✅
@@ -205,7 +205,6 @@ export const validationSchema = Yup.lazy((values) => {
         .nullable(),
       facing: Yup.string().required("Facing is required"),
       facingDetails: Yup.string(),
-      lockInPeriod: Yup.number().required("Lock in period is required"),
       // ❌ Amenities and facilities : not in payload
       totalFloors: Yup.string().required("Total floors is required"),
     };
@@ -246,6 +245,7 @@ export const validationSchema = Yup.lazy((values) => {
       // ❌  Amenities: not in payload
       // ❌  Facilities: not in payload
       facilities: Yup.array().of(Yup.string()),
+      lockInPeriod: Yup.number().required("Lock in period is required"),
 
       // Media : in common ✅
 
@@ -266,12 +266,8 @@ export const validationSchema = Yup.lazy((values) => {
             conferenceRooms: Yup.number().required(
               "Conference rooms is required"
             ),
-            privateWashrooms: Yup.number().required(
-              "Private washrooms is required"
-            ),
-            sharedWashrooms: Yup.number().required(
-              "Shared washrooms is required"
-            ),
+            privateWashrooms: Yup.string().nullable(),
+            sharedWashrooms: Yup.string().nullable(),
             furnishing: Yup.string().nullable(),
             receptionArea: Yup.string().nullable(),
             pantryType: Yup.string().nullable(),
@@ -281,12 +277,8 @@ export const validationSchema = Yup.lazy((values) => {
             ),
             staircases: Yup.string().nullable(),
             liftsAvailable: Yup.string().required("Lifts field is required"),
-            serviceLiftCount: Yup.number().required(
-              "Service lift count is required"
-            ),
-            passengerLiftCount: Yup.number().required(
-              "Passenger lift count is required"
-            ),
+            serviceLiftCount: Yup.string().nullable(),
+            passengerLiftCount: Yup.string().nullable(),
             expectedLeaseAmount: Yup.number().required(
               "Expected lease amount is required"
             ),
@@ -390,10 +382,53 @@ export const convertToFormData = (values) => {
   if (values.propertyType === "residential") {
     safeAppend("houseNo", values.houseNo);
     safeAppend("apartmentName", values.apartmentName);
-    safeAppend("bedrooms", values.bedrooms?.toString());
-    safeAppend("bathrooms", values.bathrooms?.toString());
+
+    // Bedrooms
+    if (typeof values.bedrooms === "number" && !isNaN(values.bedrooms)) {
+      safeAppend("bedrooms", values.bedrooms.toString());
+    } else if (values.bedrooms === "Others") {
+      let val = values.bedroomsOther;
+      if (
+        (typeof val === "number" && !isNaN(val)) ||
+        (typeof val === "string" && val !== "" && !isNaN(Number(val)))
+      ) {
+        safeAppend("bedrooms", val.toString());
+      } else {
+        // Leave it empty (do not set bedrooms at all)
+      }
+    }
+
+    // Bathrooms
+    if (typeof values.bathrooms === "number" && !isNaN(values.bathrooms)) {
+      safeAppend("bathrooms", values.bathrooms.toString());
+    } else if (values.bathrooms === "Others") {
+      let val = values.bathroomsOther;
+      if (
+        (typeof val === "number" && !isNaN(val)) ||
+        (typeof val === "string" && val !== "" && !isNaN(Number(val)))
+      ) {
+        safeAppend("bathrooms", val.toString());
+      } else {
+        // Leave it empty (do not set bathrooms at all)
+      }
+    }
+
+    // Living rooms
+    if (typeof values.livingRooms === "number" && !isNaN(values.livingRooms)) {
+      safeAppend("livingRooms", values.livingRooms.toString());
+    } else if (values.livingRooms === "Others") {
+      let val = values.livingRoomsOther;
+      if (
+        (typeof val === "number" && !isNaN(val)) ||
+        (typeof val === "string" && val !== "" && !isNaN(Number(val)))
+      ) {
+        safeAppend("livingRooms", val.toString());
+      } else {
+        // Leave it empty (do not set livingRooms at all)
+      }
+    }
+
     safeAppend("balconies", values.balconies?.toString());
-    safeAppend("livingRooms", values.livingRooms?.toString());
 
     // Only append otherRooms if it has content
     if (

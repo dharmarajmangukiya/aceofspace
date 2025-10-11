@@ -403,19 +403,33 @@ const PropertyDetailsStep = ({
                 <div className="col-md-6 mb-3">
                   <label className="form-label">Reception area</label>
                   <div className="form-style2 input-group">
-                    {["Available", "Not Available"].map((option) => (
-                      <div className="selection" key={`reception-${option}`}>
+                    {[
+                      { label: "Available", value: true },
+                      { label: "Not Available", value: false },
+                    ].map((option) => (
+                      <div
+                        className="selection"
+                        key={`reception-${option.label}`}
+                      >
                         <input
-                          id={`reception-${option}`}
+                          id={`reception-${option.label}`}
                           type="radio"
                           name="receptionArea"
-                          value={option}
-                          checked={formData.receptionArea === option}
+                          value={option.value}
+                          checked={
+                            String(formData.receptionArea) ===
+                            String(option.value)
+                          }
                           onChange={(e) =>
-                            handleInputChange("receptionArea", e.target.value)
+                            handleInputChange(
+                              "receptionArea",
+                              e.target.value === "true"
+                            )
                           }
                         />
-                        <label htmlFor={`reception-${option}`}>{option}</label>
+                        <label htmlFor={`reception-${option.label}`}>
+                          {option.label}
+                        </label>
                       </div>
                     ))}
                   </div>
@@ -581,10 +595,13 @@ const PropertyDetailsStep = ({
                     options={[
                       { value: "Basement", label: "Basement" },
                       { value: "G", label: "G" },
-                      ...Array.from({ length: 25 }, (_, i) => ({
-                        value: (i + 1).toString(),
-                        label: (i + 1).toString(),
-                      })),
+                      ...Array.from(
+                        { length: formData?.totalFloors || 25 },
+                        (_, i) => ({
+                          value: (i + 1).toString(),
+                          label: (i + 1).toString(),
+                        })
+                      ),
                     ]}
                     styles={smallSelectStyles(getFieldError("propertyOnFloor"))}
                     className="select-custom filterSelect"

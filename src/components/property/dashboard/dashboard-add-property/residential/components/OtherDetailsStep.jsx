@@ -277,7 +277,7 @@ const OtherDetailsStep = ({
 
       <div className="row">
         <div className="col-md-6 mb-3">
-          <label className="form-label">Facing</label>
+          <label className="form-label">Facing *</label>
           <div className="row row-cols-4">
             {[
               { value: "North", label: "North" },

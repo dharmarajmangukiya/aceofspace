@@ -51,9 +51,9 @@ const RentDetailsStep = ({
               instanceId="maintenance"
               options={[
                 { value: "", label: "Select maintenance" },
-                { value: "Monthly", label: "Monthly" },
-                { value: "Quarterly", label: "Quarterly" },
-                { value: "Yearly", label: "Yearly" },
+                { value: "monthly", label: "Monthly" },
+                { value: "quarterly", label: "Quarterly" },
+                { value: "yearly", label: "Yearly" },
               ]}
               styles={smallSelectStyles(getFieldError("maintenance"))}
               className="select-custom filterSelect"
@@ -128,11 +128,11 @@ const RentDetailsStep = ({
                 className="form-check-input"
                 type="checkbox"
                 id="bookingAmount"
-                checked={formData.bookingAmount === "true"}
+                checked={formData.bookingAmount === "1"}
                 onChange={(e) =>
                   handleInputChange(
                     "bookingAmount",
-                    e.target.checked ? "true" : "false"
+                    e.target.checked ? "1" : "0"
                   )
                 }
               />
