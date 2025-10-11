@@ -8,7 +8,7 @@ import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import LoginSignupModal from "../common/login-signup-modal";
 const menuItems = [
   {
@@ -286,4 +286,12 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default () => {
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+      </Suspense>
+    </>
+  );
+};
