@@ -1,3 +1,4 @@
+"use client";
 import AddPropertyTabContent from "@/components/property/dashboard/dashboard-add-property";
 
 const page = () => {

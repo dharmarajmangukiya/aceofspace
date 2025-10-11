@@ -1,9 +1,19 @@
 import { smallSelectStyles } from "@/utils/helper";
 import Select from "react-select";
 
-const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
+const PropertyDetailsStep = ({
+  formData,
+  onDataChange,
+  subType,
+  errors,
+  touched,
+}) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
+  };
+
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] && errors[fieldName] ? errors[fieldName] : null;
   };
 
   const handleCheckboxChange = (field, value, checked) => {
@@ -25,7 +35,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("carpetArea") ? "is-invalid" : ""
+              }`}
               placeholder="Enter carpet area"
               value={formData.carpetArea || ""}
               onChange={(e) => handleInputChange("carpetArea", e.target.value)}
@@ -42,14 +54,19 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="sq mtr">sq mtr</option>
             </select>
           </div>
+          {getFieldError("carpetArea") && (
+            <div className="text-danger">{getFieldError("carpetArea")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Super built-up area</label>
+          <label className="form-label">Super built-up area *</label>
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("superBuiltUpArea") ? "is-invalid" : ""
+              }`}
               placeholder="Enter super built-up area"
               value={formData.superBuiltUpArea || ""}
               onChange={(e) =>
@@ -68,6 +85,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="sq mtr">sq mtr</option>
             </select>
           </div>
+          {getFieldError("superBuiltUpArea") && (
+            <div className="text-danger">
+              {getFieldError("superBuiltUpArea")}
+            </div>
+          )}
         </div>
 
         <div className="col mb-3">
@@ -75,7 +97,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("builtUpArea") ? "is-invalid" : ""
+              }`}
               placeholder="Enter built-up area"
               value={formData.builtUpArea || ""}
               onChange={(e) => handleInputChange("builtUpArea", e.target.value)}
@@ -92,6 +116,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="sq mtr">sq mtr</option>
             </select>
           </div>
+          {getFieldError("builtUpArea") && (
+            <div className="text-danger">{getFieldError("builtUpArea")}</div>
+          )}
         </div>
       </div>
 
@@ -101,29 +128,39 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
           <h5 className="mb-3">Shop Facet Size</h5>
         </div>
         <div className="col-md-4 mb-3">
-          <label className="form-label">Entrance Width</label>
+          <label className="form-label">Entrance Width *</label>
           <input
-            type="text"
-            className="form-control filterInput"
+            type="number"
+            className={`form-control filterInput no-spinner ${
+              getFieldError("entranceWidth") ? "is-invalid" : ""
+            }`}
             placeholder="Enter entrance width"
             value={formData.entranceWidth || ""}
             onChange={(e) => handleInputChange("entranceWidth", e.target.value)}
           />
+          {getFieldError("entranceWidth") && (
+            <div className="text-danger">{getFieldError("entranceWidth")}</div>
+          )}
         </div>
 
         <div className="col-md-4 mb-3">
-          <label className="form-label">Clear/Ceiling Height</label>
+          <label className="form-label">Clear/Ceiling Height *</label>
           <input
-            type="text"
-            className="form-control filterInput"
+            type="number"
+            className={`form-control filterInput no-spinner ${
+              getFieldError("clearHeight") ? "is-invalid" : ""
+            }`}
             placeholder="Enter clear height"
             value={formData.clearHeight || ""}
             onChange={(e) => handleInputChange("clearHeight", e.target.value)}
           />
+          {getFieldError("clearHeight") && (
+            <div className="text-danger">{getFieldError("clearHeight")}</div>
+          )}
         </div>
 
         <div className="col-md-4 mb-3">
-          <label className="form-label">Flooring</label>
+          <label className="form-label">Flooring *</label>
           <div className="form-style2 input-group">
             {["Yes", "No"].map((option) => (
               <div className="selection" key={`flooring-${option}`}>
@@ -141,6 +178,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               </div>
             ))}
           </div>
+          {getFieldError("flooring") && (
+            <div className="text-danger">{getFieldError("flooring")}</div>
+          )}
         </div>
       </div>
 
@@ -153,27 +193,28 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                   Located Near
                 </label>
                 <Select
-                  isMulti
                   options={[
                     { value: "Entrance", label: "Entrance" },
                     { value: "Elevator", label: "Elevator" },
                     { value: "Stairs", label: "Stairs" },
                   ]}
-                  styles={smallSelectStyles()}
+                  styles={smallSelectStyles(getFieldError("locatedNear"))}
                   className="select-custom filterSelect"
                   classNamePrefix="select"
                   placeholder="Select nearby features"
-                  value={(formData.locatedNear || []).map((v) => ({
-                    value: v,
-                    label: v,
-                  }))}
+                  value={{
+                    value: formData.locatedNear || "",
+                    label: formData.locatedNear || "Select nearby features",
+                  }}
                   onChange={(selected) =>
-                    handleInputChange(
-                      "locatedNear",
-                      selected ? selected.map((opt) => opt.value) : []
-                    )
+                    handleInputChange("locatedNear", selected.value)
                   }
                 />
+                {getFieldError("locatedNear") && (
+                  <div className="text-danger">
+                    {getFieldError("locatedNear")}
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -378,6 +419,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                       </div>
                     ))}
                   </div>
+                  {getFieldError("receptionArea") && (
+                    <div className="text-danger">
+                      {getFieldError("receptionArea")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-6 mb-3">
@@ -401,9 +447,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                   </div>
                   {formData.pantryType === "Private" && (
                     <input
-                      type="text"
-                      className="form-control mt-2"
-                      placeholder="Enter area in sqft"
+                      type="number"
+                      className="form-control mt-2 no-spinner"
+                      placeholder="Enter pantry area in sqft"
                       value={formData.pantryArea || ""}
                       onChange={(e) =>
                         handleInputChange("pantryArea", e.target.value)
@@ -417,36 +463,36 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                 <div className="col mb-3">
                   <h5 className="mb-3">Facilities</h5>
                   <div className="d-flex flex-wrap gap-3">
-                    {["Furnishing", "Central AC", "Oxygen duct", "UPS"].map(
-                      (facility) => (
-                        <div
-                          key={facility}
-                          className="form-check d-flex align-items-center gap-2"
+                    {[
+                      { label: "Furnishing", key: "furnishing" },
+                      { label: "Central AC", key: "centralAC" },
+                      { label: "Oxygen duct", key: "oxygenDuct" },
+                      { label: "UPS", key: "ups" },
+                    ].map((facility) => (
+                      <div
+                        key={facility.key}
+                        className="form-check d-flex align-items-center gap-2"
+                      >
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id={`facility-${facility.key}`}
+                          checked={formData[facility.key] === "true"}
+                          onChange={(e) =>
+                            handleInputChange(
+                              facility.key,
+                              e.target.checked ? "true" : "false"
+                            )
+                          }
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor={`facility-${facility.key}`}
                         >
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            id={`facility-${facility}`}
-                            checked={
-                              formData.facilities?.includes(facility) || false
-                            }
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                "facilities",
-                                facility,
-                                e.target.checked
-                              )
-                            }
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor={`facility-${facility}`}
-                          >
-                            {facility}
-                          </label>
-                        </div>
-                      )
-                    )}
+                          {facility.label}
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -458,31 +504,44 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                       "Fire sensors",
                       "Sprinklers",
                       "Fire hose",
-                    ].map((safety) => (
+                    ].map((label) => (
                       <div
-                        key={safety}
+                        key={label}
                         className="form-check d-flex align-items-center gap-2"
                       >
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          id={`safety-${safety}`}
+                          id={`safety-${label}`}
                           checked={
-                            formData.fireSafety?.includes(safety) || false
+                            Array.isArray(formData.fireSafetyMeasures)
+                              ? formData.fireSafetyMeasures.includes(label)
+                              : false
                           }
-                          onChange={(e) =>
-                            handleCheckboxChange(
-                              "fireSafety",
-                              safety,
-                              e.target.checked
+                          onChange={(e) => {
+                            const current = Array.isArray(
+                              formData.fireSafetyMeasures
                             )
-                          }
+                              ? formData.fireSafetyMeasures
+                              : [];
+                            if (e.target.checked) {
+                              handleInputChange("fireSafetyMeasures", [
+                                ...current,
+                                label,
+                              ]);
+                            } else {
+                              handleInputChange(
+                                "fireSafetyMeasures",
+                                current.filter((item) => item !== label)
+                              );
+                            }
+                          }}
                         />
                         <label
                           className="form-check-label"
-                          htmlFor={`safety-${safety}`}
+                          htmlFor={`safety-${label}`}
                         >
-                          {safety}
+                          {label}
                         </label>
                       </div>
                     ))}
@@ -496,22 +555,29 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                   <h5 className="mb-3">Floor Details</h5>
                 </div>
                 <div className="col-md-4 mb-3">
-                  <label className="form-label">Total floors</label>
+                  <label className="form-label">Total floors *</label>
                   <input
                     type="text"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("totalFloors") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter total floors"
                     value={formData.totalFloors || ""}
                     onChange={(e) =>
                       handleInputChange("totalFloors", e.target.value)
                     }
                   />
+                  {getFieldError("totalFloors") && (
+                    <div className="text-danger">
+                      {getFieldError("totalFloors")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-4 mb-3">
-                  <label className="form-label">Your floor No</label>
+                  <label className="form-label">Your floor No *</label>
                   <Select
-                    instanceId="yourFloor"
+                    instanceId="propertyOnFloor"
                     options={[
                       { value: "Basement", label: "Basement" },
                       { value: "G", label: "G" },
@@ -520,28 +586,42 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                         label: (i + 1).toString(),
                       })),
                     ]}
-                    styles={smallSelectStyles()}
+                    styles={smallSelectStyles(getFieldError("propertyOnFloor"))}
                     className="select-custom filterSelect"
                     classNamePrefix="select"
                     value={{
-                      value: formData.yourFloor || "",
-                      label: formData.yourFloor || "Select floor",
+                      value: formData.propertyOnFloor || "",
+                      label: formData.propertyOnFloor || "Select floor",
                     }}
-                    onChange={(e) => handleInputChange("yourFloor", e.value)}
+                    onChange={(e) =>
+                      handleInputChange("propertyOnFloor", e.value)
+                    }
                   />
+                  {getFieldError("propertyOnFloor") && (
+                    <div className="text-danger">
+                      {getFieldError("propertyOnFloor")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-4 mb-3">
                   <label className="form-label">No of staircases</label>
                   <input
                     type="text"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("staircases") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter number of staircases"
                     value={formData.staircases || ""}
                     onChange={(e) =>
                       handleInputChange("staircases", e.target.value)
                     }
                   />
+                  {getFieldError("staircases") && (
+                    <div className="text-danger">
+                      {getFieldError("staircases")}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -566,7 +646,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                       </div>
                     ))}
                   </div>
-
+                  {getFieldError("liftsAvailable") && (
+                    <div className="text-danger">
+                      {getFieldError("liftsAvailable")}
+                    </div>
+                  )}
                   {formData.liftsAvailable === "Available" && (
                     <div className="row">
                       <div className="col-6">
@@ -596,7 +680,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                           </button>
                           <input
                             type="number"
-                            className="form-control text-center no-spinner"
+                            className={`form-control text-center no-spinner ${
+                              getFieldError("passengerLiftCount")
+                                ? "is-invalid"
+                                : ""
+                            }`}
                             value={formData.passengerLiftCount || 0}
                             onChange={(e) => {
                               const value = parseInt(e.target.value) || 0;
@@ -623,6 +711,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                             +
                           </button>
                         </div>
+                        {getFieldError("passengerLiftCount") && (
+                          <div className="text-danger">
+                            {getFieldError("passengerLiftCount")}
+                          </div>
+                        )}
                       </div>
                       <div className="col-6">
                         <label className="form-label small">
@@ -651,7 +744,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                           </button>
                           <input
                             type="number"
-                            className="form-control text-center no-spinner"
+                            className={`form-control text-center no-spinner ${
+                              getFieldError("serviceLiftCount")
+                                ? "is-invalid"
+                                : ""
+                            }`}
                             value={formData.serviceLiftCount || 0}
                             onChange={(e) => {
                               const value = parseInt(e.target.value) || 0;
@@ -678,6 +775,11 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
                             +
                           </button>
                         </div>
+                        {getFieldError("serviceLiftCount") && (
+                          <div className="text-danger">
+                            {getFieldError("serviceLiftCount")}
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -741,9 +843,9 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
       {/* Age and Availability */}
       <div className="row row-cols-1 row-cols-md-2 mb-4">
         <div className="col mb-3">
-          <label className="form-label">Age of property</label>
+          <label className="form-label">Age of property * </label>
           <Select
-            instanceId="propertyAge"
+            instanceId="ageOfProperty"
             options={[
               { value: "", label: "Select age" },
               { value: "0-1", label: "0-1" },
@@ -752,25 +854,33 @@ const PropertyDetailsStep = ({ formData, onDataChange, subType }) => {
               { value: "10+", label: "10+" },
             ]}
             menuPlacement="top"
-            styles={smallSelectStyles()}
+            styles={smallSelectStyles(getFieldError("ageOfProperty"))}
             className="select-custom filterSelect"
             classNamePrefix="select"
             value={{
-              value: formData.propertyAge || "",
-              label: formData.propertyAge || "Select age",
+              value: formData.ageOfProperty || "",
+              label: formData.ageOfProperty || "Select age",
             }}
-            onChange={(e) => handleInputChange("propertyAge", e.value)}
+            onChange={(e) => handleInputChange("ageOfProperty", e.value)}
           />
+          {getFieldError("ageOfProperty") && (
+            <div className="text-danger">{getFieldError("ageOfProperty")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Available from</label>
+          <label className="form-label">Available from *</label>
           <input
             type="date"
-            className="form-control filterInput"
+            className={`form-control filterInput ${
+              getFieldError("availableFrom") ? "is-invalid" : ""
+            }`}
             value={formData.availableFrom || ""}
             onChange={(e) => handleInputChange("availableFrom", e.target.value)}
           />
+          {getFieldError("availableFrom") && (
+            <div className="text-danger">{getFieldError("availableFrom")}</div>
+          )}
         </div>
       </div>
 

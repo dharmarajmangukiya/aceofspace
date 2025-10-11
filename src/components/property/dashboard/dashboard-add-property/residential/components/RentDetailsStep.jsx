@@ -123,18 +123,23 @@ const RentDetailsStep = ({
           </div>
 
           <div className="col mb-3">
-            <label className="form-label">Booking amount</label>
-            <input
-              type="number"
-              className={`form-control no-spinner filterInput ${
-                getFieldError("bookingAmount") ? "is-invalid" : ""
-              }`}
-              placeholder="Enter booking amount"
-              value={formData.bookingAmount || ""}
-              onChange={(e) =>
-                handleInputChange("bookingAmount", e.target.value)
-              }
-            />
+            <div className="form-check d-flex align-items-center gap-2">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="bookingAmount"
+                checked={formData.bookingAmount === "true"}
+                onChange={(e) =>
+                  handleInputChange(
+                    "bookingAmount",
+                    e.target.checked ? "true" : "false"
+                  )
+                }
+              />
+              <label className="form-check-label mb-0" htmlFor="bookingAmount">
+                Booking amount
+              </label>
+            </div>
             {getFieldError("bookingAmount") && (
               <div className="text-danger">
                 {getFieldError("bookingAmount")}
@@ -143,18 +148,26 @@ const RentDetailsStep = ({
           </div>
 
           <div className="col mb-3">
-            <label className="form-label">Membership charge</label>
-            <input
-              type="number"
-              className={`form-control no-spinner filterInput ${
-                getFieldError("membershipCharge") ? "is-invalid" : ""
-              }`}
-              placeholder="Enter membership charge"
-              value={formData.membershipCharge || ""}
-              onChange={(e) =>
-                handleInputChange("membershipCharge", e.target.value)
-              }
-            />
+            <div className="form-check d-flex align-items-center gap-2">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="membershipCharge"
+                checked={formData.membershipCharge === "true"}
+                onChange={(e) =>
+                  handleInputChange(
+                    "membershipCharge",
+                    e.target.checked ? "true" : "false"
+                  )
+                }
+              />
+              <label
+                className="form-check-label mb-0"
+                htmlFor="membershipCharge"
+              >
+                Membership charge
+              </label>
+            </div>
             {getFieldError("membershipCharge") && (
               <div className="text-danger">
                 {getFieldError("membershipCharge")}

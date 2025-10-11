@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Select from "react-select";
+import CommercialForm from "./commercial/CommercialForm";
 import {
   convertToFormData,
   getInitialValues,
@@ -206,11 +207,9 @@ const AddPropertyTabContent = () => {
                     className="btn btn-outline-secondary"
                     onClick={() => {
                       formik.handleSubmit();
-                      formik.validateForm().then((errors) => {
-                        console.log("Form errors:", errors);
-                        console.log("Form values:", formik.values);
-                        console.log("Touched fields:", formik.touched);
-                      });
+                      console.log("Form errors:", formik.errors);
+                      console.log("Form values:", formik.values);
+                      console.log("Touched fields:", formik.touched);
                     }}
                     style={{
                       borderRadius: "8px",
@@ -239,10 +238,7 @@ const AddPropertyTabContent = () => {
           setCurrentStep={setCurrentStep}
         />
       ) : (
-        <Commercbedrooms
-          bathrooms
-          balconies
-          livingRoomsialForm
+        <CommercialForm
           subType={selectedSubType}
           onBackToSelection={handleBackToSelection}
           formikProps={formik}

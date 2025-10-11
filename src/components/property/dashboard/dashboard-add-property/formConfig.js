@@ -4,55 +4,111 @@ import * as Yup from "yup";
 export const getInitialValues = (
   propertyType = "residential",
   subType = "Apartment"
-) => ({
-  // Basic property info (common)
-  propertyType: propertyType,
-  subType: subType,
-  city: "",
-  state: "",
-  pincode: "",
-  area: "",
-  landmark: "",
-  ageOfProperty: "",
-  availableFrom: "",
-  media: [], // Array of files, will be handled in FormData
-  video: [], // Array of files, will be handled in FormData
-  carpetArea: "",
-  builtUpArea: "",
-  clearHeight: "",
-  totalFloors: "",
-  propertyOnFloor: "",
-  maintenance: "",
-  securityDeposit: "",
+) => {
+  // --- Common Values ---
+  const baseInitials = {
+    propertyType: propertyType,
+    subType: subType,
+    city: "",
+    state: "",
+    pincode: "",
+    area: "",
+    landmark: "",
+    ageOfProperty: "",
+    availableFrom: "",
+    media: [],
+    video: [],
+    carpetArea: "",
+    builtUpArea: "",
+    clearHeight: "",
+    totalFloors: "",
+    propertyOnFloor: "",
+    maintenance: "",
+    securityDeposit: "",
+    maintenancePeriod: "",
+    securityDepositAmount: "",
+    amenities: [],
+    facilities: [],
+    lockInPeriod: "",
+    description: "",
+    address: "",
+  };
 
-  // Residential specific fields
-  address: "",
-  houseNo: "",
-  apartmentName: "", // Will be mapped from propertyName in UI
-  bedrooms: "",
-  bathrooms: "",
-  balconies: "",
-  livingRooms: "",
-  otherRooms: [], // Array in UI, will be stringified for FormData
-  furnishing: "",
-  specifications: "",
-  expectedRent: "",
-  priceNegotiation: false,
-  bookingAmount: "",
-  membershipCharge: "",
-  durationOfAgreement: "",
-  noticePeriod: "",
-  coveredParking: "",
-  openParking: "",
-  facing: "",
-  facingDetails: "",
+  // --- Residential Fields (from schema) ---
+  const residentialSpecific = {
+    houseNo: "",
+    apartmentName: "",
+    bedrooms: "",
+    bathrooms: "",
+    balconies: "",
+    livingRooms: "",
+    otherRooms: [],
+    furnishing: "",
+    specifications: "",
+    expectedRent: "",
+    priceNegotiation: false,
+    bookingAmount: "",
+    membershipCharge: "",
+    durationOfAgreement: "",
+    noticePeriod: "",
+    coveredParking: "",
+    openParking: "",
+    facing: "",
+    facingDetails: "",
+  };
 
-  // Commercial specific fields
-  buildingName: "",
-  officeNo: "",
-  lockInPeriod: "",
-  description: "",
-});
+  // --- Commercial Fields (from schema) ---
+  const commercialSpecific = {
+    buildingName: "",
+    officeNo: "",
+    // commercial only fields from schema
+    zone: "",
+    locationInside: "",
+    superBuiltUpArea: "",
+    entranceWidth: "",
+    flooring: "",
+    lockInPeriod: "",
+    description: "",
+    noOfCabins: "",
+    maxSeats: "",
+    meetingRooms: "",
+    conferenceRooms: "",
+    privateWashrooms: "",
+    sharedWashrooms: "",
+    receptionArea: "",
+    pantryType: "",
+    serviceLiftCount: "",
+    passengerLiftCount: "",
+    liftsAvailable: "",
+    staircases: "",
+    parkingType: "",
+    parkingSpaces: "",
+    ownershipType: "",
+    expectedLeaseAmount: "",
+    securityDepositMonths: "",
+    yearlyRentIncrease: "",
+    fireNocCertified: "",
+    occupancyCertificate: "",
+    suitableBusinessTypes: [],
+    locatedNear: "",
+    furnishing: "",
+    additionalPricing: [],
+    maintenancePeriod: "Monthly",
+  };
+
+  if (propertyType === "commercial") {
+    return {
+      ...baseInitials,
+      ...commercialSpecific,
+    };
+  } else {
+    // Default to residential
+    return {
+      ...baseInitials,
+      ...residentialSpecific,
+    };
+  }
+};
 export const validationSchema = Yup.lazy((values) => {
   // Base required fields for all property types
   let baseSchema = {
@@ -86,17 +142,20 @@ export const validationSchema = Yup.lazy((values) => {
     carpetArea: Yup.number().required("Carpet area is required"),
     builtUpArea: Yup.number().required("Built up area is required"),
     clearHeight: Yup.number().required("Clear height is required"),
-    totalFloors: Yup.string().required("Total floors is required"),
-    propertyOnFloor: Yup.string().required("Property on floor is required"),
     // maintenance: Yup.string().required("Maintenance is required"),
     maintenance: Yup.string(),
+
     securityDeposit: Yup.string().nullable(),
+    priceNegotiation: Yup.boolean(),
+
+    amenities: Yup.array().of(Yup.string()),
+    description: Yup.string().required("Description is required"),
+    address: Yup.string().required("Address is required"),
   };
 
   if (values.propertyType === "residential") {
     baseSchema = {
       ...baseSchema,
-      address: Yup.string().required("Address is required"),
       houseNo: Yup.string().required("House number is required"),
       apartmentName: Yup.string().required("Apartment name is required"),
       // area : in common ✅
@@ -115,6 +174,7 @@ export const validationSchema = Yup.lazy((values) => {
       // clearHeight: in common ✅
 
       furnishing: Yup.string().required("Furnishing is required"),
+
       specifications: Yup.string().required("Specifications is required"),
       // totalFloors: in common ✅
       // propertyOnFloor: in common ✅
@@ -128,14 +188,9 @@ export const validationSchema = Yup.lazy((values) => {
         .required("Expected rent is required"),
       // maintenance: in common ✅
 
-      priceNegotiation: Yup.boolean(),
       bookingAmount: Yup.number().required("Booking amount is required"),
       membershipCharge: Yup.number().nullable(),
       // ❌ Electricity and water charges excluded : not in payload
-      // ❌ Price Negotiation       : not in payload
-      // ❌ Booking amount : not in payload
-      // ❌ Membership charge : not in payload
-      // ❌ What makes your property unique : not in payload
       // Media : in common ✅
       // securityDeposit: in common ✅
       durationOfAgreement: Yup.string().required(
@@ -150,7 +205,9 @@ export const validationSchema = Yup.lazy((values) => {
         .nullable(),
       facing: Yup.string().required("Facing is required"),
       facingDetails: Yup.string(),
+      lockInPeriod: Yup.number().required("Lock in period is required"),
       // ❌ Amenities and facilities : not in payload
+      totalFloors: Yup.string().required("Total floors is required"),
     };
   }
 
@@ -160,33 +217,21 @@ export const validationSchema = Yup.lazy((values) => {
       // ✅ Area : in common
       buildingName: Yup.string().required("Building name is required"),
       officeNo: Yup.string().required("Office number is required"),
-      // ❌  Zone  : not in payload
-      // ❌  Location inside: not in payload
+      zone: Yup.string().required("Zone is required"),
+      locationInside: Yup.string().required("Location inside is required"),
       // ✅City, State, Pincode : in common
-
+      superBuiltUpArea: Yup.number().required(
+        "Super built-up area is required"
+      ),
       // carpetArea: in common ✅
-      // ❌  Super built-up area : not in payload
       // builtUpArea: in common ✅
 
-      // ❌  Entrance width : not in payload
+      entranceWidth: Yup.number().required("Entrance width is required"),
       // clearHeight: in common ✅
-      //  ❌  Flooring : not in payload
-      //  ❌  No of Cabins: not in payload
-      //  ❌  Max no of seats: not in payload
-      //  ❌  No of meeting rooms: not in payload
-      //  ❌  Conference rooms: not in payload
-      //  ❌  No of Washrooms: not in payload
-      //  ❌  No of shared washrooms: not in payload
+      flooring: Yup.string().required("Flooring is required"),
 
-      //  ❌  Reception area: not in payload
-      //  ❌  Pantry type: not in payload
-      //  ❌  Facilities: not in payload
-      //  ❌  Fire safety measures: not in payload
-
-      // totalFloors: in common ✅
       // propertyOnFloor: in common ✅
 
-      //  ❌  no of staircases: not in payload
       //  ❌  lifts available: not in payload
       //  ❌  Parking types & no of parking spaces: not in payload
       //  ❌  Ownership: not in payload
@@ -195,15 +240,77 @@ export const validationSchema = Yup.lazy((values) => {
 
       // maintenance: in common ✅
       // securityDeposit: in common ✅
-      lockInPeriod: Yup.string().required("Lock in period is required"),
       //  ❌  Yearly rent increase: not in payload
       //  ❌  Is your property fire NOC certified? : not in payload
       //  ❌  Occupancy Certificate: not in payload
-      description: Yup.string().required("Description is required"),
       // ❌  Amenities: not in payload
       // ❌  Facilities: not in payload
+      facilities: Yup.array().of(Yup.string()),
 
       // Media : in common ✅
+
+      ...(values.subType === "Showroom"
+        ? {
+            locatedNear: Yup.string(),
+            suitableBusinessTypes: Yup.array().of(Yup.string()),
+            bookingAmount: Yup.number().required("Booking amount is required"),
+          }
+        : {
+            lockInPeriod: Yup.number().required("Lock in period is required"),
+            fireNocCertified: Yup.string().required(
+              "Fire Noc certified is required"
+            ),
+            noOfCabins: Yup.number().required("No of cabins is required"),
+            maxSeats: Yup.number().required("Max seats is required"),
+            meetingRooms: Yup.number().required("Meeting rooms is required"),
+            conferenceRooms: Yup.number().required(
+              "Conference rooms is required"
+            ),
+            privateWashrooms: Yup.number().required(
+              "Private washrooms is required"
+            ),
+            sharedWashrooms: Yup.number().required(
+              "Shared washrooms is required"
+            ),
+            furnishing: Yup.string().nullable(),
+            receptionArea: Yup.string().nullable(),
+            pantryType: Yup.string().nullable(),
+            totalFloors: Yup.string().required("Total floors is required"),
+            propertyOnFloor: Yup.string().required(
+              "Property on floor is required"
+            ),
+            staircases: Yup.string().nullable(),
+            liftsAvailable: Yup.string().required("Lifts field is required"),
+            serviceLiftCount: Yup.number().required(
+              "Service lift count is required"
+            ),
+            passengerLiftCount: Yup.number().required(
+              "Passenger lift count is required"
+            ),
+            expectedLeaseAmount: Yup.number().required(
+              "Expected lease amount is required"
+            ),
+            occupancyCertificate: Yup.string().required(
+              "Occupancy certificate is required"
+            ),
+          }),
+      parkingType: Yup.string().nullable(),
+      parkingSpaces: Yup.number().nullable(),
+      ownershipType: Yup.string().required("Ownership type is required"),
+      additionalPricing: Yup.array().of(Yup.string()),
+      maintenancePeriod: Yup.string().required(
+        "Maintenance period is required"
+      ),
+      yearlyRentIncrease: Yup.number().nullable(),
+
+      /*
+// fireNocCertified
+// lockInPeriod
+// maintenancePeriod
+// occupancyCertificate
+propertyOnFloor
+totalFloors
+*/
     };
   }
 
@@ -268,6 +375,7 @@ export const convertToFormData = (values) => {
   safeAppend("totalFloors", values.totalFloors?.toString());
   safeAppend("propertyOnFloor", values.propertyOnFloor?.toString());
   safeAppend("maintenance", values.maintenance?.toString());
+  safeAppend("address", values.address);
 
   // Handle security deposit based on type
   if (values.securityDeposit === "Fixed") {
@@ -280,7 +388,6 @@ export const convertToFormData = (values) => {
 
   // Residential specific fields
   if (values.propertyType === "residential") {
-    safeAppend("address", values.address);
     safeAppend("houseNo", values.houseNo);
     safeAppend("apartmentName", values.apartmentName);
     safeAppend("bedrooms", values.bedrooms?.toString());
@@ -315,8 +422,74 @@ export const convertToFormData = (values) => {
   if (values.propertyType === "commercial") {
     safeAppend("buildingName", values.buildingName);
     safeAppend("officeNo", values.officeNo);
-    safeAppend("lockInPeriod", values.lockInPeriod);
+    safeAppend("zone", values.zone);
+    safeAppend("locationInside", values.locationInside);
+    safeAppend("entranceWidth", values.entranceWidth?.toString());
+    safeAppend("flooring", values.flooring);
+    safeAppend("lockInPeriod", values.lockInPeriod?.toString());
     safeAppend("description", values.description);
+
+    // Commercial office-specific fields (non-showroom)
+    if (values.subType !== "Showroom") {
+      safeAppend("noOfCabins", values.noOfCabins?.toString());
+      safeAppend("maxSeats", values.maxSeats?.toString());
+      safeAppend("meetingRooms", values.meetingRooms?.toString());
+      safeAppend("conferenceRooms", values.conferenceRooms?.toString());
+      safeAppend("privateWashrooms", values.privateWashrooms?.toString());
+      safeAppend("sharedWashrooms", values.sharedWashrooms?.toString());
+      safeAppend("receptionArea", values.receptionArea);
+      safeAppend("pantryType", values.pantryType);
+      safeAppend("staircases", values.staircases);
+      safeAppend("liftsAvailable", values.liftsAvailable);
+      safeAppend("serviceLiftCount", values.serviceLiftCount?.toString());
+      safeAppend("passengerLiftCount", values.passengerLiftCount?.toString());
+      safeAppend("expectedLeaseAmount", values.expectedLeaseAmount?.toString());
+    }
+
+    // Commercial showroom-specific fields
+    if (values.subType === "Showroom") {
+      safeAppend("locatedNear", values.locatedNear);
+      safeAppend("bookingAmount", values.bookingAmount?.toString());
+
+      // Only append suitableBusinessTypes if it has content
+      if (
+        values.suitableBusinessTypes &&
+        Array.isArray(values.suitableBusinessTypes) &&
+        values.suitableBusinessTypes.length > 0
+      ) {
+        safeAppend(
+          "suitableBusinessTypes",
+          JSON.stringify(values.suitableBusinessTypes)
+        );
+      }
+    }
+
+    // Common commercial fields
+    safeAppend("parkingType", values.parkingType);
+    safeAppend("parkingSpaces", values.parkingSpaces?.toString());
+    safeAppend("ownershipType", values.ownershipType);
+    safeAppend("maintenancePeriod", values.maintenancePeriod);
+    safeAppend("yearlyRentIncrease", values.yearlyRentIncrease?.toString());
+    safeAppend("fireNocCertified", values.fireNocCertified);
+    safeAppend("occupancyCertificate", values.occupancyCertificate);
+
+    // Only append additionalPricing if it has content
+    if (
+      values.additionalPricing &&
+      Array.isArray(values.additionalPricing) &&
+      values.additionalPricing.length > 0
+    ) {
+      safeAppend("additionalPricing", JSON.stringify(values.additionalPricing));
+    }
+
+    // Only append facilities if it has content
+    if (
+      values.facilities &&
+      Array.isArray(values.facilities) &&
+      values.facilities.length > 0
+    ) {
+      safeAppend("facilities", JSON.stringify(values.facilities));
+    }
   }
 
   // Media files - handle file uploads
