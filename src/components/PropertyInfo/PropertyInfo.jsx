@@ -39,7 +39,7 @@ const PropertyInfo = ({ id }) => {
       <section className="pt60 pb90 bgc-f7">
         <div className="container">
           <div className="row">
-            <PropertyHeader id={id} isRental={isRental} />
+            <PropertyHeader id={id} propertyDetail={propertyDetail} isRental={isRental} />
           </div>
           {/* End .row */}
 
@@ -60,7 +60,7 @@ const PropertyInfo = ({ id }) => {
 
               <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30">Property Description</h4>
-                <ProperytyDescriptions />
+                <ProperytyDescriptions description={propertyDetail?.description} />
                 {/* End property description */}
 
                 <h4 className="title fz17 mb30 mt50">Property Details</h4>
