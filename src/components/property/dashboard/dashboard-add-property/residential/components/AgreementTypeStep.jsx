@@ -16,15 +16,13 @@ const AgreementTypeStep = ({ formData, onDataChange, subType }) => {
             className="form-control filterInput"
             rows="4"
             placeholder="Describe what makes your property unique (50-5000 characters)"
-            value={formData.propertyUnique || ""}
-            onChange={(e) =>
-              handleInputChange("propertyUnique", e.target.value)
-            }
+            value={formData.description || ""}
+            onChange={(e) => handleInputChange("description", e.target.value)}
             minLength={50}
             maxLength={5000}
           ></textarea>
           <small className="text-muted">
-            {formData.propertyUnique?.length || 0}/5000 characters
+            {formData.description?.length || 0}/5000 characters
           </small>
         </div>
       </div>

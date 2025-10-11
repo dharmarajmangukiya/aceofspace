@@ -160,7 +160,7 @@ const KycSection = ({ userData, refetchProfile }) => {
             <Select
               instanceId="documentType"
               options={kycDocumentTypeOptions}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles()}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={selectedDocumentType ?? null}

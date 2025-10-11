@@ -107,7 +107,13 @@ const EditorWrapper = ({ value, onChange, placeholder }) => {
   );
 };
 
-const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
+const PricingDetailsStep = ({
+  formData,
+  onDataChange,
+  subType,
+  errors,
+  touched,
+}) => {
   const isShowroom = subType === "Showroom";
   const [description, setDescription] = React.useState(
     formData.propertyDescription || ""
@@ -120,7 +126,7 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
 
   const handleDescriptionChange = (markdown) => {
     setDescription(markdown);
-    handleInputChange("propertyDescription", markdown);
+    handleInputChange("description", markdown);
   };
 
   // Sync description state when formData changes
@@ -143,6 +149,10 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
 
   const characterCount = getCharacterCount(description);
 
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] && errors[fieldName] ? errors[fieldName] : null;
+  };
+
   return (
     <div className="pricing-details-step">
       <h4 className="title fz17 mb30">Add Pricing & Details</h4>
@@ -159,17 +169,20 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
                 <input
                   id={`ownership-${option}`}
                   type="radio"
-                  name="ownership"
+                  name="ownershipType"
                   value={option}
-                  checked={formData.ownership === option}
+                  checked={formData.ownershipType === option}
                   onChange={(e) =>
-                    handleInputChange("ownership", e.target.value)
+                    handleInputChange("ownershipType", e.target.value)
                   }
                 />
                 <label htmlFor={`ownership-${option}`}>{option}</label>
               </div>
             ))}
           </div>
+          {getFieldError("ownershipType") && (
+            <div className="text-danger">{getFieldError("ownershipType")}</div>
+          )}
         </div>
       </div>
 
@@ -192,6 +205,11 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
                   handleInputChange("bookingAmount", e.target.value)
                 }
               />
+              {getFieldError("bookingAmount") && (
+                <div className="text-danger">
+                  {getFieldError("bookingAmount")}
+                </div>
+              )}
               <span className="input-group-text">₹</span>
             </div>
           </div>
@@ -201,15 +219,22 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
             <div className="input-group">
               <input
                 type="number"
-                className="form-control filterInput"
+                className={`form-control filterInput ${
+                  getFieldError("expectedLeaseAmount") ? "is-invalid" : ""
+                }`}
                 placeholder="Enter lease amount"
-                value={formData.leaseAmount || ""}
+                value={formData.expectedLeaseAmount || ""}
                 onChange={(e) =>
-                  handleInputChange("leaseAmount", e.target.value)
+                  handleInputChange("expectedLeaseAmount", e.target.value)
                 }
               />
               <span className="input-group-text">₹/sq ft</span>
             </div>
+            {getFieldError("expectedLeaseAmount") && (
+              <div className="text-danger">
+                {getFieldError("expectedLeaseAmount")}
+              </div>
+            )}
           </div>
         )}
 
@@ -251,6 +276,11 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
               </div>
             ))}
           </div>
+          {getFieldError("additionalPricing") && (
+            <div className="text-danger">
+              {getFieldError("additionalPricing")}
+            </div>
+          )}
         </div>
       </div>
 
@@ -348,11 +378,13 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
         <>
           <div className="row mb-4">
             <div className="col-md-6 mb-3">
-              <label className="form-label">Lock-in period</label>
+              <label className="form-label">Lock-in period *</label>
               <div className="input-group">
                 <input
                   type="number"
-                  className="form-control filterInput"
+                  className={`form-control filterInput no-spinner ${
+                    getFieldError("lockInPeriod") ? "is-invalid" : ""
+                  }`}
                   placeholder="Enter lock-in period"
                   value={formData.lockInPeriod || ""}
                   onChange={(e) =>
@@ -361,6 +393,11 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
                 />
                 <span className="input-group-text">months</span>
               </div>
+              {getFieldError("lockInPeriod") && (
+                <div className="text-danger">
+                  {getFieldError("lockInPeriod")}
+                </div>
+              )}
             </div>
 
             <div className="col-md-6 mb-3">
@@ -382,51 +419,71 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
 
           <div className="row mb-4">
             <div className="col-12">
-              <h5 className="mb-3">Is your property fire NOC certified?</h5>
+              <h5 className="mb-3">Is your property fire NOC certified? *</h5>
             </div>
             <div className="col-md-12 mb-3">
               <div className="form-style2 input-group">
                 {["Yes", "No"].map((option) => (
-                  <div className="selection" key={`fireNOC-${option}`}>
+                  <div className="selection" key={`fireNocCertified-${option}`}>
                     <input
-                      id={`fireNOC-${option}`}
+                      id={`fireNocCertified-${option}`}
                       type="radio"
-                      name="fireNOC"
+                      name="fireNocCertified"
                       value={option}
-                      checked={formData.fireNOC === option}
+                      checked={formData.fireNocCertified === option}
                       onChange={(e) =>
-                        handleInputChange("fireNOC", e.target.value)
+                        handleInputChange("fireNocCertified", e.target.value)
                       }
                     />
-                    <label htmlFor={`fireNOC-${option}`}>{option}</label>
+                    <label htmlFor={`fireNocCertified-${option}`}>
+                      {option}
+                    </label>
                   </div>
                 ))}
               </div>
+              {getFieldError("fireNocCertified") && (
+                <div className="text-danger">
+                  {getFieldError("fireNocCertified")}
+                </div>
+              )}
             </div>
           </div>
 
           <div className="row mb-4">
             <div className="col-12">
-              <h5 className="mb-3">Occupancy Certificate</h5>
+              <h5 className="mb-3">Occupancy Certificate *</h5>
             </div>
             <div className="col-md-12 mb-3">
               <div className="form-style2 input-group">
                 {["Yes", "No"].map((option) => (
-                  <div className="selection" key={`occupancy-${option}`}>
+                  <div
+                    className="selection"
+                    key={`occupancyCertificate-${option}`}
+                  >
                     <input
-                      id={`occupancy-${option}`}
+                      id={`occupancyCertificate-${option}`}
                       type="radio"
-                      name="occupancyCert"
+                      name="occupancyCertificate"
                       value={option}
-                      checked={formData.occupancyCert === option}
+                      checked={formData.occupancyCertificate === option}
                       onChange={(e) =>
-                        handleInputChange("occupancyCert", e.target.value)
+                        handleInputChange(
+                          "occupancyCertificate",
+                          e.target.value
+                        )
                       }
                     />
-                    <label htmlFor={`occupancy-${option}`}>{option}</label>
+                    <label htmlFor={`occupancyCertificate-${option}`}>
+                      {option}
+                    </label>
                   </div>
                 ))}
               </div>
+              {getFieldError("occupancyCertificate") && (
+                <div className="text-danger">
+                  {getFieldError("occupancyCertificate")}
+                </div>
+              )}
             </div>
           </div>
         </>
@@ -469,6 +526,9 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
               {characterCount}/5000 characters
             </small>
           </div>
+          {getFieldError("description") && (
+            <div className="text-danger">{getFieldError("description")}</div>
+          )}
         </div>
       </div>
 
@@ -477,13 +537,19 @@ const PricingDetailsStep = ({ formData, onDataChange, subType }) => {
         <div className="widget-wrapper mb0">
           <h6 className="list-title mb10">Amenities</h6>
         </div>
-        <CommercialAmenities />
+        <CommercialAmenities
+          selected={formData.amenities}
+          onSelectionChange={(value) => handleInputChange("amenities", value)}
+        />
       </div>
       <div>
         <div className="widget-wrapper mb0">
           <h6 className="list-title mb10">Facilities</h6>
         </div>
-        <CommercialFacilities />
+        <CommercialFacilities
+          selected={formData.facilities}
+          onSelectionChange={(value) => handleInputChange("facilities", value)}
+        />
       </div>
 
       <div className="row mt-3">

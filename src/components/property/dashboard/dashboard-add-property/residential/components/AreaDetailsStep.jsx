@@ -1,9 +1,19 @@
 import { smallSelectStyles } from "@/utils/helper";
 import Select from "react-select";
 
-const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
+const AreaDetailsStep = ({
+  formData,
+  onDataChange,
+  subType,
+  errors,
+  touched,
+}) => {
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
+  };
+
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] && errors[fieldName] ? errors[fieldName] : null;
   };
 
   return (
@@ -16,7 +26,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("carpetArea") ? "is-invalid" : ""
+              }`}
               placeholder="Enter carpet area"
               value={formData.carpetArea || ""}
               onChange={(e) => handleInputChange("carpetArea", e.target.value)}
@@ -33,6 +45,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="sq mtr">sq mtr</option>
             </select>
           </div>
+          {getFieldError("carpetArea") && (
+            <div className="text-danger">{getFieldError("carpetArea")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
@@ -40,7 +55,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("builtUpArea") ? "is-invalid" : ""
+              }`}
               placeholder="Enter built-up area"
               value={formData.builtUpArea || ""}
               onChange={(e) => handleInputChange("builtUpArea", e.target.value)}
@@ -57,6 +74,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               <option value="sq mtr">sq mtr</option>
             </select>
           </div>
+          {getFieldError("builtUpArea") && (
+            <div className="text-danger">{getFieldError("builtUpArea")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
@@ -64,13 +84,18 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
           <div className="input-group responsive-input-group">
             <input
               type="number"
-              className="form-control filterInput"
+              className={`form-control filterInput ${
+                getFieldError("clearHeight") ? "is-invalid" : ""
+              }`}
               placeholder="Enter clear height"
               value={formData.clearHeight || ""}
               onChange={(e) => handleInputChange("clearHeight", e.target.value)}
             />
             <span className="input-group-text">ft</span>
           </div>
+          {getFieldError("clearHeight") && (
+            <div className="text-danger">{getFieldError("clearHeight")}</div>
+          )}
         </div>
 
         {/* Plot Area for Bungalow/House/Villa */}
@@ -82,7 +107,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
             <div className="input-group responsive-input-group">
               <input
                 type="number"
-                className="form-control filterInput"
+                className={`form-control filterInput ${
+                  getFieldError("plotArea") ? "is-invalid" : ""
+                }`}
                 placeholder="Enter plot area"
                 value={formData.plotArea || ""}
                 onChange={(e) => handleInputChange("plotArea", e.target.value)}
@@ -99,6 +126,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
                 <option value="sq yd">sq yd</option>
               </select>
             </div>
+            {getFieldError("plotArea") && (
+              <div className="text-danger">{getFieldError("plotArea")}</div>
+            )}
           </div>
         )}
 
@@ -121,12 +151,17 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               </div>
             ))}
           </div>
+          {getFieldError("furnishing") && (
+            <div className="text-danger">{getFieldError("furnishing")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Specifications</label>
+          <label className="form-label">Specifications *</label>
           <textarea
-            className="form-control filterInput"
+            className={`form-control filterInput ${
+              getFieldError("specifications") ? "is-invalid" : ""
+            }`}
             rows="3"
             placeholder="Dining table, etc."
             value={formData.specifications || ""}
@@ -134,50 +169,62 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               handleInputChange("specifications", e.target.value)
             }
           ></textarea>
+          {getFieldError("specifications") && (
+            <div className="text-danger">{getFieldError("specifications")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
           <label className="form-label">Total floors</label>
           <input
-            type="text"
-            className="form-control filterInput"
+            type="number"
+            className={`form-control filterInput no-spin ${
+              getFieldError("totalFloors") ? "is-invalid" : ""
+            }`}
             placeholder="Enter total floors"
             value={formData.totalFloors || ""}
             onChange={(e) => handleInputChange("totalFloors", e.target.value)}
           />
+          {getFieldError("totalFloors") && (
+            <div className="text-danger">{getFieldError("totalFloors")}</div>
+          )}
         </div>
 
         {subType === "Flat" && (
           <div className="col mb-3">
             <label className="form-label">Property on floor</label>
             <Select
-              instanceId="propertyFloor"
+              instanceId="propertyOnFloor"
               options={[
                 { value: "", label: "Select floor" },
-                { value: "Basement", label: "Basement" },
-                { value: "LG", label: "LG" },
-                { value: "G", label: "G" },
+                // { value: "Basement", label: "Basement" },
+                // { value: "G", label: "G" },
                 ...Array.from({ length: 25 }, (_, i) => ({
                   value: (i + 1).toString(),
                   label: (i + 1).toString(),
                 })),
               ]}
-              styles={smallSelectStyles}
+              styles={smallSelectStyles(getFieldError("propertyOnFloor"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
-                value: formData.propertyFloor || "",
-                label: formData.propertyFloor || "Select floor",
+                value: formData.propertyOnFloor || "",
+                label: formData.propertyOnFloor || "Select floor",
               }}
-              onChange={(e) => handleInputChange("propertyFloor", e.value)}
+              onChange={(e) => handleInputChange("propertyOnFloor", e.value)}
             />
+            {getFieldError("propertyOnFloor") && (
+              <div className="text-danger">
+                {getFieldError("propertyOnFloor")}
+              </div>
+            )}
           </div>
         )}
 
         <div className="col mb-3">
           <label className="form-label">Age of Property</label>
           <Select
-            instanceId="propertyAge"
+            instanceId="ageOfProperty"
             options={[
               { value: "", label: "Select age" },
               { value: "0-1", label: "0-1" },
@@ -185,25 +232,33 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               { value: "5-10", label: "5-10" },
               { value: "10+", label: "10+" },
             ]}
-            styles={smallSelectStyles}
+            styles={smallSelectStyles(getFieldError("ageOfProperty"))}
             className="select-custom filterSelect"
             classNamePrefix="select"
             value={{
-              value: formData.propertyAge || "",
-              label: formData.propertyAge || "Select age",
+              value: formData.ageOfProperty || "",
+              label: formData.ageOfProperty || "Select age",
             }}
-            onChange={(e) => handleInputChange("propertyAge", e.value)}
+            onChange={(e) => handleInputChange("ageOfProperty", e.value)}
           />
+          {getFieldError("ageOfProperty") && (
+            <div className="text-danger">{getFieldError("ageOfProperty")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Available from</label>
+          <label className="form-label">Available from *</label>
           <input
             type="date"
-            className="form-control filterInput"
+            className={`form-control filterInput ${
+              getFieldError("availableFrom") ? "is-invalid" : ""
+            }`}
             value={formData.availableFrom || ""}
             onChange={(e) => handleInputChange("availableFrom", e.target.value)}
           />
+          {getFieldError("availableFrom") && (
+            <div className="text-danger">{getFieldError("availableFrom")}</div>
+          )}
         </div>
 
         <div className="col mb-3">
@@ -237,6 +292,9 @@ const AreaDetailsStep = ({ formData, onDataChange, subType }) => {
               )
             )}
           </div>
+          {getFieldError("rentTo") && (
+            <div className="text-danger">{getFieldError("rentTo")}</div>
+          )}
         </div>
       </div>
     </div>
