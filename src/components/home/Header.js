@@ -4,10 +4,11 @@ import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
 import { AuthContext } from "@/Layouts/AuthProvider";
 import { role_enum } from "@/utils/constants";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import LoginSignupModal from "../common/login-signup-modal";
 const menuItems = [
   {
@@ -37,12 +38,12 @@ const Header = () => {
   const [navbar, setNavbar] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { isAuth, role, userData } = useContext(AuthContext);
-
   const { firstName, lastName } = userData || {};
   const router = useRouter();
   const pathname = usePathname();
   const loginButtonRef = useRef(null);
   const searchParams = useSearchParams();
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     if (!searchParams) return;
@@ -75,9 +76,10 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header-nav nav-homepage-style main-menu  ${
-          navbar ? "sticky slideInDown animated" : ""
-        }`}
+        className={classNames("header-nav nav-homepage-style main-menu", {
+          "sticky slideInDown animated": navbar,
+          "light-header menu-home4": !isHomePage,
+        })}
       >
         <nav className="posr">
           <div className="container posr menu_bdrt1">
@@ -284,4 +286,12 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default () => {
+  return (
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+      </Suspense>
+    </>
+  );
+};

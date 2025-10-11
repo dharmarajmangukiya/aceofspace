@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 const page = () => {
   return (
-    <Suspense>
+    <>
       {/* Breadcumb Sections */}
       <section className="breadcumb-section bgc-f7">
         <div className="container">
@@ -33,10 +33,12 @@ const page = () => {
       </section>
       {/* End Breadcumb Sections */}
 
-      {/* Property Filtering */}
-      <ProperteyFiltering />
-      {/* Property Filtering */}
-    </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        {/* Property Filtering */}
+        <ProperteyFiltering />
+        {/* Property Filtering */}
+      </Suspense>
+    </>
   );
 };
 

@@ -32,24 +32,42 @@ export const multiSelectCustomSelectStyles = {
 };
 
 // Utility function to create custom select styles with common modifications
-export const createCustomSelectStyles = (overrides = {}) => {
+export const createCustomSelectStyles = (overrides = {}, isError = false) => {
   return {
     ...customSelectStyles,
+    ...(isError && {
+      control: (base) => ({
+        ...base,
+        border: "1px solid #dc3545 !important",
+      }),
+    }),
     ...overrides,
   };
 };
 
 // small select styles
-export const smallSelectStyles = createCustomSelectStyles({
-  menuList: (provided) => ({
-    ...provided,
-    maxHeight: 120,
-  }),
-});
+export const smallSelectStyles = (isError = false) =>
+  createCustomSelectStyles(
+    {
+      menuList: (provided) => ({
+        ...provided,
+        maxHeight: 120,
+      }),
+    },
+    isError
+  );
 
 export const pickErrorMessage = (
   error,
   defaultMessage = "Something went wrong"
 ) => {
   return error?.message || error?.response?.data?.message || defaultMessage;
+};
+
+export const cleanPayload = (payload) => {
+  return Object.fromEntries(
+    Object.entries(payload).filter(
+      ([_, value]) => value !== "" && value !== null && value !== undefined
+    )
+  );
 };

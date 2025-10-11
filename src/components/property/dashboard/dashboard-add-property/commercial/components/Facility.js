@@ -2,21 +2,15 @@
 
 import { facilitiesOptions } from "@/utils/constants";
 import classNames from "classnames";
-import { useState } from "react";
 
-const CommercialFacilities = ({ onSelectionChange }) => {
-  const [selected, setSelected] = useState([]);
-
+const CommercialFacilities = ({ onSelectionChange, selected }) => {
   const handleClick = (amenity) => {
-    setSelected((prev) => {
-      const isSelected = prev.includes(amenity.value);
-      const newSelection = isSelected
-        ? prev.filter((val) => val !== amenity.value)
-        : [...prev, amenity.value];
+    const isSelected = selected.includes(amenity.value);
+    const newSelection = isSelected
+      ? selected.filter((val) => val !== amenity.value)
+      : [...selected, amenity.value];
 
-      onSelectionChange?.(newSelection);
-      return newSelection;
-    });
+    onSelectionChange?.(newSelection);
   };
 
   return (

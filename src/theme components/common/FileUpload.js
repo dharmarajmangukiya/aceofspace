@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 
 const FileUpload = ({
   label,
-  field,
   value,
   onChange,
   error,
@@ -22,6 +21,7 @@ const FileUpload = ({
   onFileSelect,
   showGuidelines = true,
   guidelines = [],
+  disabled = false,
 }) => {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef(null);
@@ -95,23 +95,31 @@ const FileUpload = ({
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setDragOver(true);
+    if (!disabled) {
+      setDragOver(true);
+    }
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    setDragOver(false);
+    if (!disabled) {
+      setDragOver(false);
+    }
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);
-    const files = e.dataTransfer.files;
-    handleFileUpload(files);
+    if (!disabled) {
+      const files = e.dataTransfer.files;
+      handleFileUpload(files);
+    }
   };
 
   const handleClick = () => {
-    inputRef.current?.click();
+    if (!disabled) {
+      inputRef.current?.click();
+    }
   };
 
   const getFilePreview = (file) => {
@@ -193,46 +201,69 @@ const FileUpload = ({
       )}
 
       <div
-        className={`upload-area ${dragOver ? "drag-over" : ""}`}
+        className={`upload-area ${dragOver ? "drag-over" : ""} ${
+          disabled ? "disabled" : ""
+        }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
         style={{
-          border: `2px dashed ${dragOver ? "var(--primary-color)" : "#e0e0e0"}`,
+          border: `2px dashed ${
+            disabled ? "#ccc" : dragOver ? "var(--primary-color)" : "#e0e0e0"
+          }`,
           borderRadius: "12px",
           padding: "2rem",
           textAlign: "center",
-          cursor: "pointer",
+          cursor: disabled ? "not-allowed" : "pointer",
           transition: "all 0.3s ease",
-          backgroundColor: dragOver ? "rgba(235, 103, 83, 0.05)" : "#fafafa",
+          backgroundColor: disabled
+            ? "#f5f5f5"
+            : dragOver
+            ? "rgba(235, 103, 83, 0.05)"
+            : "#fafafa",
           minHeight: "200px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          opacity: disabled ? 0.6 : 1,
         }}
       >
         <div className="mb-3">
           <i
             className={`${icon} fa-2x`}
             style={{
-              color: dragOver ? "var(--primary-color)" : "#999",
+              color: disabled
+                ? "#ccc"
+                : dragOver
+                ? "var(--primary-color)"
+                : "#999",
               transition: "color 0.3s ease",
             }}
           ></i>
         </div>
-        <p className="mb-3 fw-medium" style={{ color: "#333" }}>
-          {dragOver ? dragText : uploadText}
+        <p
+          className="mb-3 fw-medium"
+          style={{ color: disabled ? "#999" : "#333" }}
+        >
+          {disabled
+            ? "Video upload disabled"
+            : dragOver
+            ? dragText
+            : uploadText}
         </p>
         <p className="mb-3 small text-muted">
-          Max {maxFiles} file(s) • {getAcceptedTypes()} • Max {maxSize}MB
+          {disabled
+            ? "This feature is currently unavailable"
+            : `Max ${maxFiles} file(s) • ${getAcceptedTypes()} • Max ${maxSize}MB`}
         </p>
         <button
           type="button"
           className="btn"
+          disabled={disabled}
           style={{
-            backgroundColor: "var(--primary-color)",
+            backgroundColor: disabled ? "#ccc" : "var(--primary-color)",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -240,17 +271,22 @@ const FileUpload = ({
             fontSize: "14px",
             fontWeight: "500",
             transition: "all 0.3s ease",
+            cursor: disabled ? "not-allowed" : "pointer",
           }}
           onMouseOver={(e) => {
-            e.target.style.backgroundColor = "#d55a47";
-            e.target.style.transform = "translateY(-1px)";
+            if (!disabled) {
+              e.target.style.backgroundColor = "#d55a47";
+              e.target.style.transform = "translateY(-1px)";
+            }
           }}
           onMouseOut={(e) => {
-            e.target.style.backgroundColor = "var(--primary-color)";
-            e.target.style.transform = "translateY(0)";
+            if (!disabled) {
+              e.target.style.backgroundColor = "var(--primary-color)";
+              e.target.style.transform = "translateY(0)";
+            }
           }}
         >
-          {buttonText}
+          {disabled ? "Disabled" : buttonText}
         </button>
         <input
           ref={inputRef}
