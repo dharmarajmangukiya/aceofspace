@@ -143,8 +143,6 @@ const ResidentialForm = ({
                   className="ud-btn btn-thm"
                   type="button"
                   onClick={() => {
-                    console.log("Form errors:", formik.errors);
-                    console.log("Form values:", formik.values);
                     handleSubmit();
                   }}
                   disabled={isSubmitting}
