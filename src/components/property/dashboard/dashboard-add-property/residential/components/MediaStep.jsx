@@ -50,6 +50,7 @@ const MediaStep = ({ formData, onDataChange, subType, errors, touched }) => {
             buttonText="Choose Images"
             icon="fas fa-images"
             showGuidelines={false}
+            name="media"
           />
         </div>
       </div>

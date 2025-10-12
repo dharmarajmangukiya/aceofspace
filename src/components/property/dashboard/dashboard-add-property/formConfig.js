@@ -526,16 +526,17 @@ export const convertToFormData = (values) => {
       safeAppend("facilities", JSON.stringify(values.facilities));
     }
   }
-
+  
   // Media files - handle file uploads
-  if (values.media && Array.isArray(values.media) && values.media.length > 0) {
-    values.media.forEach((file, index) => {
+  if (values.media && values.media.length > 0) {
+    Object.keys(values.media).forEach((key, index) => {
+      const file = values.media[key];
       if (file instanceof File) {
         formData.append("media", file);
       }
     });
   }
-
+  
   return formData;
 };
 
