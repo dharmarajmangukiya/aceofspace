@@ -123,7 +123,13 @@ const Header = () => {
                       <li className=" user_setting">
                         <div className="dropdown">
                           <a
-                            className="btn p-0 user-dropdown-trigger"
+                            className={classNames(
+                              "btn p-0 user-dropdown-trigger",
+                              {
+                                "user-dropdown-text-black":
+                                  navbar || !isHomePage,
+                              }
+                            )}
                             href="#"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -189,7 +195,12 @@ const Header = () => {
                       </li>
                       {role === role_enum.ADMIN ? (
                         <Link
-                          className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
+                          className={classNames(
+                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0",
+                            {
+                              "shadow ": navbar || !isHomePage,
+                            }
+                          )}
                           href="/dashboard"
                         >
                           Dashboard
@@ -197,7 +208,12 @@ const Header = () => {
                         </Link>
                       ) : (
                         <Link
-                          className="ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0"
+                          className={classNames(
+                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0",
+                            {
+                              "shadow ": navbar || !isHomePage,
+                            }
+                          )}
                           href="/add-property"
                         >
                           Add Property
@@ -205,27 +221,29 @@ const Header = () => {
                         </Link>
                       )}
                       <a
-                        className="sidemenu-btn filter-btn-right"
+                        // className={"sidemenu-btn filter-btn-right"}
                         href="#"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#LandingPageSidebarPanel"
                         aria-controls="LandingPageSidebarPanelLabel"
                       >
-                        <Image
-                          width={25}
-                          height={9}
-                          className="img-1"
-                          src="/images/icon/nav-icon-white.svg"
-                          alt="humberger menu"
-                        />
-
-                        <Image
-                          width={25}
-                          height={9}
-                          className="img-2"
-                          src="/images/icon/nav-icon-dark.svg"
-                          alt="humberger menu"
-                        />
+                        {navbar || !isHomePage ? (
+                          <Image
+                            width={25}
+                            height={9}
+                            className="img-2"
+                            src="/images/icon/nav-icon-dark.svg"
+                            alt="humberger menu"
+                          />
+                        ) : (
+                          <Image
+                            width={25}
+                            height={9}
+                            className="img-1"
+                            src="/images/icon/nav-icon-white.svg"
+                            alt="humberger menu"
+                          />
+                        )}
                       </a>
                     </>
                   ) : (

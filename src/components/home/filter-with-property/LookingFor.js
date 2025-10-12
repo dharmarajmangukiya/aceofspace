@@ -11,9 +11,10 @@ const LookingFor = () => {
     { value: "TownHome", label: "TownHome" },
     { value: "Villa", label: "Villa" },
   ];
-  const [showSelect, setShowSelect] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
-    setShowSelect(true);
+    setIsClient(true);
   }, []);
 
   const customStyles = {
@@ -34,21 +35,35 @@ const LookingFor = () => {
       };
     },
   };
+  if (!isClient) {
+    return (
+      <div className="text-start select-borderless">
+        <div className="select__control">
+          <div className="select__value-container">
+            <div className="select__single-value">Apartments</div>
+          </div>
+          <div className="select__indicators">
+            <span className="select__indicator-separator"></span>
+            <div className="select__indicator select__dropdown-indicator">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {showSelect && (
-        <Select
-          defaultValue={[inqueryType[0]]}
-          name="colors"
-          options={inqueryType}
-          styles={customStyles}
-          className="text-start select-borderless"
-          classNamePrefix="select"
-          required
-          isClearable={false}
-        />
-      )}
-    </>
+    <Select
+      defaultValue={[inqueryType[0]]}
+      name="colors"
+      options={inqueryType}
+      styles={customStyles}
+      className="text-start select-borderless"
+      classNamePrefix="select"
+      required
+      isClearable={false}
+    />
   );
 };
 
