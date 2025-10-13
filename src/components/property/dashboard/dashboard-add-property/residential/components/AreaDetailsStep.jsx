@@ -1,4 +1,5 @@
 import { smallSelectStyles } from "@/utils/helper";
+import { useState } from "react";
 import Select from "react-select";
 
 const AreaDetailsStep = ({
@@ -8,6 +9,8 @@ const AreaDetailsStep = ({
   errors,
   touched,
 }) => {
+  const [propertyOnFloorLabel, setPropertyOnFloorLabel] =
+    useState("Select floor");
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
   };
@@ -51,7 +54,7 @@ const AreaDetailsStep = ({
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Built Up Area</label>
+          <label className="form-label">Built Up Area *</label>
           <div className="input-group responsive-input-group">
             <input
               type="number"
@@ -196,22 +199,30 @@ const AreaDetailsStep = ({
             <Select
               instanceId="propertyOnFloor"
               options={[
-                { value: "", label: "Select floor" },
-                // { value: "Basement", label: "Basement" },
-                // { value: "G", label: "G" },
-                ...Array.from({ length: 25 }, (_, i) => ({
-                  value: (i + 1).toString(),
-                  label: (i + 1).toString(),
-                })),
+                { value: "-1", label: "Basement" },
+                { value: "0", label: "Ground" },
+                ...Array.from(
+                  { length: formData?.totalFloors || 25 },
+                  (_, i) => ({
+                    value: (i + 1).toString(),
+                    label: (i + 1).toString(),
+                  })
+                ),
               ]}
               styles={smallSelectStyles(getFieldError("propertyOnFloor"))}
               className="select-custom filterSelect"
               classNamePrefix="select"
               value={{
                 value: formData.propertyOnFloor || "",
-                label: formData.propertyOnFloor || "Select floor",
+                label:
+                  propertyOnFloorLabel ??
+                  formData.propertyOnFloorLabel ??
+                  "Select floor",
               }}
-              onChange={(e) => handleInputChange("propertyOnFloor", e.value)}
+              onChange={(e) => {
+                handleInputChange("propertyOnFloor", e.value);
+                setPropertyOnFloorLabel(e.label);
+              }}
             />
             {getFieldError("propertyOnFloor") && (
               <div className="text-danger">

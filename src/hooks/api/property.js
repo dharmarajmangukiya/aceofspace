@@ -7,6 +7,7 @@ export const useGetPropertyDetail = (propertyId) => {
   return useQuery({
     queryKey: ["propertyDetail", propertyId],
     enabled: !!propertyId,
+    meta: { globalLoader: true },
     queryFn: async () => {
       try {
         const response = await api.get(`/property/${propertyId}`);
@@ -21,8 +22,10 @@ export const useGetPropertyDetail = (propertyId) => {
 // Get Properties with Infinite Scroll
 export const useGetProperties = (searchParams) => {
   // Convert URLSearchParams to a serializable object for query key
-  const searchParamsObj = searchParams ? Object.fromEntries([...searchParams]) : {};
-  
+  const searchParamsObj = searchParams
+    ? Object.fromEntries([...searchParams])
+    : {};
+
   return useInfiniteQuery({
     queryKey: ["properties", searchParamsObj],
     enabled: true,

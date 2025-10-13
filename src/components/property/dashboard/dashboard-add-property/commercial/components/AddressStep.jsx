@@ -146,6 +146,7 @@ const AddressStep = ({
               label: formData.zone || "Select zone",
             }}
             onChange={(e) => handleInputChange("zone", e.value)}
+            onBlur={() => handleBlur("zone")}
           />
           {getFieldError("zone") && (
             <div className="text-danger">{getFieldError("zone")}</div>
@@ -170,6 +171,7 @@ const AddressStep = ({
               label: formData.locationInside || "Select location",
             }}
             onChange={(e) => handleInputChange("locationInside", e.value)}
+            onBlur={() => handleBlur("locationInside")}
           />
           {getFieldError("locationInside") && (
             <div className="text-danger">{getFieldError("locationInside")}</div>

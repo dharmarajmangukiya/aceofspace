@@ -23,7 +23,7 @@ const MediaStep = ({ formData, onDataChange, subType, errors, touched }) => {
             touched={touched?.video}
             accept="video/*"
             maxFiles={1}
-            maxSize={50}
+            maxsize={5}
             preview={true}
             dragText="Drop video here"
             uploadText="Upload property video"
@@ -43,7 +43,7 @@ const MediaStep = ({ formData, onDataChange, subType, errors, touched }) => {
             touched={touched?.media}
             accept="image/*"
             maxFiles={10}
-            maxSize={5}
+            maxsize={5}
             preview={true}
             dragText="Drop images here"
             uploadText="Upload property images"

@@ -215,7 +215,7 @@ const KycSection = ({ userData, refetchProfile }) => {
             }
             accept="image/*,application/pdf"
             maxFiles={1}
-            maxSize={5}
+            maxSize={2}
             icon="fas fa-id-card"
             uploadText="Upload document front"
             dragText="Drop document here"
@@ -234,7 +234,7 @@ const KycSection = ({ userData, refetchProfile }) => {
             touched={formik.touched.documentImageBack || formik.submitCount > 0}
             accept="image/*,application/pdf"
             maxFiles={1}
-            maxSize={5}
+            maxSize={2}
             icon="fas fa-id-card"
             uploadText="Upload document back"
             dragText="Drop document here"

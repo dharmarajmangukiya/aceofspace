@@ -75,22 +75,36 @@ const FileUpload = ({
     if (oversizedFiles.length > 0) {
       const fileNames = oversizedFiles.map((f) => f.name).join(", ");
       toast.error(
-        `File(s) too large: ${fileNames}. Maximum allowed size is ${maxSize}MB`
+        `File(s) too large: ${fileNames}. Maximum allowed size is ${maxSize}MB per file`
       );
       return;
     }
 
-    // Check file count
-    if (files.length > maxFiles) {
+    // Get existing files
+    const existingFiles = value ? Array.from(value) : [];
+    const newFiles = Array.from(files);
+
+    // Combine existing and new files
+    const combinedFiles = [...existingFiles, ...newFiles];
+
+    // Check file count after combining
+    if (combinedFiles.length > maxFiles) {
       toast.error(
-        `Maximum ${maxFiles} file(s) allowed. You selected ${files.length}.`
+        `Maximum ${maxFiles} file(s) allowed. You have ${existingFiles.length} and tried to add ${newFiles.length} more.`
       );
       return;
     }
 
-    // All validations passed
-    onChange(files);
-    if (onFileSelect) onFileSelect(files);
+    // All validations passed - convert to FileList if needed
+    if (value instanceof FileList) {
+      const dt = new DataTransfer();
+      combinedFiles.forEach((file) => dt.items.add(file));
+      onChange(dt.files);
+      if (onFileSelect) onFileSelect(dt.files);
+    } else {
+      onChange(combinedFiles);
+      if (onFileSelect) onFileSelect(combinedFiles);
+    }
   };
 
   const handleDragOver = (e) => {
@@ -256,7 +270,7 @@ const FileUpload = ({
         <p className="mb-3 small text-muted">
           {disabled
             ? "This feature is currently unavailable"
-            : `Max ${maxFiles} file(s) • ${getAcceptedTypes()} • Max ${maxSize}MB`}
+            : `Max ${maxFiles} file(s) • ${getAcceptedTypes()} • Max ${maxSize}MB per file`}
         </p>
         <button
           type="button"

@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import NearbySimilarProperty from "@/components/property/property-single-style/common/NearbySimilarProperty";
 import OverView from "@/components/property/property-single-style/common/OverView";
 import PropertyAddress from "@/components/property/property-single-style/common/PropertyAddress";
@@ -16,6 +15,7 @@ import ContactWithAgent from "@/components/property/property-single-style/sideba
 import ScheduleTour from "@/components/property/property-single-style/sidebar/ScheduleTour";
 import PropertyGallery from "@/components/property/property-single-style/single-v1/PropertyGallery";
 import { useGetPropertyDetail } from "@/hooks/api/property";
+import { useEffect, useState } from "react";
 
 // const isRentOrLease = "rent";
 const isRentOrLease = "lease";
@@ -24,7 +24,7 @@ const PropertyInfo = ({ id }) => {
   // Queries
   const { data: propertyData } = useGetPropertyDetail(id);
 
-  const [ propertyDetail, setPropertyDetail ] = useState();
+  const [propertyDetail, setPropertyDetail] = useState();
 
   useEffect(() => {
     if (propertyData) {
@@ -39,7 +39,11 @@ const PropertyInfo = ({ id }) => {
       <section className="pt60 pb90 bgc-f7">
         <div className="container">
           <div className="row">
-            <PropertyHeader id={id} propertyDetail={propertyDetail} isRental={isRental} />
+            <PropertyHeader
+              id={id}
+              propertyDetail={propertyDetail}
+              isRental={isRental}
+            />
           </div>
           {/* End .row */}
 
@@ -60,12 +64,14 @@ const PropertyInfo = ({ id }) => {
 
               <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30">Property Description</h4>
-                <ProperytyDescriptions description={propertyDetail?.description} />
+                <ProperytyDescriptions
+                  description={propertyDetail?.description}
+                />
                 {/* End property description */}
 
                 <h4 className="title fz17 mb30 mt50">Property Details</h4>
                 <div className="row">
-                  <PropertyDetails />
+                  <PropertyDetails propertyDetail={propertyDetail} />
                 </div>
               </div>
               {/* End .ps-widget */}
@@ -73,7 +79,7 @@ const PropertyInfo = ({ id }) => {
               <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30 mt30">Address</h4>
                 <div className="row">
-                  <PropertyAddress />
+                  <PropertyAddress propertyDetail={propertyDetail} />
                 </div>
               </div>
               {/* End .ps-widget */}
@@ -81,7 +87,9 @@ const PropertyInfo = ({ id }) => {
               <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30">Features &amp; Amenities</h4>
                 <div className="row">
-                  <PropertyFeaturesAminites amenities={propertyDetail?.amenities} />
+                  <PropertyFeaturesAminites
+                    amenities={propertyDetail?.amenities}
+                  />
                 </div>
               </div>
               {/* End .ps-widget */}

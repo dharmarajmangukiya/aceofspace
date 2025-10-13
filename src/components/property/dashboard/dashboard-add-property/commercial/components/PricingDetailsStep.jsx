@@ -160,7 +160,7 @@ const PricingDetailsStep = ({
       {/* Ownership */}
       <div className="row mb-4">
         <div className="col-12">
-          <h5 className="mb-3">Ownership</h5>
+          <h5 className="mb-3">Ownership *</h5>
         </div>
         <div className="col-md-12 mb-3">
           <div className="form-style2 input-group">
@@ -194,7 +194,7 @@ const PricingDetailsStep = ({
 
         {isShowroom ? (
           <div className="col-md-6 mb-3">
-            <label className="form-label">Booking amount</label>
+            <label className="form-label">Booking amount *</label>
             <div className="input-group">
               <input
                 type="number"
@@ -205,13 +205,13 @@ const PricingDetailsStep = ({
                   handleInputChange("bookingAmount", e.target.value)
                 }
               />
-              {getFieldError("bookingAmount") && (
-                <div className="text-danger">
-                  {getFieldError("bookingAmount")}
-                </div>
-              )}
               <span className="input-group-text">₹</span>
             </div>
+            {getFieldError("bookingAmount") && (
+              <div className="text-danger">
+                {getFieldError("bookingAmount")}
+              </div>
+            )}
           </div>
         ) : (
           <div className="col-md-6 mb-3">

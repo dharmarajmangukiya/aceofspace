@@ -19,7 +19,7 @@ const AddPropertyTabContent = () => {
   const [selectedSubType, setSelectedSubType] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
-  const { mutate: addProperty, isPending: isAddingProperty } = useAddProperty();
+  const { mutate: addProperty } = useAddProperty();
 
   const handlePropertyTypeSelect = (propertyType) => {
     setSelectedPropertyType(propertyType);
@@ -27,6 +27,8 @@ const AddPropertyTabContent = () => {
   };
 
   const handleBackToSelection = () => {
+    formik.resetForm();
+    setCurrentStep(1);
     setSelectedPropertyType(null);
     setSelectedSubType("");
   };
@@ -50,6 +52,7 @@ const AddPropertyTabContent = () => {
             onSuccess: (response) => {
               toast.success("Property added successfully!");
               resetForm();
+              setCurrentStep(1);
               setSelectedPropertyType(null);
               setSelectedSubType("");
               resolve(response);

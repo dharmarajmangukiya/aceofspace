@@ -1,4 +1,11 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  getStepErrorCount,
+  validateAllSteps,
+  validateStep,
+} from "../stepValidation";
 import AddressStep from "./components/AddressStep";
 import AgreementTypeStep from "./components/AgreementTypeStep";
 import AreaDetailsStep from "./components/AreaDetailsStep";
@@ -24,6 +31,21 @@ const ResidentialForm = ({
     setFieldTouched,
   } = formikProps;
 
+  // Track visited steps
+  const [visitedSteps, setVisitedSteps] = useState(new Set([1]));
+
+  // Mark current step as visited
+  useEffect(() => {
+    setVisitedSteps((prev) => new Set([...prev, currentStep]));
+  }, [currentStep]);
+
+  // Reset visited steps when form is reset (currentStep goes back to 1)
+  useEffect(() => {
+    if (currentStep === 1) {
+      setVisitedSteps(new Set([1]));
+    }
+  }, [subType]); // Reset when subType changes or form is reinitialized
+
   // Define steps - ALL residential subtypes use the same 7 steps
   const getSteps = () => {
     return [
@@ -44,7 +66,17 @@ const ResidentialForm = ({
   const steps = getSteps();
   const totalSteps = steps.length;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Validate current step before proceeding
+    const isValid = await validateStep(formikProps, currentStep, "residential");
+
+    if (!isValid) {
+      toast.error(
+        "Please fill all required fields in this step before proceeding"
+      );
+      return;
+    }
+
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
@@ -56,7 +88,29 @@ const ResidentialForm = ({
     }
   };
 
-  const handleStepClick = (stepNumber) => {
+  const handleStepClick = async (stepNumber) => {
+    // Allow backward navigation without validation
+    if (stepNumber < currentStep) {
+      setCurrentStep(stepNumber);
+      return;
+    }
+
+    // For forward navigation, validate current step
+    if (stepNumber > currentStep) {
+      const isValid = await validateStep(
+        formikProps,
+        currentStep,
+        "residential"
+      );
+
+      if (!isValid) {
+        toast.error(
+          "Please fill all required fields in the current step before proceeding"
+        );
+        return;
+      }
+    }
+
     setCurrentStep(stepNumber);
   };
 
@@ -80,22 +134,35 @@ const ResidentialForm = ({
           id="residential-tab"
           role="tablist"
         >
-          {steps.map((step) => (
-            <button
-              key={step.id}
-              className={`text-nowrap nav-link ${
-                currentStep === step.id ? "active" : ""
-              } fw600`}
-              id={`step-${step.id}-tab`}
-              onClick={() => handleStepClick(step.id)}
-              type="button"
-              role="tab"
-              aria-controls={`step-${step.id}`}
-              aria-selected={currentStep === step.id}
-            >
-              Step {step.id}: {step.title}
-            </button>
-          ))}
+          {steps.map((step) => {
+            const errorCount = getStepErrorCount(
+              errors,
+              step.id,
+              "residential"
+            );
+            const isVisited = visitedSteps.has(step.id);
+            const showError = errorCount > 0 && isVisited;
+
+            return (
+              <button
+                key={step.id}
+                className={`text-nowrap nav-link ${
+                  currentStep === step.id ? "active" : ""
+                } fw600 ${showError ? "text-danger" : ""}`}
+                id={`step-${step.id}-tab`}
+                onClick={() => handleStepClick(step.id)}
+                type="button"
+                role="tab"
+                aria-controls={`step-${step.id}`}
+                aria-selected={currentStep === step.id}
+              >
+                Step {step.id}: {step.title}
+                {showError && (
+                  <span className="badge bg-danger ms-2">{errorCount}</span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </nav>
 
@@ -142,7 +209,25 @@ const ResidentialForm = ({
                 <button
                   className="ud-btn btn-thm"
                   type="button"
-                  onClick={() => {
+                  onClick={async () => {
+                    // Validate all steps before submission
+                    const { isValid, firstInvalidStep } =
+                      await validateAllSteps(
+                        formikProps,
+                        totalSteps,
+                        "residential"
+                      );
+
+                    console.log("errors", errors);
+
+                    if (!isValid) {
+                      toast.error(
+                        "Please fill all required fields in this step before proceeding"
+                      );
+                      setCurrentStep(firstInvalidStep);
+                      return;
+                    }
+
                     handleSubmit();
                   }}
                   disabled={isSubmitting}

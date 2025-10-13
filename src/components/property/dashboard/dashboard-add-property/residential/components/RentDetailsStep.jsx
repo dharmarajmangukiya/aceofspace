@@ -46,7 +46,7 @@ const RentDetailsStep = ({
           </div>
 
           <div className="col mb-3">
-            <label className="form-label">Maintenance *</label>
+            <label className="form-label">Maintenance</label>
             <Select
               instanceId="maintenance"
               options={[

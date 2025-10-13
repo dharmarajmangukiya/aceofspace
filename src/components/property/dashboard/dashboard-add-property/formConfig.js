@@ -245,7 +245,6 @@ export const validationSchema = Yup.lazy((values) => {
       // ❌  Amenities: not in payload
       // ❌  Facilities: not in payload
       facilities: Yup.array().of(Yup.string()),
-      lockInPeriod: Yup.number().required("Lock in period is required"),
 
       // Media : in common ✅
 
@@ -526,7 +525,7 @@ export const convertToFormData = (values) => {
       safeAppend("facilities", JSON.stringify(values.facilities));
     }
   }
-  
+
   // Media files - handle file uploads
   if (values.media && values.media.length > 0) {
     Object.keys(values.media).forEach((key, index) => {
@@ -536,7 +535,7 @@ export const convertToFormData = (values) => {
       }
     });
   }
-  
+
   return formData;
 };
 

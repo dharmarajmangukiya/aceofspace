@@ -1,4 +1,5 @@
 import { smallSelectStyles } from "@/utils/helper";
+import { useState } from "react";
 import Select from "react-select";
 
 const PropertyDetailsStep = ({
@@ -8,6 +9,8 @@ const PropertyDetailsStep = ({
   errors,
   touched,
 }) => {
+  const [propertyOnFloorLabel, setPropertyOnFloorLabel] =
+    useState("Select floor");
   const handleInputChange = (field, value) => {
     onDataChange({ [field]: value });
   };
@@ -93,7 +96,7 @@ const PropertyDetailsStep = ({
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Built Up Area</label>
+          <label className="form-label">Built Up Area *</label>
           <div className="input-group responsive-input-group">
             <input
               type="number"
@@ -227,55 +230,83 @@ const PropertyDetailsStep = ({
                   <h5 className="mb-3">Office Setup</h5>
                 </div>
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">No of Cabins</label>
+                  <label className="form-label">No of Cabins *</label>
                   <input
                     type="number"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("noOfCabins") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter number of cabins"
                     value={formData.noOfCabins || ""}
                     onChange={(e) =>
                       handleInputChange("noOfCabins", e.target.value)
                     }
                   />
+                  {getFieldError("noOfCabins") && (
+                    <div className="text-danger">
+                      {getFieldError("noOfCabins")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">Max no of seats</label>
+                  <label className="form-label">Max no of seats *</label>
                   <input
                     type="number"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("maxSeats") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter max seats"
                     value={formData.maxSeats || ""}
                     onChange={(e) =>
                       handleInputChange("maxSeats", e.target.value)
                     }
                   />
+                  {getFieldError("maxSeats") && (
+                    <div className="text-danger">
+                      {getFieldError("maxSeats")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">No of meeting rooms</label>
+                  <label className="form-label">No of meeting rooms *</label>
                   <input
                     type="number"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("meetingRooms") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter meeting rooms"
                     value={formData.meetingRooms || ""}
                     onChange={(e) =>
                       handleInputChange("meetingRooms", e.target.value)
                     }
                   />
+                  {getFieldError("meetingRooms") && (
+                    <div className="text-danger">
+                      {getFieldError("meetingRooms")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col-md-3 mb-3">
-                  <label className="form-label">No of conference rooms</label>
+                  <label className="form-label">No of conference rooms *</label>
                   <input
                     type="number"
-                    className="form-control filterInput"
+                    className={`form-control filterInput ${
+                      getFieldError("conferenceRooms") ? "is-invalid" : ""
+                    }`}
                     placeholder="Enter conference rooms"
                     value={formData.conferenceRooms || ""}
                     onChange={(e) =>
                       handleInputChange("conferenceRooms", e.target.value)
                     }
                   />
+                  {getFieldError("conferenceRooms") && (
+                    <div className="text-danger">
+                      {getFieldError("conferenceRooms")}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -311,7 +342,11 @@ const PropertyDetailsStep = ({
                         </button>
                         <input
                           type="number"
-                          className="form-control text-center no-spinner"
+                          className={`form-control text-center no-spinner ${
+                            getFieldError("privateWashroomsCount")
+                              ? "is-invalid"
+                              : ""
+                          }`}
                           value={formData.privateWashroomsCount || 0}
                           onChange={(e) => {
                             const value = parseInt(e.target.value) || 0;
@@ -338,6 +373,11 @@ const PropertyDetailsStep = ({
                           +
                         </button>
                       </div>
+                      {getFieldError("privateWashroomsCount") && (
+                        <div className="text-danger">
+                          {getFieldError("privateWashroomsCount")}
+                        </div>
+                      )}
                     </div>
                     <div className="col-6">
                       <label className="form-label small">
@@ -366,7 +406,11 @@ const PropertyDetailsStep = ({
                         </button>
                         <input
                           type="number"
-                          className="form-control text-center no-spinner"
+                          className={`form-control text-center no-spinner ${
+                            getFieldError("sharedWashroomsCount")
+                              ? "is-invalid"
+                              : ""
+                          }`}
                           value={formData.sharedWashroomsCount || 0}
                           onChange={(e) => {
                             const value = parseInt(e.target.value) || 0;
@@ -393,6 +437,11 @@ const PropertyDetailsStep = ({
                           +
                         </button>
                       </div>
+                      {getFieldError("sharedWashroomsCount") && (
+                        <div className="text-danger">
+                          {getFieldError("sharedWashroomsCount")}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -459,10 +508,17 @@ const PropertyDetailsStep = ({
                       </div>
                     ))}
                   </div>
+                  {getFieldError("pantryType") && (
+                    <div className="text-danger">
+                      {getFieldError("pantryType")}
+                    </div>
+                  )}
                   {formData.pantryType === "Private" && (
                     <input
                       type="number"
-                      className="form-control mt-2 no-spinner"
+                      className={`form-control mt-2 no-spinner ${
+                        getFieldError("pantryArea") ? "is-invalid" : ""
+                      }`}
                       placeholder="Enter pantry area in sqft"
                       value={formData.pantryArea || ""}
                       onChange={(e) =>
@@ -470,6 +526,12 @@ const PropertyDetailsStep = ({
                       }
                     />
                   )}
+                  {formData.pantryType === "Private" &&
+                    getFieldError("pantryArea") && (
+                      <div className="text-danger">
+                        {getFieldError("pantryArea")}
+                      </div>
+                    )}
                 </div>
               </div>
               {/* Facilities */}
@@ -508,6 +570,11 @@ const PropertyDetailsStep = ({
                       </div>
                     ))}
                   </div>
+                  {getFieldError("facilities") && (
+                    <div className="text-danger">
+                      {getFieldError("facilities")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="col mb-3">
@@ -560,6 +627,11 @@ const PropertyDetailsStep = ({
                       </div>
                     ))}
                   </div>
+                  {getFieldError("fireSafetyMeasures") && (
+                    <div className="text-danger">
+                      {getFieldError("fireSafetyMeasures")}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -593,8 +665,8 @@ const PropertyDetailsStep = ({
                   <Select
                     instanceId="propertyOnFloor"
                     options={[
-                      { value: "Basement", label: "Basement" },
-                      { value: "G", label: "G" },
+                      { value: "-1", label: "Basement" },
+                      { value: "0", label: "Ground" },
                       ...Array.from(
                         { length: formData?.totalFloors || 25 },
                         (_, i) => ({
@@ -608,11 +680,15 @@ const PropertyDetailsStep = ({
                     classNamePrefix="select"
                     value={{
                       value: formData.propertyOnFloor || "",
-                      label: formData.propertyOnFloor || "Select floor",
+                      label:
+                        propertyOnFloorLabel ??
+                        formData.propertyOnFloorLabel ??
+                        "Select floor",
                     }}
-                    onChange={(e) =>
-                      handleInputChange("propertyOnFloor", e.value)
-                    }
+                    onChange={(e) => {
+                      handleInputChange("propertyOnFloor", e.value);
+                      setPropertyOnFloorLabel(e.label);
+                    }}
                   />
                   {getFieldError("propertyOnFloor") && (
                     <div className="text-danger">

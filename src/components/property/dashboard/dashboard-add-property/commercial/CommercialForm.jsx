@@ -1,4 +1,11 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  getStepErrorCount,
+  validateAllSteps,
+  validateStep,
+} from "../stepValidation";
 import AddressStep from "./components/AddressStep";
 import MediaStep from "./components/MediaStep";
 import PricingDetailsStep from "./components/PricingDetailsStep";
@@ -21,6 +28,21 @@ const CommercialForm = ({
     setFieldTouched,
   } = formikProps;
 
+  // Track visited steps
+  const [visitedSteps, setVisitedSteps] = useState(new Set([1]));
+
+  // Mark current step as visited
+  useEffect(() => {
+    setVisitedSteps((prev) => new Set([...prev, currentStep]));
+  }, [currentStep]);
+
+  // Reset visited steps when form is reset (currentStep goes back to 1)
+  useEffect(() => {
+    if (currentStep === 1) {
+      setVisitedSteps(new Set([1]));
+    }
+  }, [subType]); // Reset when subType changes or form is reinitialized
+
   // All commercial properties have 4 steps
   const steps = [
     { id: 1, title: "Address", component: AddressStep },
@@ -31,7 +53,17 @@ const CommercialForm = ({
 
   const totalSteps = steps.length;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Validate current step before proceeding
+    const isValid = await validateStep(formikProps, currentStep, "commercial");
+
+    if (!isValid) {
+      toast.error(
+        "Please fill all required fields in this step before proceeding"
+      );
+      return;
+    }
+
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
@@ -43,7 +75,29 @@ const CommercialForm = ({
     }
   };
 
-  const handleStepClick = (stepNumber) => {
+  const handleStepClick = async (stepNumber) => {
+    // Allow backward navigation without validation
+    if (stepNumber < currentStep) {
+      setCurrentStep(stepNumber);
+      return;
+    }
+
+    // For forward navigation, validate current step
+    if (stepNumber > currentStep) {
+      const isValid = await validateStep(
+        formikProps,
+        currentStep,
+        "commercial"
+      );
+
+      if (!isValid) {
+        toast.error(
+          "Please fill all required fields in the current step before proceeding"
+        );
+        return;
+      }
+    }
+
     setCurrentStep(stepNumber);
   };
 
@@ -63,22 +117,31 @@ const CommercialForm = ({
       {/* Step Navigation */}
       <nav className="mb-4">
         <div className="nav nav-tabs" id="commercial-tab" role="tablist">
-          {steps.map((step) => (
-            <button
-              key={step.id}
-              className={`nav-link ${
-                currentStep === step.id ? "active" : ""
-              } fw600`}
-              id={`step-${step.id}-tab`}
-              onClick={() => handleStepClick(step.id)}
-              type="button"
-              role="tab"
-              aria-controls={`step-${step.id}`}
-              aria-selected={currentStep === step.id}
-            >
-              Step {step.id}: {step.title}
-            </button>
-          ))}
+          {steps.map((step) => {
+            const errorCount = getStepErrorCount(errors, step.id, "commercial");
+            const isVisited = visitedSteps.has(step.id);
+            const showError = errorCount > 0 && isVisited;
+
+            return (
+              <button
+                key={step.id}
+                className={`nav-link ${
+                  currentStep === step.id ? "active" : ""
+                } fw600 ${showError ? "text-danger" : ""}`}
+                id={`step-${step.id}-tab`}
+                onClick={() => handleStepClick(step.id)}
+                type="button"
+                role="tab"
+                aria-controls={`step-${step.id}`}
+                aria-selected={currentStep === step.id}
+              >
+                Step {step.id}: {step.title}
+                {showError && (
+                  <span className="badge bg-danger ms-2">{errorCount}</span>
+                )}
+              </button>
+            );
+          })}
         </div>
       </nav>
 
@@ -125,9 +188,24 @@ const CommercialForm = ({
                 <button
                   className="ud-btn btn-thm"
                   type="button"
-                  onClick={() => {
-                    console.log("Form errors:", formik.errors);
-                    console.log("Form values:", formik.values);
+                  onClick={async () => {
+                    // Validate all steps before submission
+                    const { isValid, firstInvalidStep } =
+                      await validateAllSteps(
+                        formikProps,
+                        totalSteps,
+                        "commercial"
+                      );
+                    console.log("errors", errors);
+
+                    if (!isValid) {
+                      toast.error(
+                        "Please fill all required fields in this step before proceeding"
+                      );
+                      setCurrentStep(firstInvalidStep);
+                      return;
+                    }
+
                     handleSubmit();
                   }}
                   disabled={isSubmitting}
