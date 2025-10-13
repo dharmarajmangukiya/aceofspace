@@ -26,6 +26,7 @@ const PropertyCard = ({
               ? `${listing.images[0]}`
               : "/images/listings/xl-6.jpg"
           }
+          unoptimized
           alt="listings"
         />
         <div className="sale-sticker-wrap">

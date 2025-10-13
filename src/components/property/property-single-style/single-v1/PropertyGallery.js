@@ -65,6 +65,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                 >
                   {({ ref, open }) => (
                     <Image
+                      unoptimized
                       src={mainImage}
                       width={591}
                       height={558}
@@ -107,6 +108,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                         >
                           {({ ref, open }) => (
                             <Image
+                              unoptimized
                               width={270}
                               height={250}
                               className="w-100 h-100 cover"
