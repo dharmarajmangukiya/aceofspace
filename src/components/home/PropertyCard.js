@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const PropertyCard = ({
   listing,
@@ -12,6 +13,22 @@ const PropertyCard = ({
   onLikeClick,
   imageStyles = {},
 }) => {
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const getImageSrc = () => {
+    if (imageError) {
+      return "/images/no-image.jpg";
+    }
+    if (listing?.images?.length || 0) {
+      return listing.images[0];
+    }
+    return "/images/listings/xl-6.jpg";
+  };
+
   return (
     <div role="button" onClick={onCardClick} className="listing-style9">
       <div className="list-thumb">
@@ -20,14 +37,10 @@ const PropertyCard = ({
           height={382}
           className={"w-100 h-100 cover"}
           style={imageStyles}
-          // src={listing?.images?.length || 0 ? `${API_BASE_DOCUMENT_URL}${listing.images[0]}` : "/images/listings/xl-6.jpg"}
-          src={
-            listing?.images?.length || 0
-              ? `${listing.images[0]}`
-              : "/images/listings/xl-6.jpg"
-          }
+          src={getImageSrc()}
           unoptimized
           alt="listings"
+          onError={handleImageError}
         />
         <div className="sale-sticker-wrap">
           {onFeatureClick && listing.forRent && (

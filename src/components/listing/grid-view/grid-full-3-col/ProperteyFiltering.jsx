@@ -12,16 +12,26 @@ import FeaturedListings from "./FeatuerdListings";
 import TopFilterBar from "./TopFilterBar";
 
 export default function ProperteyFiltering() {
-  
   const searchParams = useSearchParams();
   const router = useRouter();
-  
-  const { data: properties, isLoading, error, refetch } = useGetProperties(searchParams);
+
+  const {
+    data: properties,
+    isFetching: isLoading,
+    error,
+    refetch,
+  } = useGetProperties(searchParams);
 
   const params = Object.fromEntries([...searchParams]);
 
-  const rentOrLease = ["residential", "commercial"].includes(params?.Type) ? params?.Type : "residential";
-  const sortOption = ["latest", "bestMatch", "priceLow", "priceHigh"].includes(params?.Sort) ? params?.Sort : "latest";
+  const rentOrLease = ["residential", "commercial"].includes(params?.Type)
+    ? params?.Type
+    : "residential";
+  const sortOption = ["latest", "bestMatch", "priceLow", "priceHigh"].includes(
+    params?.Sort
+  )
+    ? params?.Sort
+    : "latest";
 
   const [sortedFilteredData, setSortedFilteredData] = useState([]);
 
@@ -32,15 +42,20 @@ export default function ProperteyFiltering() {
   useEffect(() => {
     setPageNumber(1);
   }, [searchParams]);
-  
+
   useEffect(() => {
     if (properties) {
-      setPageItems((properties?.pages[0].status == 1 || properties?.pages[0].data?.list.length) ? properties?.pages[0].data?.list : []);
+      setPageItems(
+        properties?.pages[0].status == 1 ||
+          properties?.pages[0].data?.list.length
+          ? properties?.pages[0].data?.list
+          : []
+      );
     }
   }, [properties]);
-  
+
   const [pageContentTrac, setPageContentTrac] = useState([]);
-  
+
   const [listingStatus, setListingStatus] = useState(rentOrLease);
   const [currentSortingOption, setCurrentSortingOption] = useState(sortOption);
   const [propertyTypes, setPropertyTypes] = useState([]);
@@ -70,14 +85,14 @@ export default function ProperteyFiltering() {
     document.querySelectorAll(".filterSelect").forEach(function (element) {
       element.value = "All Cities";
     });
-    
+
     // Reset URL search parameters and trigger refetch
     router.replace(window.location.pathname, { scroll: false });
   };
 
   const handlelistingStatus = (elm) => {
     const currentParams = new URLSearchParams(searchParams);
-    currentParams.set('Type', elm);
+    currentParams.set("Type", elm);
     const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
     router.replace(newUrl, { scroll: false });
     setListingStatus(elm);
@@ -85,7 +100,7 @@ export default function ProperteyFiltering() {
 
   useEffect(() => {
     const currentParams = new URLSearchParams(searchParams);
-    currentParams.set('Sort', currentSortingOption);
+    currentParams.set("Sort", currentSortingOption);
     const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
     router.replace(newUrl, { scroll: false });
   }, [currentSortingOption]);
@@ -216,9 +231,12 @@ export default function ProperteyFiltering() {
             <div className="col-12 text-center py-5">
               <div className="alert alert-danger" role="alert">
                 <h5>Error loading properties</h5>
-                <p>{error.message || 'Failed to fetch properties. Please try again.'}</p>
-                <button 
-                  className="btn btn-primary mt-2" 
+                <p>
+                  {error.message ||
+                    "Failed to fetch properties. Please try again."}
+                </p>
+                <button
+                  className="btn btn-primary mt-2"
                   onClick={() => refetch()}
                 >
                   Retry

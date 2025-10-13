@@ -1,9 +1,23 @@
 "use client";
 import Image from "next/image";
 import "photoswipe/dist/photoswipe.css";
+import { useState } from "react";
 import { Gallery, Item } from "react-photoswipe-gallery";
 
 const PropertyGallery = ({ id, images = [] }) => {
+  const [imageErrors, setImageErrors] = useState({});
+
+  const handleImageError = (imageIndex) => {
+    setImageErrors((prev) => ({ ...prev, [imageIndex]: true }));
+  };
+
+  const getImageSrc = (imageUrl, imageIndex) => {
+    if (imageErrors[imageIndex]) {
+      return "/images/no-image.jpg";
+    }
+    return imageUrl;
+  };
+
   try {
     console.log("PropertyGallery images:", images);
 
@@ -29,7 +43,14 @@ const PropertyGallery = ({ id, images = [] }) => {
                 className="d-flex align-items-center justify-content-center"
                 style={{ height: "400px", backgroundColor: "#f8f9fa" }}
               >
-                <p className="text-muted mb-0">No images available</p>
+                <Image
+                  src="/images/no-image.jpg"
+                  alt="No images available"
+                  width={400}
+                  height={400}
+                  className="w-100 h-100 cover"
+                  unoptimized
+                />
               </div>
             </div>
           </div>
@@ -50,6 +71,7 @@ const PropertyGallery = ({ id, images = [] }) => {
 
     const mainImage = getSafeImageUrl(safeImages[0]);
     const remainingImages = safeImages.slice(1);
+    const mainImageSrc = getImageSrc(mainImage, 0);
 
     return (
       <>
@@ -58,15 +80,15 @@ const PropertyGallery = ({ id, images = [] }) => {
             <div className="sp-img-content mb15-md">
               <div className="popup-img preview-img-1 sp-img">
                 <Item
-                  original={mainImage}
-                  thumbnail={mainImage}
+                  original={mainImageSrc}
+                  thumbnail={mainImageSrc}
                   width={610}
                   height={510}
                 >
                   {({ ref, open }) => (
                     <Image
                       unoptimized
-                      src={mainImage}
+                      src={mainImageSrc}
                       width={591}
                       height={558}
                       ref={ref}
@@ -74,10 +96,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                       alt="Property main image"
                       role="button"
                       className="w-100 h-100 cover"
-                      onError={(e) => {
-                        console.error("Error loading main image:", e);
-                        e.target.style.display = "none";
-                      }}
+                      onError={() => handleImageError(0)}
                     />
                   )}
                 </Item>
@@ -92,6 +111,9 @@ const PropertyGallery = ({ id, images = [] }) => {
                 const safeImageUrl = getSafeImageUrl(image);
                 if (!safeImageUrl) return null;
 
+                const actualIndex = index + 1; // +1 because main image is at index 0
+                const imageSrc = getImageSrc(safeImageUrl, actualIndex);
+
                 return (
                   <div className="col-6 ps-sm-0" key={index}>
                     <div className="sp-img-content">
@@ -101,8 +123,8 @@ const PropertyGallery = ({ id, images = [] }) => {
                         } sp-img mb10`}
                       >
                         <Item
-                          original={safeImageUrl}
-                          thumbnail={safeImageUrl}
+                          original={imageSrc}
+                          thumbnail={imageSrc}
                           width={270}
                           height={250}
                         >
@@ -115,15 +137,9 @@ const PropertyGallery = ({ id, images = [] }) => {
                               ref={ref}
                               onClick={open}
                               role="button"
-                              src={safeImageUrl}
+                              src={imageSrc}
                               alt={`Property image ${index + 2}`}
-                              onError={(e) => {
-                                console.error(
-                                  `Error loading image ${index + 2}:`,
-                                  e
-                                );
-                                e.target.style.display = "none";
-                              }}
+                              onError={() => handleImageError(actualIndex)}
                             />
                           )}
                         </Item>
@@ -147,7 +163,14 @@ const PropertyGallery = ({ id, images = [] }) => {
               className="d-flex align-items-center justify-content-center"
               style={{ height: "400px", backgroundColor: "#f8f9fa" }}
             >
-              <p className="text-muted mb-0">Error loading images</p>
+              <Image
+                src="/images/no-image.jpg"
+                alt="Error loading images"
+                width={400}
+                height={400}
+                className="w-100 h-100 cover"
+                unoptimized
+              />
             </div>
           </div>
         </div>
