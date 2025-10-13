@@ -211,3 +211,12 @@ header.nav-homepage-style {
 .sidemenu-btn-text-black {
   color: black !important;
 }
+
+.popup-img {
+  img {
+    object-fit: contain !important;
+  }
+}
+.pswp__img {
+  object-fit: contain !important;
+}
