@@ -216,11 +216,11 @@ header.nav-homepage-style {
   font-size: 1.2em !important;
 }
 
-.popup-img {
-  img {
-    object-fit: contain !important;
-  }
-}
+// .popup-img {
+//   img {
+//     object-fit: contain !important;
+//   }
+// }
 .pswp__img {
   object-fit: contain !important;
 }
@@ -228,4 +228,8 @@ header.nav-homepage-style {
 .border-outline-none {
   border: none !important;
   outline: none !important;
+}
+
+img.property-thumbnail-cover {
+  object-fit: cover !important;
 }

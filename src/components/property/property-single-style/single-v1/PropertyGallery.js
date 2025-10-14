@@ -13,7 +13,7 @@ const PropertyGallery = ({ id, images = [] }) => {
 
   const getImageSrc = (imageUrl, imageIndex) => {
     if (imageErrors[imageIndex]) {
-      return "/images/no-image.jpg";
+      return "/images/no-image.png";
     }
     return imageUrl;
   };
@@ -44,7 +44,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                 style={{ height: "400px", backgroundColor: "#f8f9fa" }}
               >
                 <Image
-                  src="/images/no-image.jpg"
+                  src="/images/no-image.png"
                   alt="No images available"
                   width={400}
                   height={400}
@@ -118,7 +118,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                   <div className="col-6 ps-sm-0" key={index}>
                     <div className="sp-img-content">
                       <div
-                        className={`popup-img preview-img-${
+                        className={`popup-img  preview-img-${
                           index + 2
                         } sp-img mb10`}
                       >
@@ -133,7 +133,7 @@ const PropertyGallery = ({ id, images = [] }) => {
                               unoptimized
                               width={270}
                               height={250}
-                              className="w-100 h-100 cover"
+                              className="w-100 h-100 property-thumbnail-cover"
                               ref={ref}
                               onClick={open}
                               role="button"
@@ -164,7 +164,7 @@ const PropertyGallery = ({ id, images = [] }) => {
               style={{ height: "400px", backgroundColor: "#f8f9fa" }}
             >
               <Image
-                src="/images/no-image.jpg"
+                src="/images/no-image.png"
                 alt="Error loading images"
                 width={400}
                 height={400}

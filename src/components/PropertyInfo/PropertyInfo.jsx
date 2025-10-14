@@ -5,10 +5,8 @@ import PropertyAddress from "@/components/property/property-single-style/common/
 import PropertyDetails from "@/components/property/property-single-style/common/PropertyDetails";
 import PropertyFeaturesAminites from "@/components/property/property-single-style/common/PropertyFeaturesAminites";
 import PropertyHeader from "@/components/property/property-single-style/common/PropertyHeader";
-import PropertyVideo from "@/components/property/property-single-style/common/PropertyVideo";
 import ProperytyDescriptions from "@/components/property/property-single-style/common/ProperytyDescriptions";
 import ReviewBoxForm from "@/components/property/property-single-style/common/ReviewBoxForm";
-import VirtualTour360 from "@/components/property/property-single-style/common/VirtualTour360";
 import InfoWithForm from "@/components/property/property-single-style/common/more-info";
 import AllReviews from "@/components/property/property-single-style/common/reviews";
 import ContactWithAgent from "@/components/property/property-single-style/sidebar/ContactWithAgent";
@@ -84,14 +82,8 @@ const PropertyInfo = ({ id }) => {
               </div>
               {/* End .ps-widget */}
 
-              <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-                <h4 className="title fz17 mb30">Features &amp; Amenities</h4>
-                <div className="row">
-                  <PropertyFeaturesAminites
-                    amenities={propertyDetail?.amenities}
-                  />
-                </div>
-              </div>
+              <PropertyFeaturesAminites amenities={propertyDetail?.amenities} />
+
               {/* End .ps-widget */}
 
               {/* <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
@@ -114,20 +106,20 @@ const PropertyInfo = ({ id }) => {
               </div> */}
               {/* End .ps-widget */}
 
-              <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 ">
+              {/* <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 ">
                 <h4 className="title fz17 mb30">Video</h4>
                 <div className="row">
                   <PropertyVideo />
                 </div>
-              </div>
+              </div> */}
               {/* End .ps-widget */}
 
-              <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+              {/* <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30">360° Virtual Tour</h4>
                 <div className="row">
                   <VirtualTour360 />
                 </div>
-              </div>
+              </div> */}
               {/* End .ps-widget */}
 
               {/* <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
@@ -176,7 +168,7 @@ const PropertyInfo = ({ id }) => {
 
               <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
                 <h4 className="title fz17 mb30">Get More Information</h4>
-                <InfoWithForm />
+                <InfoWithForm propertyDetail={propertyDetail} />
               </div>
               {/* End .ps-widget */}
 

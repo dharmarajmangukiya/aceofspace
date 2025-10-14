@@ -1,9 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import SingleAgentInfo from "./SingleAgentInfo";
-import { useEffect, useState } from "react";
 
-const InfoWithForm = () => {
+const InfoWithForm = ({ propertyDetail }) => {
   const inqueryType = [
     { value: "Engineer", label: "Engineer" },
     { value: "Doctor", label: "Doctor" },
@@ -33,7 +33,7 @@ const InfoWithForm = () => {
 
   return (
     <>
-      <SingleAgentInfo />
+      <SingleAgentInfo propertyDetail={propertyDetail} />
 
       <div className="row">
         <div className="col-md-12">

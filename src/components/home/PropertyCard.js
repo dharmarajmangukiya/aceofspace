@@ -21,12 +21,12 @@ const PropertyCard = ({
 
   const getImageSrc = () => {
     if (imageError) {
-      return "/images/no-image.jpg";
+      return "/images/no-image.png";
     }
     if (listing?.images?.length || 0) {
       return listing.images[0];
     }
-    return "/images/listings/xl-6.jpg";
+    return "/images/no-image.png";
   };
 
   return (
@@ -50,7 +50,7 @@ const PropertyCard = ({
           alt="listings"
           onError={handleImageError}
         />
-        {/* Black tint overlay for better text visibility */}
+        {/* Gradient overlay for better text visibility - darker at bottom */}
         <div
           style={{
             position: "absolute",
@@ -59,10 +59,11 @@ const PropertyCard = ({
             right: 0,
             bottom: 0,
             background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.9) 100%)",
             pointerEvents: "none",
           }}
         />
+
         <div
           className="sale-sticker-wrap"
           style={{ position: "relative", zIndex: 2 }}

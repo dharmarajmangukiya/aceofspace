@@ -1,5 +1,3 @@
-import React from "react";
-
 const ScheduleTour = () => {
   const tabs = [
     {
@@ -14,7 +12,7 @@ const ScheduleTour = () => {
 
   return (
     <div className="ps-navtab">
-      <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul className="nav nav-pills gap-y-2 mb-3" id="pills-tab" role="tablist">
         {tabs.map((tab) => (
           <li className="nav-item" key={tab.id} role="presentation">
             <button
