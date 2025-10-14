@@ -25,6 +25,8 @@ const SignIn = ({ closeModal, setIsOtpSent, signUpTabButton }) => {
       signIn(values, {
         onSuccess: (data) => {
           toast.success(data?.message || "Login successful");
+          // Dispatch custom event to update auth state instantly
+          window.dispatchEvent(new CustomEvent("authChange"));
           // Close modal and redirect on success
           router.push("/");
           setIsOtpSent(false);

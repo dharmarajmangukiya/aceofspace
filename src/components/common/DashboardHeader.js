@@ -2,77 +2,78 @@
 
 import MainMenu from "@/components/common/MainMenu";
 import SidebarPanel from "@/components/common/sidebar-panel";
+import { useAuth } from "@/hooks/useAuth";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+const menuItems = [
+  {
+    icon: "flaticon-user",
+    text: "My Profile",
+    href: "/my-profile",
+  },
+  {
+    icon: "flaticon-exit",
+    text: "Logout",
+    href: "#",
+    props: {
+      role: "button",
+      id: "logoutButton",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#globalLogoutModal",
+    },
+  },
+];
+
 const DashboardHeader = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const menuItems = [
-    {
-      title: "MANAGE ACCOUNT",
-      items: [
-        {
-          icon: "flaticon-user",
-          text: "My Profile",
-          href: "/my-profile",
-        },
-        {
-          icon: "flaticon-exit",
-          text: "Logout",
-          href: "#",
-          props: {
-            role: "button",
-            id: "logoutButton",
-            "data-bs-toggle": "modal",
-            "data-bs-target": "#globalLogoutModal",
-          },
-        },
-      ],
-    },
-    // {
-    //   title: "MAIN",
-    //   items: [
-    //     {
-    //       icon: "flaticon-discovery",
-    //       text: "Dashboard",
-    //       href: "/dashboard",
-    //     },
-    //     {
-    //       icon: "flaticon-chat-1",
-    //       text: "Message",
-    //       href: "/dashboard-message",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "MANAGE LISTINGS",
-    //   items: [
-    //     {
-    //       icon: "flaticon-new-tab",
-    //       text: "Add New Property",
-    //       href: "/add-property",
-    //     },
-    //     {
-    //       icon: "flaticon-home",
-    //       text: "My Properties",
-    //       href: "/dashboard-my-properties",
-    //     },
-    //     {
-    //       icon: "flaticon-like",
-    //       text: "My Favorites",
-    //       href: "/dashboard-my-favourites",
-    //     },
-    //     {
-    //       icon: "flaticon-search-2",
-    //       text: "Saved Search",
-    //       href: "/dashboard-saved-search",
-    //     },
-    //     { icon: "flaticon-review", text: "Reviews", href: "/dashboard-review" },
-    //   ],
-    // },
-  ];
+  const { userData } = useAuth();
+  const { firstName, lastName } = userData || {};
+
+  // {
+  //   title: "MAIN",
+  //   items: [
+  //     {
+  //       icon: "flaticon-discovery",
+  //       text: "Dashboard",
+  //       href: "/dashboard",
+  //     },
+  //     {
+  //       icon: "flaticon-chat-1",
+  //       text: "Message",
+  //       href: "/dashboard-message",
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "MANAGE LISTINGS",
+  //   items: [
+  //     {
+  //       icon: "flaticon-new-tab",
+  //       text: "Add New Property",
+  //       href: "/add-property",
+  //     },
+  //     {
+  //       icon: "flaticon-home",
+  //       text: "My Properties",
+  //       href: "/dashboard-my-properties",
+  //     },
+  //     {
+  //       icon: "flaticon-like",
+  //       text: "My Favorites",
+  //       href: "/dashboard-my-favourites",
+  //     },
+  //     {
+  //       icon: "flaticon-search-2",
+  //       text: "Saved Search",
+  //       href: "/dashboard-saved-search",
+  //     },
+  //     { icon: "flaticon-review", text: "Reviews", href: "/dashboard-review" },
+  //   ],
+  // },
 
   return (
     <>
@@ -139,15 +140,39 @@ const DashboardHeader = () => {
                     {/* End notification icon */}
 
                     <li className=" user_setting">
-                      <div className="dropdown">
-                        <a className="btn" href="#" data-bs-toggle="dropdown">
-                          <Image
-                            width={44}
-                            height={44}
-                            src="https://homez-appdir.vercel.app/images/resource/user.png"
-                            alt="user.png"
-                            unoptimized
-                          />
+                      {/* <div className="dropdown">
+                        <a
+                          className="btn border-outline-none"
+                          href="#"
+                          data-bs-toggle="dropdown"
+                        >
+                          <span
+                            className={classNames(
+                              "title header-profile-text h5"
+                            )}
+                          >
+                            {(() => {
+                              let name = "";
+                              if (firstName && lastName) {
+                                name = (
+                                  (firstName || "") +
+                                  " " +
+                                  (lastName || "")
+                                ).trim();
+                              } else {
+                                name = "Profile";
+                              }
+
+                              return name ? (
+                                <>
+                                  <i className="far fa-user-circle me-1" />
+                                  {name}
+                                </>
+                              ) : (
+                                <i className="far fa-user-circle me-1" />
+                              );
+                            })()}
+                          </span>
                         </a>
                         <div className="dropdown-menu">
                           <div className="user_setting_content">
@@ -182,7 +207,63 @@ const DashboardHeader = () => {
                             ))}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+
+                      <ul className="ace-responsive-menu">
+                        <li className="visible_list dropitem">
+                          <Link className="list-item" href="/">
+                            <span
+                              className={classNames(
+                                "title header-profile-text h5"
+                              )}
+                            >
+                              {(() => {
+                                let name = "";
+                                if (firstName && lastName) {
+                                  name = (
+                                    (firstName || "") +
+                                    " " +
+                                    (lastName || "")
+                                  ).trim();
+                                } else {
+                                  name = "Profile";
+                                }
+
+                                return name ? (
+                                  <>
+                                    <i className="far fa-user-circle me-1" />
+                                    {name}
+                                  </>
+                                ) : (
+                                  <i className="far fa-user-circle me-1" />
+                                );
+                              })()}
+                            </span>
+                          </Link>
+                          {/* Level Two*/}
+                          <ul className="sub-menu">
+                            {menuItems.map((item, index) => (
+                              <li key={index}>
+                                <a
+                                  key={index}
+                                  className={`dropdown-item ${
+                                    pathname == item.href ? "-is-active" : ""
+                                  } `}
+                                  href={"#"}
+                                  {...(item?.props ?? {})}
+                                  onClick={() => {
+                                    if (item?.href !== "#") {
+                                      router.push(item?.href);
+                                    }
+                                  }}
+                                >
+                                  {item.text}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      </ul>
                     </li>
                     {/* End avatar dropdown */}
                   </ul>

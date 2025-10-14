@@ -208,8 +208,12 @@ header.nav-homepage-style {
   color: black !important;
 }
 
-.sidemenu-btn-text-black {
-  color: black !important;
+.sidemenu-btn-text-white {
+  color: white !important;
+}
+
+.header-profile-text i {
+  font-size: 1.2em !important;
 }
 
 .popup-img {
@@ -219,4 +223,9 @@ header.nav-homepage-style {
 }
 .pswp__img {
   object-fit: contain !important;
+}
+
+.border-outline-none {
+  border: none !important;
+  outline: none !important;
 }

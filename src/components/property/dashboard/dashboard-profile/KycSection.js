@@ -273,7 +273,7 @@ const KycSection = ({ userData, refetchProfile }) => {
               <li className="mb-2">
                 Supported formats: JPG, PNG, PDF (images or PDF documents)
               </li>
-              <li>Maximum file size: 5MB per document</li>
+              <li>Maximum file size: 2MB per document</li>
             </ul>
           </div>
         </div>

@@ -12,25 +12,20 @@ import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import LoginSignupModal from "../common/login-signup-modal";
 const menuItems = [
   {
-    title: "MANAGE ACCOUNT",
-    items: [
-      {
-        icon: "flaticon-user",
-        text: "My Profile",
-        href: "/my-profile",
-      },
-      {
-        icon: "flaticon-exit",
-        text: "Logout",
-        href: "#",
-        props: {
-          role: "button",
-          id: "logoutButton",
-          "data-bs-toggle": "modal",
-          "data-bs-target": "#globalLogoutModal",
-        },
-      },
-    ],
+    icon: "flaticon-user",
+    text: "My Profile",
+    href: "/my-profile",
+  },
+  {
+    icon: "flaticon-exit",
+    text: "Logout",
+    href: "#",
+    props: {
+      role: "button",
+      id: "logoutButton",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#globalLogoutModal",
+    },
   },
 ];
 
@@ -120,11 +115,72 @@ const Header = () => {
                 <div className="d-flex align-items-center">
                   {isLoggedIn ? (
                     <>
-                      <li className=" user_setting">
+                      <div>
+                        <ul className="ace-responsive-menu">
+                          <li className="visible_list dropitem">
+                            <Link className="list-item" href="/">
+                              <span
+                                className={classNames(
+                                  "title header-profile-text h5",
+                                  {
+                                    "sidemenu-btn-text-white":
+                                      !navbar && isHomePage,
+                                  }
+                                )}
+                              >
+                                {(() => {
+                                  let name = "";
+                                  if (firstName && lastName) {
+                                    name = (
+                                      (firstName || "") +
+                                      " " +
+                                      (lastName || "")
+                                    ).trim();
+                                  } else {
+                                    name = "Profile";
+                                  }
+
+                                  return name ? (
+                                    <>
+                                      <i className="far fa-user-circle me-1" />
+                                      {name}
+                                    </>
+                                  ) : (
+                                    <i className="far fa-user-circle me-1" />
+                                  );
+                                })()}
+                              </span>
+                            </Link>
+                            {/* Level Two*/}
+                            <ul className="sub-menu">
+                              {menuItems.map((item, index) => (
+                                <li key={index}>
+                                  <a
+                                    key={index}
+                                    className={`dropdown-item ${
+                                      pathname == item.href ? "-is-active" : ""
+                                    } `}
+                                    href={"#"}
+                                    {...(item?.props ?? {})}
+                                    onClick={() => {
+                                      if (item?.href !== "#") {
+                                        router.push(item?.href);
+                                      }
+                                    }}
+                                  >
+                                    {item.text}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <li className=" user_setting">
                         <div className="dropdown">
                           <a
                             className={classNames(
-                              "btn p-0 user-dropdown-trigger",
+                              "btn p-0 user-dropdown-trigger border-outline-none",
                               {
                                 "user-dropdown-text-black":
                                   navbar || !isHomePage,
@@ -148,11 +204,11 @@ const Header = () => {
 
                               return name ? (
                                 <>
-                                  <i className="far fa-user-circle fz16 me-1" />
+                                  <i className="far fa-user-circle fa-xl me-1" />
                                   {name}
                                 </>
                               ) : (
-                                <i className="far fa-user-circle fz16 me-1" />
+                                <i className="far fa-user-circle fa-xl me-1" />
                               );
                             })()}
                           </a>
@@ -192,11 +248,11 @@ const Header = () => {
                             </div>
                           </div>
                         </div>
-                      </li>
+                      </li> */}
                       {role === role_enum.ADMIN ? (
                         <Link
                           className={classNames(
-                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0",
+                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0 text-nowrap",
                             {
                               "shadow ": navbar || !isHomePage,
                             }
@@ -209,7 +265,7 @@ const Header = () => {
                       ) : (
                         <Link
                           className={classNames(
-                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0",
+                            "ud-btn btn-white add-property bdrs12 mx-2 mx-xl-4 border-0 text-nowrap",
                             {
                               "shadow ": navbar || !isHomePage,
                             }
@@ -227,7 +283,7 @@ const Header = () => {
                         data-bs-target="#LandingPageSidebarPanel"
                         aria-controls="LandingPageSidebarPanelLabel"
                       >
-                        {navbar || !isHomePage ? (
+                        {/* {navbar || !isHomePage ? (
                           <Image
                             width={25}
                             height={9}
@@ -243,7 +299,7 @@ const Header = () => {
                             src="/images/icon/nav-icon-white.svg"
                             alt="humberger menu"
                           />
-                        )}
+                        )} */}
                       </a>
                     </>
                   ) : (

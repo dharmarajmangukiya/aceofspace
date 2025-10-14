@@ -69,6 +69,11 @@ export const useSignIn = () => {
           if (user) {
             storeUserData(user, rememberMe);
           }
+
+          // Dispatch custom event to update auth state instantly
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("authChange"));
+          }
         }
 
         return response.data;
@@ -100,6 +105,11 @@ export const useSignUp = () => {
           // Store user data if provided
           if (user) {
             storeUserData(user, true);
+          }
+
+          // Dispatch custom event to update auth state instantly
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("authChange"));
           }
         }
 
@@ -153,6 +163,10 @@ export const useLogout = () => {
     mutationFn: async () => {
       // Since there is no API for logout, just clear auth data
       clearAuthData();
+      // Dispatch custom event to update auth state instantly
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("authChange"));
+      }
       // Optionally, return a resolved value to indicate success
       return { message: "Logged out successfully (local only)" };
     },
@@ -196,6 +210,11 @@ export const useRefreshToken = () => {
 
           // Store new tokens
           storeTokens(token, newRefreshToken, rememberMe);
+
+          // Dispatch custom event to update auth state instantly
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("authChange"));
+          }
         }
 
         return response.data;

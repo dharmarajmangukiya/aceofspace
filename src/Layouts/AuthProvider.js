@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!isClient) return;
 
-    const handleStorageChange = () => {
+    const handleAuthChange = () => {
       const token = getAuthToken();
       const user = getUserData();
       const userRole = user?.role?.name ?? "";
@@ -39,12 +39,13 @@ export const AuthProvider = ({ children }) => {
       setRole(userRole);
     };
 
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("authChange", handleStorageChange);
+    // Listen for both storage changes and custom auth events
+    window.addEventListener("storage", handleAuthChange);
+    window.addEventListener("authChange", handleAuthChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("authChange", handleStorageChange);
+      window.removeEventListener("storage", handleAuthChange);
+      window.removeEventListener("authChange", handleAuthChange);
     };
   }, [isClient]);
 

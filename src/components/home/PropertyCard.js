@@ -31,18 +31,42 @@ const PropertyCard = ({
 
   return (
     <div role="button" onClick={onCardClick} className="listing-style9">
-      <div className="list-thumb">
+      <div
+        className="list-thumb"
+        style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden" }}
+      >
         <Image
           width={465}
-          height={382}
-          className={"w-100 h-100 cover"}
-          style={imageStyles}
+          height={620}
+          className={"w-100 h-100"}
+          style={{
+            ...imageStyles,
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+          }}
           src={getImageSrc()}
           unoptimized
           alt="listings"
           onError={handleImageError}
         />
-        <div className="sale-sticker-wrap">
+        {/* Black tint overlay for better text visibility */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          className="sale-sticker-wrap"
+          style={{ position: "relative", zIndex: 2 }}
+        >
           {onFeatureClick && listing.forRent && (
             <div
               className="list-tag rounded-0 fz12"
@@ -64,7 +88,7 @@ const PropertyCard = ({
           )}
         </div>
 
-        <div className="list-meta">
+        <div className="list-meta" style={{ position: "relative", zIndex: 2 }}>
           {onNewTabClick && (
             <a onClick={onNewTabClick} role="button">
               <span className="flaticon-fullscreen" />
