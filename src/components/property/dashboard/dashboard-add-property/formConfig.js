@@ -119,7 +119,17 @@ export const validationSchema = Yup.lazy((values) => {
     pincode: Yup.string()
       .matches(/^\d{6}$/, "Pincode must be 6 digits")
       .required("Pincode is required"),
-    area: Yup.string().required("Area is required"),
+    area: Yup.mixed()
+      .required("Area is required")
+      .test("not-null", "Area is required", (val) => val !== null)
+      .test("area-shape", "Area is required", (val) => {
+        if (val === null || val === undefined || val === "") return false;
+        if (typeof val === "string") return val.trim().length > 0;
+        if (typeof val === "object") {
+          return !!val.placeName || !!val.formattedAddress || !!val.coordinates;
+        }
+        return false;
+      }),
     landmark: Yup.string(),
     ageOfProperty: Yup.string().required("Age of property is required"),
     availableFrom: Yup.string().required("Available from is required"),
@@ -348,10 +358,17 @@ export const convertToFormData = (values) => {
   safeAppend("city", values.city);
   safeAppend("state", values.state);
   safeAppend("pincode", values.pincode);
-  safeAppend("area", values.area);
+  // Do not append area object directly; API expects only coordinates
+  // Extract latitude and longitude from area.coordinates
+  if (
+    values.area &&
+    typeof values.area === "object" &&
+    values.area.coordinates
+  ) {
+    safeAppend("latitude", values.area.coordinates.lat?.toString());
+    safeAppend("longitude", values.area.coordinates.lng?.toString());
+  }
   safeAppend("landmark", values.landmark);
-  safeAppend("ageOfProperty", values.ageOfProperty);
-  safeAppend("availableFrom", values.availableFrom);
 
   // Convert area fields to sq ft
   safeAppendArea("carpetArea", values.carpetArea, values.carpetAreaUnit);

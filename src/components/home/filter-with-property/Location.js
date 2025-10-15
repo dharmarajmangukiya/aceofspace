@@ -1,110 +1,52 @@
 "use client";
+import { usePlacesAutocomplete } from "@/hooks/usePlacesAutocomplete";
 import { GOOGLE_MAPS_API_KEY } from "@/utils/config";
-import { APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
 const API_KEY = GOOGLE_MAPS_API_KEY;
 
-const Location = () => {
+const Location = ({ onLocationSelect }) => {
   return (
     <APIProvider apiKey={API_KEY}>
-      <AutocompleteSelect />
+      <AutocompleteSelect onLocationSelect={onLocationSelect} />
     </APIProvider>
   );
 };
 
-const AutocompleteSelect = () => {
-  const places = useMapsLibrary("places");
-  const [service, setService] = useState(null);
-  const [options, setOptions] = useState([]);
+const AutocompleteSelect = ({ onLocationSelect }) => {
   const [isClient, setIsClient] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const debounceTimeout = useRef(null);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+
+  const { options, isLoading, fetchPlaceDetails } = usePlacesAutocomplete({
+    input: inputValue,
+    enabled: isClient,
+  });
 
   useEffect(() => {
     setIsClient(true);
-    if (places) {
-      setService(new window.google.maps.places.AutocompleteService());
-    }
-  }, [places]);
-
-  // Cleanup debounce on unmount
-  useEffect(() => {
-    return () => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-    };
   }, []);
 
-  const handleInputChange = useCallback(
-    (inputValue) => {
-      if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+  const handleInputChange = (value) => {
+    setInputValue(value ?? "");
+  };
 
-      if (!service || !inputValue) {
-        setOptions([]);
-        setIsLoading(false);
-        return;
-      }
+  const handleSelect = async (selected) => {
+    if (!selected) {
+      setSelectedValue(null);
+      if (onLocationSelect) onLocationSelect(null);
+      return;
+    }
 
-      setIsLoading(true);
-
-      debounceTimeout.current = setTimeout(() => {
-        const AHD_BOUNDS = new window.google.maps.LatLngBounds(
-          { lat: 22.93, lng: 72.47 }, // Southwest corner of Ahmedabad
-          { lat: 23.12, lng: 72.68 } // Northeast corner of Ahmedabad
-        );
-
-        service.getPlacePredictions(
-          {
-            input: inputValue,
-            bounds: AHD_BOUNDS,
-            strictBounds: true,
-            componentRestrictions: { country: "in" },
-          },
-          (predictions, status) => {
-            setIsLoading(false);
-
-            if (
-              status !== window.google.maps.places.PlacesServiceStatus.OK ||
-              !predictions
-            ) {
-              setOptions([]);
-              return;
-            }
-
-            setOptions(
-              predictions.map((p) => ({
-                value: p.place_id,
-                label: p.description,
-              }))
-            );
-          }
-        );
-      }, 300);
-    },
-    [service]
-  );
-
-  const handleSelect = (selected) => {
-    if (!selected || !service) return;
-
-    const placesService = new window.google.maps.places.PlacesService(
-      document.createElement("div")
-    );
-
-    placesService.getDetails({ placeId: selected.value }, (place, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        const coords = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        };
-        console.log("Selected place coordinates:", coords);
-      } else {
-        console.error("Failed to get place details:", status);
-      }
-    });
+    setSelectedValue(selected);
+    try {
+      const details = await fetchPlaceDetails(selected.value);
+      if (onLocationSelect) onLocationSelect(details);
+    } catch (err) {
+      // swallow
+    }
   };
 
   const customStyles = {
@@ -146,6 +88,7 @@ const AutocompleteSelect = () => {
 
   return (
     <Select
+      value={selectedValue}
       options={options}
       onInputChange={handleInputChange}
       onChange={handleSelect}

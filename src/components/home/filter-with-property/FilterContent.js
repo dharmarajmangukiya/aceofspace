@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import Location from "./Location";
 import LookingFor from "./LookingFor";
+import Radius from "./Radius";
 
 const rentSuggestions = [
   "1 BHK flat on rent",
@@ -31,6 +32,7 @@ const leaseSuggestions = [
 const FilterContent = ({ activeTab, setActiveTab, isRent }) => {
   const router = useRouter();
   const [index, setIndex] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const suggestions = isRent ? rentSuggestions : leaseSuggestions;
 
@@ -52,6 +54,18 @@ const FilterContent = ({ activeTab, setActiveTab, isRent }) => {
   ];
 
   const [price, setPrice] = useState([2000, 45000]);
+
+  // Location handler
+  const handleLocationSelect = (locationData) => {
+    setSelectedLocation(locationData);
+    if (locationData) {
+      console.log("Location saved:", {
+        name: locationData.placeName,
+        address: locationData.formattedAddress,
+        coordinates: locationData.coordinates,
+      });
+    }
+  };
 
   // price range handler
   const handleOnChange = (value) => {
@@ -81,21 +95,27 @@ const FilterContent = ({ activeTab, setActiveTab, isRent }) => {
             <div className="advance-content-style3 at-home5">
               <div className="row align-items-center">
                 <div className="col-md-4 col-xl-3 bdrr1 bdrrn-sm">
-                  <label>Search</label>
+                  <label className="fz14">Location(Ahmedabad)</label>
+
                   <div className="advance-search-field position-relative">
                     <form className="form-search position-relative">
                       <div className="box-search">
-                        <input
-                          className="form-control bgc-f7 bdrs12 ps-0"
-                          type="text"
-                          name="search"
-                          placeholder={`Search "${suggestions[index]}"`}
-                        />
+                        <Location onLocationSelect={handleLocationSelect} />
                       </div>
                     </form>
                   </div>
                 </div>
                 {/* End .col-3 */}
+
+                <div className="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                  <div className="mt-3 mt-md-0">
+                    <div className="bootselect-multiselect">
+                      <label>Radius</label>
+                      <Radius />
+                    </div>
+                  </div>
+                </div>
+                {/* End col-md-4 */}
 
                 <div className="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
                   <div className="mt-3 mt-md-0 px-0">
@@ -105,16 +125,6 @@ const FilterContent = ({ activeTab, setActiveTab, isRent }) => {
                         {activeTab === "rent" ? "Resdential" : "Commercial"})
                       </label>
                       <LookingFor />
-                    </div>
-                  </div>
-                </div>
-                {/* End col-md-4 */}
-
-                <div className="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
-                  <div className="mt-3 mt-md-0">
-                    <div className="bootselect-multiselect">
-                      <label className="fz14">Location(Ahmedabad)</label>
-                      <Location />
                     </div>
                   </div>
                 </div>

@@ -178,7 +178,7 @@ const AreaDetailsStep = ({
         </div>
 
         <div className="col mb-3">
-          <label className="form-label">Total floors</label>
+          <label className="form-label">Total floors *</label>
           <input
             type="number"
             className={`form-control filterInput no-spin ${

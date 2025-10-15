@@ -31,6 +31,7 @@ export const residentialStepFields = {
     "furnishing",
     "specifications",
     "availableFrom",
+    "ageOfProperty",
   ],
   4: [
     // Rent Details Step
@@ -52,7 +53,6 @@ export const residentialStepFields = {
     // Other Details Step
     "furnishing",
     "specifications",
-    "ageOfProperty",
     "coveredParking",
     "openParking",
     "facing",

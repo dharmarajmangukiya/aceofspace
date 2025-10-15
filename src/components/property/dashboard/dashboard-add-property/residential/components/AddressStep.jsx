@@ -1,3 +1,69 @@
+import { usePlacesAutocomplete } from "@/hooks/usePlacesAutocomplete";
+import { smallSelectStyles } from "@/utils/helper";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+
+const AreaAutocomplete = ({ value, onSelect, error, onBlur }) => {
+  const [isClient, setIsClient] = useState(false);
+  const [inputValue, setInputValue] = useState(value || "");
+  const [selected, setSelected] = useState(null);
+
+  const { options, isLoading, fetchPlaceDetails } = usePlacesAutocomplete({
+    input: inputValue,
+    enabled: isClient,
+  });
+
+  useEffect(() => setIsClient(true), []);
+
+  useEffect(() => {
+    if (value && typeof value === "object") {
+      // Set display text
+      setInputValue(value.placeName || value.formattedAddress || "");
+      // Reconstruct the selected option for react-select
+      setSelected({
+        value: value.placeId,
+        label: value.formattedAddress || value.placeName,
+      });
+    } else {
+      setInputValue(value || "");
+      setSelected(null);
+    }
+  }, [value]);
+
+  return (
+    <div>
+      <Select
+        value={selected}
+        options={options}
+        onInputChange={(v) => {
+          setInputValue(v || "");
+          // Don't call onChange during typing - only onSelect when location is chosen
+        }}
+        onChange={async (opt) => {
+          setSelected(opt);
+          if (!opt) {
+            if (onSelect) onSelect(null);
+            return;
+          }
+          const details = await fetchPlaceDetails(opt.value);
+          if (details) {
+            if (onSelect) onSelect(details);
+          }
+        }}
+        placeholder="Search area in Ahmedabad"
+        styles={smallSelectStyles(error)}
+        className="select-custom filterSelect"
+        classNamePrefix="select"
+        isClearable
+        isLoading={isLoading}
+        onBlur={onBlur}
+        noOptionsMessage={() => "No locations found in Ahmedabad"}
+      />
+      {error && <div className="text-danger mt-1">{error}</div>}
+    </div>
+  );
+};
+
 const AddressStep = ({
   formData,
   onDataChange,
@@ -88,19 +154,15 @@ const AddressStep = ({
       <div className="row">
         <div className="col-md-6 mb-3">
           <label className="form-label">Area *</label>
-          <input
-            type="text"
-            className={`form-control filterInput ${
-              getFieldError("area") ? "is-invalid" : ""
-            }`}
-            placeholder="Enter area/locality"
-            value={formData.area || ""}
-            onChange={(e) => handleInputChange("area", e.target.value)}
+          <AreaAutocomplete
+            value={formData.area}
+            onSelect={(payload) => {
+              // Only set area - it contains coordinates inside
+              handleInputChange("area", payload);
+            }}
+            error={getFieldError("area")}
             onBlur={() => handleBlur("area")}
           />
-          {getFieldError("area") && (
-            <div className="text-danger">{getFieldError("area")}</div>
-          )}
         </div>
 
         <div className="col-md-6 mb-3">

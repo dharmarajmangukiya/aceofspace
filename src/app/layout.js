@@ -3,6 +3,8 @@ import ScrollToTop from "@/components/common/ScrollTop";
 import Aos from "aos";
 
 import MainLayout from "@/Layouts/MainLayout";
+import { GOOGLE_MAPS_API_KEY } from "@/utils/config";
+import { APIProvider } from "@vis.gl/react-google-maps";
 import "aos/dist/aos.css";
 import { DM_Sans, Poppins } from "next/font/google";
 import "rc-slider/assets/index.css";
@@ -43,7 +45,9 @@ export default function RootLayout({ children }) {
         cz-shortcut-listen="false"
       >
         <div className="wrapper ovh">
-          <MainLayout>{children}</MainLayout>
+          <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+            <MainLayout>{children}</MainLayout>
+          </APIProvider>
         </div>
 
         <ScrollToTop />
