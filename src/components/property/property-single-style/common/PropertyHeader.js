@@ -1,18 +1,34 @@
 "use client";
+import {
+  useAddToFavorites,
+  useRemoveFromFavorites,
+} from "@/hooks/api/property";
+import { pickErrorMessage } from "@/utils/helper";
+import classNames from "classnames";
 import { useState } from "react";
 
-const PropertyHeader = ({ id, propertyDetail, isRental }) => {
+const PropertyHeader = ({ id, propertyDetail }) => {
   const data = propertyDetail || {};
-  const [isFavorited, setIsFavorited] = useState(Boolean(data?.isFavorite));
   const [showShareOptions, setShowShareOptions] = useState(false);
+  const { mutate: addToFavorites } = useAddToFavorites();
+  const { mutate: removeFromFavorites } = useRemoveFromFavorites();
+  const isFavorite = Boolean(data?.isFavorite);
 
   const handleFavorite = () => {
-    try {
-      setIsFavorited(!isFavorited);
-      // TODO: Add API call to update favorite status
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
+    const functionToCall = isFavorite ? removeFromFavorites : addToFavorites;
+
+    console.log(functionToCall, "functionToCall");
+    console.log(isFavorite ? "removing" : "adding");
+
+    functionToCall(id, {
+      onError: (error) => {
+        const errorMessage = pickErrorMessage(
+          error,
+          `Error ${isFavorite ? "removing" : "adding"} favorites:`
+        );
+        toast.error(errorMessage);
+      },
+    });
   };
 
   const handleShare = async () => {
@@ -145,16 +161,19 @@ const PropertyHeader = ({ id, propertyDetail, isRental }) => {
           <div className="property-action text-lg-end">
             <div className="d-flex mb20 mb10-md align-items-center justify-content-lg-end">
               <button
-                className={`icon mr10 ${isFavorited ? "text-danger" : ""}`}
+                className={`icon mr10 ${isFavorite ? "text-danger" : ""}`}
                 onClick={handleFavorite}
                 title={
-                  isFavorited ? "Remove from favorites" : "Add to favorites"
+                  isFavorite ? "Remove from favorites" : "Add to favorites"
                 }
               >
-                <span
-                  className={`flaticon-like ${
-                    isFavorited ? "text-danger" : ""
-                  }`}
+                <i
+                  className={classNames(
+                    "icon-center",
+                    isFavorite
+                      ? "fa-solid fa-heart text-danger"
+                      : "fa-solid fa-heart"
+                  )}
                 />
               </button>
               <button

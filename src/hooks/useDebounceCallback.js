@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 // Returns a stable debounced function without exposing cancel/flush.
 // It automatically clears pending timeouts on re-run and unmount.
-export const useDebounceCallback = (callback, delay = 300) => {
+const useDebounceCallback = (callback, delay = 300) => {
   const timerRef = useRef();
   const savedCallbackRef = useRef(callback);
 

@@ -1,30 +1,27 @@
 "use client";
-import React from "react";
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import listings from "@/data/listings";
-import Image from "next/image";
-import { useState } from "react";
-import Link from "next/link";
+import Loader from "@/components/common/Loader";
+import PropertyCard from "@/components/home/PropertyCard";
 
-const ListingsFavourites = () => {
-  const [favoriteListings, setFavoriteListings] = useState(
-    listings.slice(0, 8)
-  );
+const ListingsFavourites = ({ properties, loading }) => {
+  if (loading) {
+    return <Loader />;
+  }
 
-  const handleDeleteListing = (id) => {
-    const updatedListings = favoriteListings.filter(
-      (listing) => listing.id !== id
-    );
-    setFavoriteListings(updatedListings);
-  };
-
+  console.log("properties", properties);
   return (
     <>
-      {favoriteListings.length === 0 ? (
-        <h3>No items available.</h3>
+      {!properties || (properties && properties?.length === 0) ? (
+        <h3>No favourites available.</h3>
       ) : (
-        favoriteListings.map((listing) => (
-          <div className="col-md-6 col-lg-4 col-xl-3" key={listing.id}>
+        <div className="row">
+          {properties?.map((property, index) => (
+            <div className="col-sm-6  col-xl-4" key={property?.id + index}>
+              <PropertyCard propertyData={property?.property} showLikeButton />
+            </div>
+          ))}
+        </div>
+      )}
+      {/* <div className="col-md-6 col-lg-4 col-xl-3" key={listing.id}>
             <div className="listing-style1 style2">
               <div className="list-thumb">
                 <Image
@@ -88,9 +85,7 @@ const ListingsFavourites = () => {
                 </div>
               </div>
             </div>
-          </div>
-        ))
-      )}
+          </div> */}
     </>
   );
 };

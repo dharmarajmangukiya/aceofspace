@@ -15,9 +15,6 @@ import PropertyGallery from "@/components/property/property-single-style/single-
 import { useGetPropertyDetail } from "@/hooks/api/property";
 import { useEffect, useState } from "react";
 
-// const isRentOrLease = "rent";
-const isRentOrLease = "lease";
-
 const PropertyInfo = ({ id }) => {
   // Queries
   const { data: propertyData } = useGetPropertyDetail(id);
@@ -30,7 +27,7 @@ const PropertyInfo = ({ id }) => {
     }
   }, [propertyData]);
 
-  const isRental = isRentOrLease === "rent";
+  const isRental = propertyDetail?.propertyType === "residential";
   return (
     <>
       {/* Property All Single V1 */}

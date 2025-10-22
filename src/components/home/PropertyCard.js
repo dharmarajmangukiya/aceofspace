@@ -1,19 +1,48 @@
 "use client";
+import {
+  useAddToFavorites,
+  useRemoveFromFavorites,
+} from "@/hooks/api/property";
+import { BACKEND_BASE_URL } from "@/utils/config";
+import { pickErrorMessage } from "@/utils/helper";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const PropertyCard = ({
-  listing,
+  propertyData,
   onCardClick = () => {},
   onFeatureClick,
   onForSaleClick,
   onNewTabClick,
   onPlusClick,
-  onLikeClick,
+  showLikeButton = false,
   imageStyles = {},
 }) => {
   const [imageError, setImageError] = useState(false);
+  const router = useRouter();
+
+  const { mutate: addToFavorites } = useAddToFavorites();
+  const { mutate: removeFromFavorites } = useRemoveFromFavorites();
+  const isFavorite = Boolean(propertyData?.isFavorite);
+
+  const handleFavorite = (e) => {
+    e.stopPropagation();
+    const functionToCall = isFavorite ? removeFromFavorites : addToFavorites;
+
+    functionToCall(propertyData?.id, {
+      onError: (error) => {
+        const errorMessage = pickErrorMessage(
+          error,
+          `Error ${isFavorite ? "removing" : "adding"} favorites:`
+        );
+        toast.error(errorMessage);
+      },
+    });
+  };
 
   const handleImageError = () => {
     setImageError(true);
@@ -23,14 +52,28 @@ const PropertyCard = ({
     if (imageError) {
       return "/images/no-image.png";
     }
-    if (listing?.images?.length || 0) {
-      return listing.images[0];
+    if (propertyData?.images?.length > 0) {
+      let url = propertyData.images[0];
+      if (url.startsWith("/")) {
+        url = BACKEND_BASE_URL + url;
+      }
+      return url;
     }
     return "/images/no-image.png";
   };
 
+  console.log(getImageSrc(), "getImageSrc");
+
+  const handleCardClick = () => {
+    if (propertyData?.id) {
+      router.push(`/property-detail/${propertyData?.id}`);
+    }
+    if (onCardClick) {
+      onCardClick(propertyData);
+    }
+  };
   return (
-    <div role="button" onClick={onCardClick} className="listing-style9">
+    <div role="button" onClick={handleCardClick} className="listing-style9">
       <div
         className="list-thumb"
         style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden" }}
@@ -68,7 +111,7 @@ const PropertyCard = ({
           className="sale-sticker-wrap"
           style={{ position: "relative", zIndex: 2 }}
         >
-          {onFeatureClick && listing.forRent && (
+          {onFeatureClick && propertyData?.forRent && (
             <div
               className="list-tag rounded-0 fz12"
               onClick={onFeatureClick}
@@ -88,8 +131,13 @@ const PropertyCard = ({
             </div>
           )}
         </div>
-
-        <div className="list-meta" style={{ position: "relative", zIndex: 2 }}>
+        <div
+          className="list-meta"
+          style={{
+            zIndex: 3,
+            transform: "translateX(0px)",
+          }}
+        >
           {onNewTabClick && (
             <a onClick={onNewTabClick} role="button">
               <span className="flaticon-fullscreen" />
@@ -100,9 +148,16 @@ const PropertyCard = ({
               <span className="flaticon-new-tab" />
             </a>
           )}
-          {onLikeClick && (
-            <a onClick={onLikeClick} role="button">
-              <span className="flaticon-like" />
+          {showLikeButton && (
+            <a onClick={handleFavorite} role="button">
+              <i
+                className={classNames(
+                  "icon-center",
+                  isFavorite
+                    ? "fa-solid fa-heart text-danger"
+                    : "fa-solid fa-heart"
+                )}
+              />
             </a>
           )}
         </div>
@@ -110,70 +165,74 @@ const PropertyCard = ({
 
       <div className="list-content">
         <div className="list-price">
-          {listing.expectedRent} / <span>mo</span>
+          {propertyData?.expectedRent} / <span>mo</span>
         </div>
         <h6 className="list-title my-1">
-          <Link href={`/single-v2/${listing.id}`}>{listing.buildingName}</Link>
+          <Link href={`/single-v2/${propertyData?.id}`}>
+            {propertyData?.buildingName}
+          </Link>
         </h6>
 
         {(() => {
-          if (listing.propertyType === "residential") {
+          if (propertyData?.propertyType === "residential") {
             return (
               <div className="list-meta2 d-flex align-items-center flex-wrap">
                 <a href="#" className="mr10">
-                  <i className="fa-solid fa-building"></i> {listing.subType}
+                  <i className="fa-solid fa-building"></i>{" "}
+                  {propertyData?.subType}
                 </a>
-                {listing.bedrooms && (
+                {propertyData?.bedrooms && (
                   <a href="#" className="mr10">
-                    <i className="fa-solid fa-bed mr5"></i> {listing.bedrooms}{" "}
-                    bedroom(s)
+                    <i className="fa-solid fa-bed mr5"></i>{" "}
+                    {propertyData.bedrooms} bedroom(s)
                   </a>
                 )}
-                {listing.bathrooms && (
+                {propertyData?.bathrooms && (
                   <a href="#" className="mr10">
                     <i className="fa-solid fa-shower mr5"></i>{" "}
-                    {listing.bathrooms} bath
+                    {propertyData.bathrooms} bath
                   </a>
                 )}
-                {listing.furnishing && (
+                {propertyData?.furnishing && (
                   <a href="#">
                     <i className="fa-solid fa-couch mr5"></i>{" "}
-                    {listing.furnishing}
+                    {propertyData.furnishing}
                   </a>
                 )}
-                {listing.carpetArea && (
+                {propertyData?.carpetArea && (
                   <a href="#">
                     <span className="flaticon-expand mr5" />{" "}
-                    {listing.carpetArea} Carpet Area sqft
+                    {propertyData.carpetArea} Carpet Area sqft
                   </a>
                 )}
               </div>
             );
-          } else if (listing.propertyType === "commercial") {
+          } else if (propertyData?.propertyType === "commercial") {
             return (
               <div className="list-meta2 d-flex align-items-center flex-wrap">
                 <a href="#" className="mr10">
-                  <i className="fa-solid fa-building mr5"></i> {listing.subType}
+                  <i className="fa-solid fa-building mr5"></i>{" "}
+                  {propertyData?.subType}
                 </a>
 
-                {listing.noOfCabins && (
+                {propertyData?.noOfCabins && (
                   <a href="#" className="mr10">
                     <i className="fa-solid fa-building mr5"></i>{" "}
-                    {listing.noOfCabins} Cabins
+                    {propertyData.noOfCabins} Cabins
                   </a>
                 )}
 
-                {listing.maxSeats && (
+                {propertyData?.maxSeats && (
                   <a href="#" className="mr10">
-                    <i className="fa-solid fa-chair"></i> {listing.maxSeats}{" "}
-                    Seats
+                    <i className="fa-solid fa-chair"></i>{" "}
+                    {propertyData.maxSeats} Seats
                   </a>
                 )}
 
-                {listing.carpetArea && (
+                {propertyData?.carpetArea && (
                   <a href="#" className="mr10">
                     <span className="flaticon-expand mr5" />{" "}
-                    {listing.carpetArea} Carpet Area sqft
+                    {propertyData.carpetArea} Carpet Area sqft
                   </a>
                 )}
               </div>

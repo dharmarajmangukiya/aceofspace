@@ -39,7 +39,7 @@ const PopularListings = ({ data }) => {
           (listing, index) => (
             <SwiperSlide key={listing.id + index}>
               <div className="item">
-                <PropertyCard listing={listing} />
+                <PropertyCard propertyData={listing} showLikeButton />
               </div>
             </SwiperSlide>
           )

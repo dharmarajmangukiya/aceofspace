@@ -1,6 +1,19 @@
-import React from "react";
+const FilterHeader = ({
+  onSearchTermChange,
+  searchTerm = "",
+  sortValue = "",
+  onSortChange,
+  isLoading = false,
+}) => {
+  const handleSearchTermChange = (value) => {
+    onSearchTermChange?.(value);
+  };
 
-const FilterHeader = () => {
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+    onSortChange?.(value);
+  };
+
   return (
     <div className="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
       <div className="item1 mb15-sm">
@@ -8,11 +21,17 @@ const FilterHeader = () => {
           <input
             type="text"
             className="form-control bdrs12"
-            placeholder="Search"
+            placeholder="Search properties..."
+            value={searchTerm}
+            onChange={(e) => handleSearchTermChange(e.target.value)}
             required
           />
-          <label>
-            <span className="flaticon-search" />
+          <label style={{ cursor: "pointer" }}>
+            <i
+              className={
+                isLoading ? "fas fa-spinner fa-spin" : "flaticon-search"
+              }
+            />
           </label>
         </div>
       </div>
@@ -23,11 +42,18 @@ const FilterHeader = () => {
           <span style={{ minWidth: "50px" }} className="title-color">
             Sort by:
           </span>
-          <select className="form-select show-tick">
-            <option>Best Seller</option>
-            <option>Best Match</option>
-            <option>Price Low</option>
-            <option>Price High</option>
+          <select
+            className="form-select show-tick"
+            value={sortValue}
+            onChange={handleSortChange}
+          >
+            <option value="">Select Sort</option>
+            <option value="price_low_high">Price Low to High</option>
+            <option value="price_high_low">Price High to Low</option>
+            <option value="date_new_old">Date New to Old</option>
+            <option value="date_old_new">Date Old to New</option>
+            <option value="name_a_z">Name A to Z</option>
+            <option value="name_z_a">Name Z to A</option>
           </select>
         </div>
       </div>

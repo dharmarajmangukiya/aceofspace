@@ -14,13 +14,7 @@ const FeaturedListings = ({ data, colstyle }) => {
           }  `}
           key={listing.id}
         >
-          <PropertyCard
-            listing={listing}
-            onCardClick={() => {
-              router.push(`/property-detail/${listing.id}`);
-            }}
-            onLikeClick={() => {}}
-          />
+          <PropertyCard propertyData={listing} showLikeButton />
         </div>
       ))}
     </>

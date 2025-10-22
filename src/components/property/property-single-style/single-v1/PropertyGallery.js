@@ -19,8 +19,6 @@ const PropertyGallery = ({ id, images = [] }) => {
   };
 
   try {
-    console.log("PropertyGallery images:", images);
-
     // Safe array check with proper validation
     const safeImages = Array.isArray(images)
       ? images.filter((img) => {

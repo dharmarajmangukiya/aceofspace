@@ -1,6 +1,9 @@
 "use client";
+import { queryClient } from "@/Layouts/MainLayout";
 import api from "@/utils/axiosInstance";
+import { PAGE_SIZE } from "@/utils/constants";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import useDebouncedValue from "../useDebouncedValue";
 
 // Get Property Detail by ID
 export const useGetPropertyDetail = (propertyId) => {
@@ -88,13 +91,21 @@ export const useUpdateProperty = () => {
 };
 
 // Get My Properties
-export const useGetMyProperties = () => {
+export const useGetMyProperties = (
+  page = 1,
+  limit = PAGE_SIZE,
+  search = "",
+  sortBy = ""
+) => {
+  const { debouncedValue: debouncedSearchValue } = useDebouncedValue(search);
   return useQuery({
-    queryKey: ["myProperties"],
+    queryKey: ["myProperties", page, limit, debouncedSearchValue, sortBy],
     enabled: true,
     queryFn: async () => {
       try {
-        const response = await api.get("/property/my");
+        const response = await api.get("/property/my", {
+          params: { page, limit, search: debouncedSearchValue, sortBy },
+        });
         return response.data;
       } catch (error) {
         throw error;
@@ -128,11 +139,21 @@ export const useAddToFavorites = () => {
         throw error;
       }
     },
+    onSuccess: (data, propertyId) => {
+      // Invalidate favorites list queries
+      queryClient.invalidateQueries({
+        queryKey: ["favorites"],
+      });
+      // Invalidate property detail query to update favorite status
+      queryClient.invalidateQueries({
+        queryKey: ["propertyDetail", propertyId],
+      });
+    },
   });
 };
 
 // Get Favorites with Pagination
-export const useGetFavorites = (page = 1, limit = 10) => {
+export const useGetFavorites = (page = 1, limit = PAGE_SIZE) => {
   return useQuery({
     queryKey: ["favorites", page, limit],
     enabled: true,
@@ -149,29 +170,6 @@ export const useGetFavorites = (page = 1, limit = 10) => {
   });
 };
 
-// Get Favorites with Infinite Scroll
-export const useGetFavoritesInfinite = (limit = 10) => {
-  return useInfiniteQuery({
-    queryKey: ["favoritesInfinite", limit],
-    enabled: true,
-    initialPageParam: 1,
-    queryFn: async ({ pageParam = 1 }) => {
-      try {
-        const response = await api.get("/favorites/list", {
-          params: { page: pageParam, limit },
-        });
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
-    },
-    getNextPageParam: (lastPage, allPages) => {
-      if (!lastPage.pagination?.isNextPage) return undefined;
-      return allPages.length + 1;
-    },
-  });
-};
-
 // Remove from Favorites
 export const useRemoveFromFavorites = () => {
   return useMutation({
@@ -184,6 +182,16 @@ export const useRemoveFromFavorites = () => {
       } catch (error) {
         throw error;
       }
+    },
+    onSuccess: (data, propertyId) => {
+      // Invalidate favorites list queries
+      queryClient.invalidateQueries({
+        queryKey: ["favorites"],
+      });
+      // Invalidate property detail query to update favorite status
+      queryClient.invalidateQueries({
+        queryKey: ["propertyDetail", propertyId],
+      });
     },
   });
 };

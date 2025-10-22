@@ -2,7 +2,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useDebounceCallback } from "./useDebounceCallback";
+import useDebounceCallback from "./useDebounceCallback";
 
 // Ahmedabad bounding box (SW, NE)
 const AHD_BOUNDS_SW = { lat: 22.9074872, lng: 72.4487989 };

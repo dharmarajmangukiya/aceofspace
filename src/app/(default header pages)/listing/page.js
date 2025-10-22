@@ -52,7 +52,7 @@ export default page;
 //       <PropertyCard
 //         listing={listing}
 //         onCardClick={() => {}}
-//         onLikeClick={() => {}}
+//                    showLikeButton
 //       />
 //     </div>
 //   ))}

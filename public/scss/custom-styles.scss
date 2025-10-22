@@ -233,3 +233,10 @@ header.nav-homepage-style {
 img.property-thumbnail-cover {
   object-fit: cover !important;
 }
+
+.icon-center {
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
