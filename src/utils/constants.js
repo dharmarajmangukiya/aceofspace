@@ -407,7 +407,7 @@ export const getSidebarItems = (role) => {
             text: "Add New Property",
           },
           {
-            href: "/dashboard-my-properties",
+            href: "/my-properties",
             icon: "flaticon-home",
             text: "My Properties",
           },

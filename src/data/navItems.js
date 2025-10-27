@@ -85,7 +85,7 @@ export const propertyItems = [
       { label: "Dashboard Home", href: "/dashboard" },
       { label: "Message", href: "/dashboard-message" },
       { label: "New Property", href: "/add-property" },
-      { label: "My Properties", href: "/dashboard-my-properties" },
+      { label: "My Properties", href: "/my-properties" },
       { label: "My Favorites", href: "/dashboard-my-favourites" },
       { label: "Saved Search", href: "/dashboard-saved-search" },
       { label: "Reviews", href: "/dashboard-reviews" },

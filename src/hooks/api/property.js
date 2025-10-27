@@ -74,10 +74,14 @@ export const useAddProperty = () => {
 // Update Property
 export const useUpdateProperty = () => {
   return useMutation({
-    mutationFn: async (data) => {
+    mutationFn: async (formData) => {
       try {
-        const { id, ...propertyData } = data;
-        const response = await api.put(`/property/update/${id}`, propertyData, {
+        // Extract id from FormData
+        const id = formData.get("id");
+        // Remove id from FormData before sending
+        formData.delete("id");
+
+        const response = await api.put(`/property/update/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

@@ -36,7 +36,7 @@ const DashboardHeader = () => {
         {
           icon: "flaticon-home",
           text: "My Properties",
-          href: "/dashboard-my-properties",
+          href: "/my-properties",
         },
         {
           icon: "flaticon-like",

@@ -94,7 +94,7 @@ module.exports = [
       { label: "Dashboard Home", path: "/dashboard" },
       { label: "Message", path: "/dashboard-message" },
       { label: "New Property", path: "/add-property" },
-      { label: "My Properties", path: "/dashboard-my-properties" },
+      { label: "My Properties", path: "/my-properties" },
       { label: "My Favorites", path: "/dashboard-my-favourites" },
       { label: "Saved Search", path: "/dashboard-saved-search" },
       { label: "Reviews", path: "/dashboard-reviews" },

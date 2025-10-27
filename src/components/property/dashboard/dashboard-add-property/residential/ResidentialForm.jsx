@@ -20,6 +20,7 @@ const ResidentialForm = ({
   formikProps,
   currentStep,
   setCurrentStep,
+  isEditMode = false,
 }) => {
   const {
     values,
@@ -232,7 +233,11 @@ const ResidentialForm = ({
                   }}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit Property"}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : isEditMode
+                    ? "Update Property"
+                    : "Submit Property"}
                 </button>
               )}
             </div>
@@ -251,6 +256,7 @@ ResidentialForm.propTypes = {
     setFieldValue: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
   }).isRequired,
+  isEditMode: PropTypes.bool,
 };
 
 export default ResidentialForm;

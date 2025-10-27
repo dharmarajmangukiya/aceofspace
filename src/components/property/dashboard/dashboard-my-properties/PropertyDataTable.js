@@ -81,11 +81,6 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
     return "Price not set";
   };
 
-  // const handleEdit = (property) => {
-  //   // TODO: Navigate to edit page when ready
-  //   router.push(`/dashboard-add-property?id=${property.id}`);
-  // };
-
   const handleDeleteClick = (property) => {
     setPropertyToDelete(property);
     // Trigger Bootstrap modal using data attributes
@@ -225,34 +220,29 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
         </span>
       ),
     },
-    {
-      key: "view",
-      header: "View",
-      width: 140,
-      render: (property) => (
-        <button
-          className="btn btn-sm btn-outline-primary"
-          onClick={() => handleView(property)}
-        >
-          <i className="fas fa-eye me-1"></i>
-          View
-        </button>
-      ),
-    },
+
     {
       key: "action",
       header: "Action",
       width: 120,
       render: (property) => (
         <div className="d-flex">
-          {/* <button
+          <button
+            className="icon"
+            style={{ border: "none" }}
+            data-tooltip-id={`view-${property.id}`}
+            onClick={() => handleView(property)}
+          >
+            <i className="fas fa-eye me-1"></i>
+          </button>
+          <button
             className="icon"
             style={{ border: "none" }}
             data-tooltip-id={`edit-${property.id}`}
-            onClick={() => handleEdit(property)}
+            onClick={() => router.push(`/edit-property/${property.id}`)}
           >
             <span className="fas fa-pen fa" />
-          </button> */}
+          </button>
           <button
             className="icon"
             style={{ border: "none" }}
@@ -262,6 +252,7 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
             <span className="flaticon-bin" />
           </button>
 
+          <ReactTooltip id={`view-${property.id}`} place="top" content="View" />
           <ReactTooltip id={`edit-${property.id}`} place="top" content="Edit" />
           <ReactTooltip
             id={`delete-${property.id}`}

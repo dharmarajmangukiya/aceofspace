@@ -17,6 +17,7 @@ const CommercialForm = ({
   formikProps,
   currentStep,
   setCurrentStep,
+  isEditMode = false,
 }) => {
   const {
     values,
@@ -210,7 +211,11 @@ const CommercialForm = ({
                   }}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit Property"}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : isEditMode
+                    ? "Update Property"
+                    : "Submit Property"}
                 </button>
               )}
             </div>
@@ -229,6 +234,7 @@ CommercialForm.propTypes = {
     setFieldValue: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
   }).isRequired,
+  isEditMode: PropTypes.bool,
 };
 
 export default CommercialForm;
