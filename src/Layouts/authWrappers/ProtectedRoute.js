@@ -2,7 +2,7 @@
 
 import { AuthContext } from "@/Layouts/AuthProvider";
 import { role_enum } from "@/utils/constants";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
 const ProtectedRoute = ({
@@ -12,6 +12,7 @@ const ProtectedRoute = ({
 }) => {
   const { isAuth, role, userData } = useContext(AuthContext);
   const router = useRouter();
+  const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
 
   // Ensure this only runs on client side
@@ -42,10 +43,26 @@ const ProtectedRoute = ({
       }
       return;
     }
-  }, [isClient, isAuth, role, allowedRoles, redirectTo, router]);
+  }, [
+    isClient,
+    isAuth,
+    role,
+    allowedRoles,
+    redirectTo,
+    router,
+    userData,
+    pathname,
+  ]);
 
   // Show loading while checking authentication on client side
-  if (!isClient || !isAuth || (role && !allowedRoles.includes(role))) {
+  const isKycApproved = userData?.kyc?.status === "approved";
+  const onMyProfileRoute = pathname === "/my-profile";
+  if (
+    !isClient ||
+    !isAuth ||
+    (role && !allowedRoles.includes(role)) ||
+    (!isKycApproved && !onMyProfileRoute)
+  ) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"

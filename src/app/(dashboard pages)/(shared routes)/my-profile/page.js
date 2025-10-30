@@ -4,9 +4,23 @@ import PersonalInfo from "@/components/property/dashboard/dashboard-profile/Pers
 // import ProfileBox from "@/components/property/dashboard/dashboard-profile/ProfileBox";
 import KycSection from "@/components/property/dashboard/dashboard-profile/KycSection";
 import { useGetProfile } from "@/hooks/api/user";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const DashboardMyProfile = () => {
   const { data: userData, refetch: refetchProfile } = useGetProfile();
+  const searchParams = useSearchParams();
+  const scrollTo = searchParams.get("scrollTo");
+
+  useEffect(() => {
+    if (scrollTo && typeof window !== "undefined") {
+      const scrollToElement = document.getElementById(scrollTo);
+      if (scrollToElement) {
+        const y = scrollToElement.getBoundingClientRect().top - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }
+  }, [scrollTo]);
   return (
     <>
       <div className="row align-items-center pb40">
@@ -37,7 +51,10 @@ const DashboardMyProfile = () => {
           </div>
           {/* End .ps-widget */}
 
-          <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div
+            className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative"
+            id="kyc-update"
+          >
             <h4 className="title fz17 mb30">Update KYC</h4>
             <KycSection userData={userData} refetchProfile={refetchProfile} />
           </div>

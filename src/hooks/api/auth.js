@@ -1,6 +1,7 @@
 import api from "@/utils/axiosInstance";
 import { authStorage } from "@/utils/storage";
 import { useMutation } from "@tanstack/react-query";
+// Note: avoid calling React hooks inside non-hook functions; use direct API calls instead
 
 // Utility functions for token management using centralized storage
 export const getAuthToken = () => authStorage.getAuthToken();
@@ -60,10 +61,14 @@ export const useSignIn = () => {
 
         // Handle successful login - store both tokens
         if (response?.data?.data?.token) {
-          const { token, refreshToken, user } = response.data.data;
+          const { token, refreshToken } = response.data.data;
 
           // Store both tokens
           storeTokens(token, refreshToken, rememberMe);
+
+          // Fetch profile via direct API call (not a hook) after storing tokens
+          const profileRes = await api.get("/user/profile");
+          const user = profileRes?.data?.data;
 
           // Store user data if provided
           if (user) {
@@ -78,6 +83,8 @@ export const useSignIn = () => {
 
         return response.data;
       } catch (error) {
+        console.log("error", error);
+        clearAuthData();
         throw error;
       }
     },

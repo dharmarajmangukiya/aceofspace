@@ -2,11 +2,13 @@ import { AuthContext } from "@/Layouts/AuthProvider";
 import api from "@/utils/axiosInstance";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import { clearAuthData, isRememberMe } from "./auth";
+import { clearAuthData, isRememberMe, storeUserData } from "./auth";
 
 // Get current user profile
 export const useGetProfile = () => {
   const { isAuth } = useContext(AuthContext);
+  const rememberMe = isRememberMe();
+
   return useQuery({
     queryKey: ["profile", isAuth],
     enabled: isAuth,
@@ -16,17 +18,11 @@ export const useGetProfile = () => {
         const response = await api.get("/user/profile");
 
         // Update user data in localStorage if profile is fetched
-        if (response.data?.user) {
-          if (isRememberMe()) {
-            localStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.user)
-            );
-          } else {
-            sessionStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.user)
-            );
+        console.log("response.data.data", response.data.data);
+        if (response?.data?.data) {
+          storeUserData(response.data.data, true);
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("authChange"));
           }
         }
 

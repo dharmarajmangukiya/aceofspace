@@ -38,7 +38,13 @@ export function usePlacesAutocomplete({ input, enabled = true } = {}) {
     const isGoogleReady =
       typeof window !== "undefined" && !!window.google?.maps;
     if (!isGoogleReady) return null;
-    return new window.google.maps.LatLngBounds(AHD_BOUNDS_SW, AHD_BOUNDS_NE);
+    // Use LatLngBoundsLiteral to avoid constructor issues across Maps JS versions
+    return {
+      south: AHD_BOUNDS_SW.lat,
+      west: AHD_BOUNDS_SW.lng,
+      north: AHD_BOUNDS_NE.lat,
+      east: AHD_BOUNDS_NE.lng,
+    };
   }, [places]);
 
   // Query: predictions for current input
@@ -61,8 +67,8 @@ export function usePlacesAutocomplete({ input, enabled = true } = {}) {
           autocompleteService.getPlacePredictions(
             {
               input: debouncedInput,
-              bounds,
-              strictBounds: true,
+              // Use locationRestriction for strict bounding in Places AutocompleteService
+              locationRestriction: bounds,
               componentRestrictions: { country: "in" },
               types: ["geocode"],
             },

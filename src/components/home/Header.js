@@ -34,6 +34,7 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { isAuth, role, userData } = useContext(AuthContext);
   const { firstName, lastName } = userData || {};
+  console.log("userData", firstName, lastName);
   const router = useRouter();
   const pathname = usePathname();
   const loginButtonRef = useRef(null);
