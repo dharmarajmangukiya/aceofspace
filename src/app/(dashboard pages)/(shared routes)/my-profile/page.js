@@ -11,6 +11,19 @@ const DashboardMyProfile = () => {
   const { data: userData, refetch: refetchProfile } = useGetProfile();
   const searchParams = useSearchParams();
   const scrollTo = searchParams.get("scrollTo");
+  // Refetch profile when authChange event is fired (e.g., after login)
+  useEffect(() => {
+    const handleAuthChange = () => {
+      refetchProfile();
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("authChange", handleAuthChange);
+      return () => {
+        window.removeEventListener("authChange", handleAuthChange);
+      };
+    }
+  }, [refetchProfile]);
 
   useEffect(() => {
     if (scrollTo && typeof window !== "undefined") {
@@ -27,7 +40,6 @@ const DashboardMyProfile = () => {
         <div className="col-lg-12">
           <div className="dashboard_title_area">
             <h2>My Profile</h2>
-            <p className="text">We are glad to see you again!</p>
           </div>
         </div>
       </div>

@@ -211,7 +211,7 @@ const DashboardHeader = () => {
 
                       <ul className="ace-responsive-menu">
                         <li className="visible_list dropitem">
-                          <Link className="list-item" href="/">
+                          <Link className="list-item" href="#">
                             <span
                               className={classNames(
                                 "title header-profile-text h5"

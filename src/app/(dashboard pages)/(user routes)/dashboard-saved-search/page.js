@@ -41,7 +41,6 @@ const DashboardSavedSearch = () => {
                 <div className="col-lg-12">
                   <div className="dashboard_title_area">
                     <h2>My Favourites</h2>
-                    <p className="text">We are glad to see you again!</p>
                   </div>
                 </div>
               </div>

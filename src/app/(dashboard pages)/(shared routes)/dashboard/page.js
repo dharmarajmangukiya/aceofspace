@@ -26,7 +26,6 @@ const DashboardHome = () => {
         <div className="col-lg-12">
           <div className="dashboard_title_area">
             <h2>{"Howdy" + userName + "!"}</h2>
-            <p className="text">We are glad to see you again!</p>
           </div>
         </div>
         {/* col-lg-12 */}

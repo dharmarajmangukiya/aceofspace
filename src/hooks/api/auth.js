@@ -1,6 +1,6 @@
 import api from "@/utils/axiosInstance";
 import { authStorage } from "@/utils/storage";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Note: avoid calling React hooks inside non-hook functions; use direct API calls instead
 
 // Utility functions for token management using centralized storage
@@ -52,6 +52,8 @@ export const isRefreshTokenExpired = (refreshToken) => {
 
 // Login mutation
 export const useSignIn = () => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationKey: ["signIn"],
     mutationFn: async (credentials) => {
@@ -79,6 +81,9 @@ export const useSignIn = () => {
           if (typeof window !== "undefined") {
             window.dispatchEvent(new CustomEvent("authChange"));
           }
+
+          // Invalidate and refetch profile query to ensure fresh data
+          queryClient.invalidateQueries({ queryKey: ["profile"] });
         }
 
         return response.data;

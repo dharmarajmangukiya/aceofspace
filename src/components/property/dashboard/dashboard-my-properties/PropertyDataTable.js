@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import DeletePropertyModal from "./DeletePropertyModal";
+import PropertyMessageModal from "./PropertyMessageModal";
 
 const getStatusStyle = (status) => {
   switch (status?.toLowerCase()) {
@@ -34,6 +35,8 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [propertyToDelete, setPropertyToDelete] = useState(null);
+  const [propertyForMessage, setPropertyForMessage] = useState(null);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [imageErrors, setImageErrors] = useState(new Set());
 
   const { mutate: deleteProperty, isPending: isDeleting } = useDeleteProperty();
@@ -153,6 +156,16 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
     router.push(`/property-detail/${property.id}`);
   };
 
+  const handleMessageClick = (property) => {
+    setPropertyForMessage(property);
+    setIsMessageModalOpen(true);
+  };
+
+  const handleCloseMessageModal = () => {
+    setIsMessageModalOpen(false);
+    setPropertyForMessage(null);
+  };
+
   const columns = [
     {
       key: "listing",
@@ -238,6 +251,14 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
           <button
             className="icon"
             style={{ border: "none" }}
+            data-tooltip-id={`message-${property.id}`}
+            onClick={() => handleMessageClick(property)}
+          >
+            <i className="fas fa-envelope me-1"></i>
+          </button>
+          <button
+            className="icon"
+            style={{ border: "none" }}
             data-tooltip-id={`edit-${property.id}`}
             onClick={() => router.push(`/edit-property/${property.id}`)}
           >
@@ -253,6 +274,11 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
           </button>
 
           <ReactTooltip id={`view-${property.id}`} place="top" content="View" />
+          <ReactTooltip
+            id={`message-${property.id}`}
+            place="top"
+            content="Messages"
+          />
           <ReactTooltip id={`edit-${property.id}`} place="top" content="Edit" />
           <ReactTooltip
             id={`delete-${property.id}`}
@@ -277,6 +303,11 @@ const PropertyDataTable = ({ properties = [], isLoading = false }) => {
         property={propertyToDelete}
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
+      />
+      <PropertyMessageModal
+        property={propertyForMessage}
+        isOpen={isMessageModalOpen}
+        onClose={handleCloseMessageModal}
       />
     </>
   );
